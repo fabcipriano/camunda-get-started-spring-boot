@@ -19,6 +19,8 @@ package org.camunda.bpm.getstarted.loanapproval;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication;
 import org.camunda.bpm.spring.boot.starter.event.PostDeployEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,12 +33,18 @@ public class WebappExampleProcessApplication {
   @Autowired
   private RuntimeService runtimeService;
 
+  private static final Logger logger
+          = LoggerFactory.getLogger(WebappExampleProcessApplication.class);
+
   public static void main(String... args) {
+    logger.info("Starting ... ");
     SpringApplication.run(WebappExampleProcessApplication.class, args);
+    logger.info("Started !!!");
   }
 
   @EventListener
   public void processPostDeploy(PostDeployEvent event) {
+
     runtimeService.startProcessInstanceByKey("loanApproval");
   }
 
