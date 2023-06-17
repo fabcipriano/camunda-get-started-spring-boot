@@ -1,0 +1,9 @@
+version: "3"
+services:
+  camunda-get-started:
+    container_name: camunda-started
+    build:
+      dockerfile: ./Dockerfile
+    image: facio/camunda-get-started:latest
+    ports:
+      - "8666:8080"
