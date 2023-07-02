@@ -5,10 +5,14 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <camunda.spring-boot.version>7.19.0</camunda.spring-boot.version>
-    <spring-boot.version>2.7.10</spring-boot.version>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
+    <!-- when 7.7.0 use camunda.spring.boot.version>2.2.0</camunda.spring.boot.version-->
+    <camunda.spring.boot.version>2.3.0</camunda.spring.boot.version>
+    <camunda.engine.version>7.8.0</camunda.engine.version>
+    <spring-boot.version>1.5.9.RELEASE</spring-boot.version>
+    <hikari.cp.version>2.6.1</hikari.cp.version>
+    <postgresql.version>42.2.2</postgresql.version>
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>8</maven.compiler.target>
   </properties>
   
   <dependencyManagement>
@@ -24,20 +28,50 @@
   </dependencyManagement>
   
   <dependencies>
+
+    <!--workflow-->
+    <dependency>
+      <!--groupId>org.camunda.bpm.extension.springboot</groupId-->
+      <groupId>org.camunda.bpm.springboot</groupId>
+      <artifactId>camunda-bpm-spring-boot-starter</artifactId>
+      <version>${camunda.spring.boot.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
-      <version>${camunda.spring-boot.version}</version>
+      <version>${camunda.spring.boot.version}</version>
     </dependency>
+
     <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
+      <groupId>org.camunda.bpm.springboot</groupId>
+      <artifactId>camunda-bpm-spring-boot-starter-test</artifactId>
+      <version>${camunda.spring.boot.version}</version>
     </dependency>
+
     <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
-      <version>2.3.6</version>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine</artifactId>
+      <version>${camunda.engine.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
+      <version>${hikari.cp.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>${postgresql.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.uuid</groupId>
+      <artifactId>java-uuid-generator</artifactId>
+      <version>3.2.0</version>
+    </dependency>
+
   </dependencies>
   
    <build>

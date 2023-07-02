@@ -1,6 +1,8 @@
 package org.camunda.bpm.getstarted.model;
 
-public class CamundaInstance {
+import java.io.Serializable;
+
+public class CamundaInstance implements Serializable {
     private CamundaStatus status;
     private long totalTime;
     private String businessKey;

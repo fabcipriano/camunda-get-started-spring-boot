@@ -3,5 +3,31 @@ camunda.bpm:
     id: demo
     password: demo
     firstName: Demo
+  id-generator: strong
+  history-level: NONE
+  history-level-default: NONE
   filter:
     create: All tasks
+
+camunda.bpm.database:
+  jdbc-batch-processing: true
+
+camunda.bpm.job-execution:
+  core-pool-size: 20
+  max-pool-size: 20
+
+spring.datasource:
+  url: "jdbc:postgresql://camunda-db.jsahdjh.us-east-1.rds.amazonaws.com:666/mypostgres"
+  username: vaiplaneta
+  password: 1236668910
+  driverClassName: org.postgresql.Driver
+
+spring.datasource.hikari:
+  connectionTimeout: 2500
+  maximumPoolSize: 25
+  poolName: HiCamundaDS
+
+logging.level:
+    org.springframework: INFO
+    org.camunda.bpm.engine.cmd: DEBUG
+    org.camunda.bpm.engine.jobexecutor: DEBUG

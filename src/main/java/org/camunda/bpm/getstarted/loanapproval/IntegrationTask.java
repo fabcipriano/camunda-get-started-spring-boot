@@ -16,8 +16,6 @@ public class IntegrationTask implements JavaDelegate {
             = LoggerFactory.getLogger(IntegrationTask.class);
     private static final Random random = new Random();
 
-    public static final Map<String, CamundaInstance> CAMUNDA_INSTANCE_MAP = new HashMap<>();
-
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
         String currentActivityName = delegateExecution.getCurrentActivityName();
@@ -25,17 +23,23 @@ public class IntegrationTask implements JavaDelegate {
 
         if ("Initial".equals(currentActivityName)) {
             logger.info("Initial task.");
-            CAMUNDA_INSTANCE_MAP.put(delegateExecution.getProcessInstanceId(),
-                    new CamundaInstance(CamundaStatus.CREATED, 0, delegateExecution.getBusinessKey()));
             delegateExecution.setVariable("StartTime",System.currentTimeMillis());
+            delegateExecution.setVariable("CAMUNDA_INSTANCE",
+                    new CamundaInstance(CamundaStatus.CREATED, 0, delegateExecution.getBusinessKey()));
             logger.info("Called {} task. INITIALIZED ..  resturn", currentActivityName);
             return;
         }
 
         if ("Create Loan".equals(currentActivityName)) {
             logger.info("Create loan task.");
-            CamundaInstance camundaInstance = CAMUNDA_INSTANCE_MAP.get(delegateExecution.getProcessInstanceId());
-            camundaInstance.setStatus(CamundaStatus.RUNNING);
+            CamundaInstance camundaInstance = (CamundaInstance) delegateExecution.getVariable("CAMUNDA_INSTANCE");
+            if (camundaInstance != null ) {
+                camundaInstance.setStatus(CamundaStatus.RUNNING);
+                delegateExecution.setVariable("CAMUNDA_INSTANCE", camundaInstance);
+                logger.info("Create loan task variable saved.");
+            } else {
+                logger.warn("Create loan task SKIP !!!!!!");
+            }
         }
 
         delegateExecution.setVariable("StatusLoan-" + currentActivityName,"CREATED");
@@ -47,10 +51,16 @@ public class IntegrationTask implements JavaDelegate {
             logger.info("Final task.");
             Object startTime = delegateExecution.getVariable("StartTime");
             long totalTime  = System.currentTimeMillis() - (long)startTime;
-            CamundaInstance camundaInstance = CAMUNDA_INSTANCE_MAP.get(delegateExecution.getProcessInstanceId());
-            camundaInstance.setTotalTime(totalTime);
-            camundaInstance.setStatus(CamundaStatus.FINISHED);
-            logger.info(" =====> Instance {} executed in {} ms", delegateExecution.getProcessInstanceId(), totalTime);
+            CamundaInstance camundaInstance = (CamundaInstance) delegateExecution.getVariable("CAMUNDA_INSTANCE");
+            if (camundaInstance != null) {
+                camundaInstance.setTotalTime(totalTime);
+                camundaInstance.setStatus(CamundaStatus.FINISHED);
+
+                delegateExecution.setVariable("CAMUNDA_INSTANCE", camundaInstance);
+                logger.info(" =====> Instance {} executed AND saved in {} ms", delegateExecution.getProcessInstanceId(), totalTime);
+            } else {
+                logger.warn(" =====> Instance BYPASS executed AND saved in {} ms", totalTime);
+            }
         }
 
         logger.info("Called {} task.", currentActivityName);
