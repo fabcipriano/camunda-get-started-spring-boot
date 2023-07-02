@@ -21,3 +21,4 @@ hs_err_pid*
 .settings
 .project
 /out.txt
+/logs/spring-boot-logger.log
