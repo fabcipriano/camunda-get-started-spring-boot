@@ -1,0 +1,1346 @@
+
+2023-07-01 18:21:23
+Full thread dump OpenJDK 64-Bit Server VM (25.372-b07 mixed mode):
+
+"RMI TCP Connection(3)-127.0.0.1" #87 daemon prio=9 os_prio=0 tid=0x00005622e04c4800 nid=0x46a6 runnable [0x00007f9bd8efd000]
+   java.lang.Thread.State: RUNNABLE
+        at java.net.SocketInputStream.socketRead0(Native Method)
+        at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+        at java.net.SocketInputStream.read(SocketInputStream.java:171)
+        at java.net.SocketInputStream.read(SocketInputStream.java:141)
+        at java.io.BufferedInputStream.fill(BufferedInputStream.java:246)
+        at java.io.BufferedInputStream.read(BufferedInputStream.java:265)
+        - locked <0x0000000784cec130> (a java.io.BufferedInputStream)
+        at java.io.FilterInputStream.read(FilterInputStream.java:83)
+        at sun.rmi.transport.tcp.TCPTransport.handleMessages(TCPTransport.java:555)
+        at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(TCPTransport.java:834)
+        at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.lambda$run$0(TCPTransport.java:688)
+        at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler$$Lambda$48/631856425.run(Unknown Source)
+        at java.security.AccessController.doPrivileged(Native Method)
+        at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(TCPTransport.java:687)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x000000078382fe60> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"JMX server connection timeout 86" #86 daemon prio=9 os_prio=0 tid=0x00007f9af4017800 nid=0x46a3 in Object.wait() [0x00007f9bd8ffe000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+        at java.lang.Object.wait(Native Method)
+        at com.sun.jmx.remote.internal.ServerCommunicatorAdmin$Timeout.run(ServerCommunicatorAdmin.java:168)
+        - locked <0x00000007838708a0> (a [I)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"RMI Scheduler(0)" #85 daemon prio=9 os_prio=0 tid=0x00007f9af4017000 nid=0x46a1 waiting on condition [0x00007f9bd90fe000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x0000000784d7f338> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+        at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:215)
+        at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:2078)
+        at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1093)
+        at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:809)
+        at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1074)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1134)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"RMI TCP Accept-0" #83 daemon prio=9 os_prio=0 tid=0x00007f9b94012000 nid=0x469d runnable [0x00007f9bd92fe000]
+   java.lang.Thread.State: RUNNABLE
+        at java.net.PlainSocketImpl.socketAccept(Native Method)
+        at java.net.AbstractPlainSocketImpl.accept(AbstractPlainSocketImpl.java:409)
+        at java.net.ServerSocket.implAccept(ServerSocket.java:560)
+        at java.net.ServerSocket.accept(ServerSocket.java:528)
+        at sun.management.jmxremote.LocalRMIServerSocketFactory$1.accept(LocalRMIServerSocketFactory.java:52)
+        at sun.rmi.transport.tcp.TCPTransport$AcceptLoop.executeAcceptLoop(TCPTransport.java:405)
+        at sun.rmi.transport.tcp.TCPTransport$AcceptLoop.run(TCPTransport.java:377)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"camundaTaskExecutor-20" #63 prio=5 os_prio=0 tid=0x00007f9b44026000 nid=0x454c runnable [0x00007f9bd95fd000]
+   java.lang.Thread.State: RUNNABLE
+        at java.net.SocketInputStream.socketRead0(Native Method)
+        at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+        at java.net.SocketInputStream.read(SocketInputStream.java:171)
+        at java.net.SocketInputStream.read(SocketInputStream.java:141)
+        at org.postgresql.core.VisibleBufferedInputStream.readMore(VisibleBufferedInputStream.java:140)
+        at org.postgresql.core.VisibleBufferedInputStream.ensureBytes(VisibleBufferedInputStream.java:109)
+        at org.postgresql.core.VisibleBufferedInputStream.read(VisibleBufferedInputStream.java:67)
+        at org.postgresql.core.PGStream.receiveChar(PGStream.java:293)
+        at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:1947)
+        at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:306)
+        - locked <0x0000000784aa7b48> (a org.postgresql.core.v3.QueryExecutorImpl)
+        at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:441)
+        at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:365)
+        at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:155)
+        at org.postgresql.jdbc.PgPreparedStatement.execute(PgPreparedStatement.java:144)
+        at com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+        at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.execute(HikariProxyPreparedStatement.java)
+        at org.apache.ibatis.executor.statement.PreparedStatementHandler.update(PreparedStatementHandler.java:44)
+        at org.apache.ibatis.executor.statement.RoutingStatementHandler.update(RoutingStatementHandler.java:69)
+        at org.apache.ibatis.executor.SimpleExecutor.doUpdate(SimpleExecutor.java:48)
+        at org.apache.ibatis.executor.BaseExecutor.update(BaseExecutor.java:105)
+        at org.apache.ibatis.executor.CachingExecutor.update(CachingExecutor.java:71)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.update(DefaultSqlSession.java:152)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.delete(DefaultSqlSession.java:165)
+        at org.camunda.bpm.engine.impl.db.sql.DbSqlSession.executeDelete(DbSqlSession.java:188)
+        at org.camunda.bpm.engine.impl.db.sql.DbSqlSession.deleteEntity(DbSqlSession.java:173)
+        at org.camunda.bpm.engine.impl.db.AbstractPersistenceSession.executeDbOperation(AbstractPersistenceSession.java:45)
+        at org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager.flushDbOperationManager(DbEntityManager.java:303)
+        at org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager.flush(DbEntityManager.java:281)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContext.flushSessions(CommandContext.java:203)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContext.close(CommandContext.java:132)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContextInterceptor.execute(CommandContextInterceptor.java:113)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor$1.doInTransaction(SpringTransactionInterceptor.java:42)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:133)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:36)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x0000000784d69bb0> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-19" #62 prio=5 os_prio=0 tid=0x00007f9b44020000 nid=0x454b waiting on condition [0x00007f9bd96fd000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x00000006c7a2bb20> (a java.util.concurrent.SynchronousQueue$TransferQueue)
+        at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:215)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.awaitFulfill(SynchronousQueue.java:764)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.transfer(SynchronousQueue.java:695)
+        at java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:941)
+        at com.zaxxer.hikari.util.ConcurrentBag.borrow(ConcurrentBag.java:157)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:165)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:145)
+        at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+        at org.springframework.jdbc.datasource.DataSourceTransactionManager.doBegin(DataSourceTransactionManager.java:246)
+        at org.springframework.transaction.support.AbstractPlatformTransactionManager.getTransaction(AbstractPlatformTransactionManager.java:373)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:130)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.invokeJobListener(ExecuteJobHelper.java:68)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:49)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x0000000784e21aa8> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-18" #59 prio=5 os_prio=0 tid=0x00007f9b44023000 nid=0x453f waiting on condition [0x00007f9bd99fd000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x00000006c7a2bb20> (a java.util.concurrent.SynchronousQueue$TransferQueue)
+        at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:215)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.awaitFulfill(SynchronousQueue.java:764)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.transfer(SynchronousQueue.java:695)
+        at java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:941)
+        at com.zaxxer.hikari.util.ConcurrentBag.borrow(ConcurrentBag.java:157)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:165)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:145)
+        at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+        at org.springframework.jdbc.datasource.DataSourceTransactionManager.doBegin(DataSourceTransactionManager.java:246)
+        at org.springframework.transaction.support.AbstractPlatformTransactionManager.getTransaction(AbstractPlatformTransactionManager.java:373)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:130)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:36)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x0000000784d6ab30> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-17" #58 prio=5 os_prio=0 tid=0x00007f9b44021800 nid=0x453e runnable [0x00007f9bd9afd000]
+   java.lang.Thread.State: RUNNABLE
+        at java.net.SocketInputStream.socketRead0(Native Method)
+        at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+        at java.net.SocketInputStream.read(SocketInputStream.java:171)
+        at java.net.SocketInputStream.read(SocketInputStream.java:141)
+        at org.postgresql.core.VisibleBufferedInputStream.readMore(VisibleBufferedInputStream.java:140)
+        at org.postgresql.core.VisibleBufferedInputStream.ensureBytes(VisibleBufferedInputStream.java:109)
+        at org.postgresql.core.VisibleBufferedInputStream.read(VisibleBufferedInputStream.java:67)
+        at org.postgresql.core.PGStream.receiveChar(PGStream.java:293)
+        at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:1947)
+        at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:306)
+        - locked <0x0000000784c24058> (a org.postgresql.core.v3.QueryExecutorImpl)
+        at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:441)
+        at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:365)
+        at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:155)
+        at org.postgresql.jdbc.PgPreparedStatement.execute(PgPreparedStatement.java:144)
+        at com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+        at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.execute(HikariProxyPreparedStatement.java)
+        at org.apache.ibatis.executor.statement.PreparedStatementHandler.update(PreparedStatementHandler.java:44)
+        at org.apache.ibatis.executor.statement.RoutingStatementHandler.update(RoutingStatementHandler.java:69)
+        at org.apache.ibatis.executor.SimpleExecutor.doUpdate(SimpleExecutor.java:48)
+        at org.apache.ibatis.executor.BaseExecutor.update(BaseExecutor.java:105)
+        at org.apache.ibatis.executor.CachingExecutor.update(CachingExecutor.java:71)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.update(DefaultSqlSession.java:152)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.delete(DefaultSqlSession.java:165)
+        at org.camunda.bpm.engine.impl.db.sql.DbSqlSession.executeDelete(DbSqlSession.java:188)
+        at org.camunda.bpm.engine.impl.db.sql.DbSqlSession.deleteEntity(DbSqlSession.java:173)
+        at org.camunda.bpm.engine.impl.db.AbstractPersistenceSession.executeDbOperation(AbstractPersistenceSession.java:45)
+        at org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager.flushDbOperationManager(DbEntityManager.java:303)
+        at org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager.flush(DbEntityManager.java:281)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContext.flushSessions(CommandContext.java:203)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContext.close(CommandContext.java:132)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContextInterceptor.execute(CommandContextInterceptor.java:113)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor$1.doInTransaction(SpringTransactionInterceptor.java:42)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:133)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:36)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x00000007849466f0> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-16" #57 prio=5 os_prio=0 tid=0x00007f9b4401f000 nid=0x453d waiting on condition [0x00007f9bd9bfd000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x00000006c7a2bb20> (a java.util.concurrent.SynchronousQueue$TransferQueue)
+        at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:215)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.awaitFulfill(SynchronousQueue.java:764)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.transfer(SynchronousQueue.java:695)
+        at java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:941)
+        at com.zaxxer.hikari.util.ConcurrentBag.borrow(ConcurrentBag.java:157)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:165)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:145)
+        at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+        at org.springframework.jdbc.datasource.DataSourceTransactionManager.doBegin(DataSourceTransactionManager.java:246)
+        at org.springframework.transaction.support.AbstractPlatformTransactionManager.getTransaction(AbstractPlatformTransactionManager.java:373)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:130)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.callFailedJobListenerWithRetries(ExecuteJobHelper.java:80)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.invokeJobListener(ExecuteJobHelper.java:61)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:49)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x0000000784fbd680> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-15" #55 prio=5 os_prio=0 tid=0x00007f9b4401b800 nid=0x453b runnable [0x00007f9bd9cfd000]
+   java.lang.Thread.State: RUNNABLE
+        at java.net.SocketInputStream.socketRead0(Native Method)
+        at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+        at java.net.SocketInputStream.read(SocketInputStream.java:171)
+        at java.net.SocketInputStream.read(SocketInputStream.java:141)
+        at org.postgresql.core.VisibleBufferedInputStream.readMore(VisibleBufferedInputStream.java:140)
+        at org.postgresql.core.VisibleBufferedInputStream.ensureBytes(VisibleBufferedInputStream.java:109)
+        at org.postgresql.core.VisibleBufferedInputStream.read(VisibleBufferedInputStream.java:67)
+        at org.postgresql.core.PGStream.receiveChar(PGStream.java:293)
+        at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:1947)
+        at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:306)
+        - locked <0x0000000784a0cfa8> (a org.postgresql.core.v3.QueryExecutorImpl)
+        at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:441)
+        at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:365)
+        at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:155)
+        at org.postgresql.jdbc.PgPreparedStatement.execute(PgPreparedStatement.java:144)
+        at com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+        at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.execute(HikariProxyPreparedStatement.java)
+        at org.apache.ibatis.executor.statement.PreparedStatementHandler.update(PreparedStatementHandler.java:44)
+        at org.apache.ibatis.executor.statement.RoutingStatementHandler.update(RoutingStatementHandler.java:69)
+        at org.apache.ibatis.executor.SimpleExecutor.doUpdate(SimpleExecutor.java:48)
+        at org.apache.ibatis.executor.BaseExecutor.update(BaseExecutor.java:105)
+        at org.apache.ibatis.executor.CachingExecutor.update(CachingExecutor.java:71)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.update(DefaultSqlSession.java:152)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.delete(DefaultSqlSession.java:165)
+        at org.camunda.bpm.engine.impl.db.sql.DbSqlSession.executeDelete(DbSqlSession.java:188)
+        at org.camunda.bpm.engine.impl.db.sql.DbSqlSession.deleteEntity(DbSqlSession.java:173)
+        at org.camunda.bpm.engine.impl.db.AbstractPersistenceSession.executeDbOperation(AbstractPersistenceSession.java:45)
+        at org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager.flushDbOperationManager(DbEntityManager.java:303)
+        at org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager.flush(DbEntityManager.java:281)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContext.flushSessions(CommandContext.java:203)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContext.close(CommandContext.java:132)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContextInterceptor.execute(CommandContextInterceptor.java:113)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor$1.doInTransaction(SpringTransactionInterceptor.java:42)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:133)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:36)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x00000007851bd2d8> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-14" #54 prio=5 os_prio=0 tid=0x00007f9b4401a000 nid=0x453a waiting on condition [0x00007f9bd9dfb000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+        at java.lang.Thread.sleep(Native Method)
+        at org.camunda.bpm.getstarted.loanapproval.IntegrationTask.execute(IntegrationTask.java:48)
+        at org.camunda.bpm.engine.impl.bpmn.delegate.JavaDelegateInvocation.invoke(JavaDelegateInvocation.java:36)
+        at org.camunda.bpm.engine.impl.delegate.DelegateInvocation.proceed(DelegateInvocation.java:54)
+        at org.camunda.bpm.engine.impl.delegate.DefaultDelegateInterceptor.handleInvocationInContext(DefaultDelegateInterceptor.java:87)
+        at org.camunda.bpm.engine.impl.delegate.DefaultDelegateInterceptor.handleInvocation(DefaultDelegateInterceptor.java:59)
+        at org.camunda.bpm.engine.impl.bpmn.behavior.ServiceTaskJavaDelegateActivityBehavior.execute(ServiceTaskJavaDelegateActivityBehavior.java:50)
+        at org.camunda.bpm.engine.impl.bpmn.behavior.ServiceTaskJavaDelegateActivityBehavior.performExecution(ServiceTaskJavaDelegateActivityBehavior.java:41)
+        at org.camunda.bpm.engine.impl.bpmn.behavior.TaskActivityBehavior.execute(TaskActivityBehavior.java:65)
+        at org.camunda.bpm.engine.impl.bpmn.behavior.ClassDelegateActivityBehavior$1.call(ClassDelegateActivityBehavior.java:65)
+        at org.camunda.bpm.engine.impl.bpmn.behavior.ClassDelegateActivityBehavior$1.call(ClassDelegateActivityBehavior.java:62)
+        at org.camunda.bpm.engine.impl.bpmn.behavior.AbstractBpmnActivityBehavior.executeWithErrorPropagation(AbstractBpmnActivityBehavior.java:108)
+        at org.camunda.bpm.engine.impl.bpmn.behavior.ClassDelegateActivityBehavior.execute(ClassDelegateActivityBehavior.java:62)
+        at org.camunda.bpm.engine.impl.pvm.runtime.operation.PvmAtomicOperationActivityExecute$2.callback(PvmAtomicOperationActivityExecute.java:57)
+        at org.camunda.bpm.engine.impl.pvm.runtime.operation.PvmAtomicOperationActivityExecute$2.callback(PvmAtomicOperationActivityExecute.java:46)
+        at org.camunda.bpm.engine.impl.pvm.runtime.PvmExecutionImpl.continueIfExecutionDoesNotAffectNextOperation(PvmExecutionImpl.java:1935)
+        at org.camunda.bpm.engine.impl.pvm.runtime.operation.PvmAtomicOperationActivityExecute.execute(PvmAtomicOperationActivityExecute.java:38)
+        at org.camunda.bpm.engine.impl.pvm.runtime.operation.PvmAtomicOperationActivityExecute.execute(PvmAtomicOperationActivityExecute.java:27)
+        at org.camunda.bpm.engine.impl.interceptor.AtomicOperationInvocation.execute(AtomicOperationInvocation.java:89)
+        at org.camunda.bpm.engine.impl.interceptor.CommandInvocationContext.invokeNext(CommandInvocationContext.java:125)
+        at org.camunda.bpm.engine.impl.interceptor.CommandInvocationContext.performNext(CommandInvocationContext.java:104)
+        at org.camunda.bpm.engine.impl.interceptor.CommandInvocationContext.performOperation(CommandInvocationContext.java:79)
+        at org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity.performOperation(ExecutionEntity.java:611)
+        at org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity.performOperation(ExecutionEntity.java:587)
+        at org.camunda.bpm.engine.impl.pvm.runtime.PvmExecutionImpl$5.callback(PvmExecutionImpl.java:1874)
+        at org.camunda.bpm.engine.impl.pvm.runtime.PvmExecutionImpl$5.callback(PvmExecutionImpl.java:1871)
+        at org.camunda.bpm.engine.impl.pvm.runtime.PvmExecutionImpl.continueExecutionIfNotCanceled(PvmExecutionImpl.java:1941)
+        at org.camunda.bpm.engine.impl.pvm.runtime.PvmExecutionImpl.dispatchDelayedEventsAndPerformOperation(PvmExecutionImpl.java:1890)
+        at org.camunda.bpm.engine.impl.pvm.runtime.PvmExecutionImpl.dispatchDelayedEventsAndPerformOperation(PvmExecutionImpl.java:1871)
+        at org.camunda.bpm.engine.impl.pvm.runtime.operation.PvmAtomicOperationTransitionNotifyListenerStart.eventNotificationsCompleted(PvmAtomicOperationTransitionNotifyListenerStart.java:57)
+        at org.camunda.bpm.engine.impl.pvm.runtime.operation.PvmAtomicOperationTransitionNotifyListenerStart.eventNotificationsCompleted(PvmAtomicOperationTransitionNotifyListenerStart.java:27)
+        at org.camunda.bpm.engine.impl.core.operation.AbstractEventAtomicOperation.execute(AbstractEventAtomicOperation.java:65)
+        at org.camunda.bpm.engine.impl.interceptor.AtomicOperationInvocation.execute(AtomicOperationInvocation.java:89)
+        at org.camunda.bpm.engine.impl.interceptor.CommandInvocationContext.invokeNext(CommandInvocationContext.java:125)
+        at org.camunda.bpm.engine.impl.interceptor.CommandInvocationContext.performNext(CommandInvocationContext.java:104)
+        at org.camunda.bpm.engine.impl.interceptor.CommandInvocationContext.performOperation(CommandInvocationContext.java:79)
+        at org.camunda.bpm.engine.impl.interceptor.CommandInvocationContext.performOperation(CommandInvocationContext.java:69)
+        at org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity.performOperationSync(ExecutionEntity.java:622)
+        at org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity.performOperationSync(ExecutionEntity.java:597)
+        at org.camunda.bpm.engine.impl.core.operation.AbstractEventAtomicOperation.execute(AbstractEventAtomicOperation.java:58)
+        at org.camunda.bpm.engine.impl.interceptor.AtomicOperationInvocation.execute(AtomicOperationInvocation.java:89)
+        at org.camunda.bpm.engine.impl.interceptor.CommandInvocationContext.invokeNext(CommandInvocationContext.java:125)
+        at org.camunda.bpm.engine.impl.interceptor.CommandInvocationContext.performNext(CommandInvocationContext.java:104)
+        at org.camunda.bpm.engine.impl.interceptor.CommandInvocationContext.performOperation(CommandInvocationContext.java:79)
+        at org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity.performOperation(ExecutionEntity.java:611)
+        at org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity.performOperation(ExecutionEntity.java:587)
+        at org.camunda.bpm.engine.impl.pvm.runtime.operation.PvmAtomicOperationTransitionCreateScope.scopeCreated(PvmAtomicOperationTransitionCreateScope.java:34)
+        at org.camunda.bpm.engine.impl.pvm.runtime.operation.PvmAtomicOperationCreateScope.execute(PvmAtomicOperationCreateScope.java:50)
+        at org.camunda.bpm.engine.impl.pvm.runtime.operation.PvmAtomicOperationCreateScope.execute(PvmAtomicOperationCreateScope.java:24)
+        at org.camunda.bpm.engine.impl.interceptor.AtomicOperationInvocation.execute(AtomicOperationInvocation.java:89)
+        at org.camunda.bpm.engine.impl.interceptor.CommandInvocationContext.invokeNext(CommandInvocationContext.java:125)
+        at org.camunda.bpm.engine.impl.interceptor.CommandInvocationContext.performNext(CommandInvocationContext.java:112)
+        at org.camunda.bpm.engine.impl.interceptor.CommandInvocationContext$1.call(CommandInvocationContext.java:95)
+        at org.camunda.bpm.engine.impl.interceptor.CommandInvocationContext$1.call(CommandInvocationContext.java:93)
+        at org.camunda.bpm.engine.impl.context.ProcessApplicationClassloaderInterceptor.call(ProcessApplicationClassloaderInterceptor.java:44)
+        at org.camunda.bpm.application.AbstractProcessApplication.execute(AbstractProcessApplication.java:114)
+        at org.camunda.bpm.application.AbstractProcessApplication.execute(AbstractProcessApplication.java:125)
+        at org.camunda.bpm.engine.impl.context.Context.executeWithinProcessApplication(Context.java:192)
+        at org.camunda.bpm.engine.impl.interceptor.CommandInvocationContext.performNext(CommandInvocationContext.java:93)
+        at org.camunda.bpm.engine.impl.interceptor.CommandInvocationContext.performOperation(CommandInvocationContext.java:79)
+        at org.camunda.bpm.engine.impl.interceptor.CommandInvocationContext.performOperation(CommandInvocationContext.java:69)
+        at org.camunda.bpm.engine.impl.jobexecutor.AsyncContinuationJobHandler.execute(AsyncContinuationJobHandler.java:76)
+        at org.camunda.bpm.engine.impl.jobexecutor.AsyncContinuationJobHandler.execute(AsyncContinuationJobHandler.java:36)
+        at org.camunda.bpm.engine.impl.persistence.entity.JobEntity.execute(JobEntity.java:129)
+        at org.camunda.bpm.engine.impl.cmd.ExecuteJobsCmd.execute(ExecuteJobsCmd.java:99)
+        at org.camunda.bpm.engine.impl.cmd.ExecuteJobsCmd.execute(ExecuteJobsCmd.java:36)
+        at org.camunda.bpm.engine.impl.interceptor.CommandExecutorImpl.execute(CommandExecutorImpl.java:24)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContextInterceptor.execute(CommandContextInterceptor.java:104)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor$1.doInTransaction(SpringTransactionInterceptor.java:42)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:133)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:36)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x0000000784db57a0> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-13" #53 prio=5 os_prio=0 tid=0x00007f9b44018000 nid=0x4539 waiting on condition [0x00007f9bd9efd000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x00000006c7a2bb20> (a java.util.concurrent.SynchronousQueue$TransferQueue)
+        at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:215)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.awaitFulfill(SynchronousQueue.java:764)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.transfer(SynchronousQueue.java:695)
+        at java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:941)
+        at com.zaxxer.hikari.util.ConcurrentBag.borrow(ConcurrentBag.java:157)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:165)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:145)
+        at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+        at org.springframework.jdbc.datasource.DataSourceTransactionManager.doBegin(DataSourceTransactionManager.java:246)
+        at org.springframework.transaction.support.AbstractPlatformTransactionManager.getTransaction(AbstractPlatformTransactionManager.java:373)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:130)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.callFailedJobListenerWithRetries(ExecuteJobHelper.java:80)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.invokeJobListener(ExecuteJobHelper.java:61)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:49)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x0000000784d693f0> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-12" #52 prio=5 os_prio=0 tid=0x00007f9b44016800 nid=0x4538 runnable [0x00007f9bd9ffd000]
+   java.lang.Thread.State: RUNNABLE
+        at java.net.SocketInputStream.socketRead0(Native Method)
+        at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+        at java.net.SocketInputStream.read(SocketInputStream.java:171)
+        at java.net.SocketInputStream.read(SocketInputStream.java:141)
+        at org.postgresql.core.VisibleBufferedInputStream.readMore(VisibleBufferedInputStream.java:140)
+        at org.postgresql.core.VisibleBufferedInputStream.ensureBytes(VisibleBufferedInputStream.java:109)
+        at org.postgresql.core.VisibleBufferedInputStream.read(VisibleBufferedInputStream.java:67)
+        at org.postgresql.core.PGStream.receiveChar(PGStream.java:293)
+        at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:1947)
+        at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:306)
+        - locked <0x00000006c7a2be08> (a org.postgresql.core.v3.QueryExecutorImpl)
+        at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:441)
+        at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:365)
+        at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:155)
+        at org.postgresql.jdbc.PgPreparedStatement.execute(PgPreparedStatement.java:144)
+        at com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+        at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.execute(HikariProxyPreparedStatement.java)
+        at org.apache.ibatis.executor.statement.PreparedStatementHandler.update(PreparedStatementHandler.java:44)
+        at org.apache.ibatis.executor.statement.RoutingStatementHandler.update(RoutingStatementHandler.java:69)
+        at org.apache.ibatis.executor.SimpleExecutor.doUpdate(SimpleExecutor.java:48)
+        at org.apache.ibatis.executor.BaseExecutor.update(BaseExecutor.java:105)
+        at org.apache.ibatis.executor.CachingExecutor.update(CachingExecutor.java:71)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.update(DefaultSqlSession.java:152)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.delete(DefaultSqlSession.java:165)
+        at org.camunda.bpm.engine.impl.db.sql.DbSqlSession.executeDelete(DbSqlSession.java:188)
+        at org.camunda.bpm.engine.impl.db.sql.DbSqlSession.deleteEntity(DbSqlSession.java:173)
+        at org.camunda.bpm.engine.impl.db.AbstractPersistenceSession.executeDbOperation(AbstractPersistenceSession.java:45)
+        at org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager.flushDbOperationManager(DbEntityManager.java:303)
+        at org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager.flush(DbEntityManager.java:281)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContext.flushSessions(CommandContext.java:203)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContext.close(CommandContext.java:132)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContextInterceptor.execute(CommandContextInterceptor.java:113)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor$1.doInTransaction(SpringTransactionInterceptor.java:42)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:133)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:36)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x00000007853235e0> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-11" #51 prio=5 os_prio=0 tid=0x00007f9b44014800 nid=0x4537 waiting on condition [0x00007f9bda0fd000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x00000006c7a2bb20> (a java.util.concurrent.SynchronousQueue$TransferQueue)
+        at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:215)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.awaitFulfill(SynchronousQueue.java:764)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.transfer(SynchronousQueue.java:695)
+        at java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:941)
+        at com.zaxxer.hikari.util.ConcurrentBag.borrow(ConcurrentBag.java:157)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:165)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:145)
+        at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+        at org.springframework.jdbc.datasource.DataSourceTransactionManager.doBegin(DataSourceTransactionManager.java:246)
+        at org.springframework.transaction.support.AbstractPlatformTransactionManager.getTransaction(AbstractPlatformTransactionManager.java:373)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:130)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:36)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x0000000784db4fe0> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-10" #50 prio=5 os_prio=0 tid=0x00007f9b44013000 nid=0x4536 waiting on condition [0x00007f9bda1fd000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x00000006c7a2bb20> (a java.util.concurrent.SynchronousQueue$TransferQueue)
+        at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:215)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.awaitFulfill(SynchronousQueue.java:764)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.transfer(SynchronousQueue.java:695)
+        at java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:941)
+        at com.zaxxer.hikari.util.ConcurrentBag.borrow(ConcurrentBag.java:157)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:165)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:145)
+        at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+        at org.springframework.jdbc.datasource.DataSourceTransactionManager.doBegin(DataSourceTransactionManager.java:246)
+        at org.springframework.transaction.support.AbstractPlatformTransactionManager.getTransaction(AbstractPlatformTransactionManager.java:373)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:130)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.callFailedJobListenerWithRetries(ExecuteJobHelper.java:80)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.invokeJobListener(ExecuteJobHelper.java:61)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:49)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x0000000784db5f60> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-9" #49 prio=5 os_prio=0 tid=0x00007f9b44011000 nid=0x4535 waiting on condition [0x00007f9bda2fd000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x00000006c7a2bb20> (a java.util.concurrent.SynchronousQueue$TransferQueue)
+        at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:215)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.awaitFulfill(SynchronousQueue.java:764)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.transfer(SynchronousQueue.java:695)
+        at java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:941)
+        at com.zaxxer.hikari.util.ConcurrentBag.borrow(ConcurrentBag.java:157)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:165)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:145)
+        at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+        at org.springframework.jdbc.datasource.DataSourceTransactionManager.doBegin(DataSourceTransactionManager.java:246)
+        at org.springframework.transaction.support.AbstractPlatformTransactionManager.getTransaction(AbstractPlatformTransactionManager.java:373)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:130)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:36)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x0000000784fcd7d0> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-8" #48 prio=5 os_prio=0 tid=0x00007f9b4400f800 nid=0x4534 runnable [0x00007f9bda3fd000]
+   java.lang.Thread.State: RUNNABLE
+        at java.net.SocketInputStream.socketRead0(Native Method)
+        at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+        at java.net.SocketInputStream.read(SocketInputStream.java:171)
+        at java.net.SocketInputStream.read(SocketInputStream.java:141)
+        at org.postgresql.core.VisibleBufferedInputStream.readMore(VisibleBufferedInputStream.java:140)
+        at org.postgresql.core.VisibleBufferedInputStream.ensureBytes(VisibleBufferedInputStream.java:109)
+        at org.postgresql.core.VisibleBufferedInputStream.read(VisibleBufferedInputStream.java:67)
+        at org.postgresql.core.PGStream.receiveChar(PGStream.java:293)
+        at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:1947)
+        at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:306)
+        - locked <0x0000000784962be8> (a org.postgresql.core.v3.QueryExecutorImpl)
+        at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:441)
+        at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:365)
+        at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:155)
+        at org.postgresql.jdbc.PgPreparedStatement.execute(PgPreparedStatement.java:144)
+        at com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+        at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.execute(HikariProxyPreparedStatement.java)
+        at org.apache.ibatis.executor.statement.PreparedStatementHandler.update(PreparedStatementHandler.java:44)
+        at org.apache.ibatis.executor.statement.RoutingStatementHandler.update(RoutingStatementHandler.java:69)
+        at org.apache.ibatis.executor.SimpleExecutor.doUpdate(SimpleExecutor.java:48)
+        at org.apache.ibatis.executor.BaseExecutor.update(BaseExecutor.java:105)
+        at org.apache.ibatis.executor.CachingExecutor.update(CachingExecutor.java:71)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.update(DefaultSqlSession.java:152)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.delete(DefaultSqlSession.java:165)
+        at org.camunda.bpm.engine.impl.db.sql.DbSqlSession.executeDelete(DbSqlSession.java:188)
+        at org.camunda.bpm.engine.impl.db.sql.DbSqlSession.deleteEntity(DbSqlSession.java:173)
+        at org.camunda.bpm.engine.impl.db.AbstractPersistenceSession.executeDbOperation(AbstractPersistenceSession.java:45)
+        at org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager.flushDbOperationManager(DbEntityManager.java:303)
+        at org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager.flush(DbEntityManager.java:281)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContext.flushSessions(CommandContext.java:203)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContext.close(CommandContext.java:132)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContextInterceptor.execute(CommandContextInterceptor.java:113)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor$1.doInTransaction(SpringTransactionInterceptor.java:42)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:133)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:36)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x0000000785544990> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-7" #47 prio=5 os_prio=0 tid=0x00007f9b4400e000 nid=0x4533 waiting on condition [0x00007f9bda4fd000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x00000006c7a2bb20> (a java.util.concurrent.SynchronousQueue$TransferQueue)
+        at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:215)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.awaitFulfill(SynchronousQueue.java:764)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.transfer(SynchronousQueue.java:695)
+        at java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:941)
+        at com.zaxxer.hikari.util.ConcurrentBag.borrow(ConcurrentBag.java:157)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:165)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:145)
+        at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+        at org.springframework.jdbc.datasource.DataSourceTransactionManager.doBegin(DataSourceTransactionManager.java:246)
+        at org.springframework.transaction.support.AbstractPlatformTransactionManager.getTransaction(AbstractPlatformTransactionManager.java:373)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:130)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.callFailedJobListenerWithRetries(ExecuteJobHelper.java:80)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.invokeJobListener(ExecuteJobHelper.java:61)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:49)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x000000078556d228> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-6" #46 prio=5 os_prio=0 tid=0x00007f9b4400b800 nid=0x4531 runnable [0x00007f9bda5fd000]
+   java.lang.Thread.State: RUNNABLE
+        at java.net.SocketInputStream.socketRead0(Native Method)
+        at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+        at java.net.SocketInputStream.read(SocketInputStream.java:171)
+        at java.net.SocketInputStream.read(SocketInputStream.java:141)
+        at org.postgresql.core.VisibleBufferedInputStream.readMore(VisibleBufferedInputStream.java:140)
+        at org.postgresql.core.VisibleBufferedInputStream.ensureBytes(VisibleBufferedInputStream.java:109)
+        at org.postgresql.core.VisibleBufferedInputStream.read(VisibleBufferedInputStream.java:67)
+        at org.postgresql.core.PGStream.receiveChar(PGStream.java:293)
+        at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:1947)
+        at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:306)
+        - locked <0x00000007848b10f0> (a org.postgresql.core.v3.QueryExecutorImpl)
+        at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:441)
+        at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:365)
+        at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:155)
+        at org.postgresql.jdbc.PgPreparedStatement.execute(PgPreparedStatement.java:144)
+        at com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+        at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.execute(HikariProxyPreparedStatement.java)
+        at org.apache.ibatis.executor.statement.PreparedStatementHandler.update(PreparedStatementHandler.java:44)
+        at org.apache.ibatis.executor.statement.RoutingStatementHandler.update(RoutingStatementHandler.java:69)
+        at org.apache.ibatis.executor.SimpleExecutor.doUpdate(SimpleExecutor.java:48)
+        at org.apache.ibatis.executor.BaseExecutor.update(BaseExecutor.java:105)
+        at org.apache.ibatis.executor.CachingExecutor.update(CachingExecutor.java:71)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.update(DefaultSqlSession.java:152)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.delete(DefaultSqlSession.java:165)
+        at org.camunda.bpm.engine.impl.db.sql.DbSqlSession.executeDelete(DbSqlSession.java:188)
+        at org.camunda.bpm.engine.impl.db.sql.DbSqlSession.deleteEntity(DbSqlSession.java:173)
+        at org.camunda.bpm.engine.impl.db.AbstractPersistenceSession.executeDbOperation(AbstractPersistenceSession.java:45)
+        at org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager.flushDbOperationManager(DbEntityManager.java:303)
+        at org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager.flush(DbEntityManager.java:281)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContext.flushSessions(CommandContext.java:203)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContext.close(CommandContext.java:132)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContextInterceptor.execute(CommandContextInterceptor.java:113)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor$1.doInTransaction(SpringTransactionInterceptor.java:42)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:133)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:36)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x0000000784945f10> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-5" #45 prio=5 os_prio=0 tid=0x00007f9b4400a000 nid=0x4530 waiting on condition [0x00007f9bda6fd000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x00000006c7a2bb20> (a java.util.concurrent.SynchronousQueue$TransferQueue)
+        at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:215)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.awaitFulfill(SynchronousQueue.java:764)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.transfer(SynchronousQueue.java:695)
+        at java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:941)
+        at com.zaxxer.hikari.util.ConcurrentBag.borrow(ConcurrentBag.java:157)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:165)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:145)
+        at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+        at org.springframework.jdbc.datasource.DataSourceTransactionManager.doBegin(DataSourceTransactionManager.java:246)
+        at org.springframework.transaction.support.AbstractPlatformTransactionManager.getTransaction(AbstractPlatformTransactionManager.java:373)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:130)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.invokeJobListener(ExecuteJobHelper.java:68)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:49)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x00000007855a11b8> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-4" #44 prio=5 os_prio=0 tid=0x00007f9b44008000 nid=0x452f runnable [0x00007f9bda7fd000]
+   java.lang.Thread.State: RUNNABLE
+        at java.net.SocketInputStream.socketRead0(Native Method)
+        at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+        at java.net.SocketInputStream.read(SocketInputStream.java:171)
+        at java.net.SocketInputStream.read(SocketInputStream.java:141)
+        at org.postgresql.core.VisibleBufferedInputStream.readMore(VisibleBufferedInputStream.java:140)
+        at org.postgresql.core.VisibleBufferedInputStream.ensureBytes(VisibleBufferedInputStream.java:109)
+        at org.postgresql.core.VisibleBufferedInputStream.read(VisibleBufferedInputStream.java:67)
+        at org.postgresql.core.PGStream.receiveChar(PGStream.java:293)
+        at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:1947)
+        at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:306)
+        - locked <0x0000000784b99840> (a org.postgresql.core.v3.QueryExecutorImpl)
+        at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:441)
+        at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:365)
+        at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:155)
+        at org.postgresql.jdbc.PgPreparedStatement.execute(PgPreparedStatement.java:144)
+        at com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+        at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.execute(HikariProxyPreparedStatement.java)
+        at org.apache.ibatis.executor.statement.PreparedStatementHandler.update(PreparedStatementHandler.java:44)
+        at org.apache.ibatis.executor.statement.RoutingStatementHandler.update(RoutingStatementHandler.java:69)
+        at org.apache.ibatis.executor.SimpleExecutor.doUpdate(SimpleExecutor.java:48)
+        at org.apache.ibatis.executor.BaseExecutor.update(BaseExecutor.java:105)
+        at org.apache.ibatis.executor.CachingExecutor.update(CachingExecutor.java:71)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.update(DefaultSqlSession.java:152)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.insert(DefaultSqlSession.java:141)
+        at org.camunda.bpm.engine.impl.db.sql.DbSqlSession.executeInsertEntity(DbSqlSession.java:146)
+        at org.camunda.bpm.engine.impl.db.sql.DbSqlSession.insertEntity(DbSqlSession.java:138)
+        at org.camunda.bpm.engine.impl.db.AbstractPersistenceSession.executeDbOperation(AbstractPersistenceSession.java:41)
+        at org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager.flushDbOperationManager(DbEntityManager.java:303)
+        at org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager.flush(DbEntityManager.java:281)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContext.flushSessions(CommandContext.java:203)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContext.close(CommandContext.java:132)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContextInterceptor.execute(CommandContextInterceptor.java:113)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor$1.doInTransaction(SpringTransactionInterceptor.java:42)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:133)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:36)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x0000000784945730> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-3" #43 prio=5 os_prio=0 tid=0x00007f9b44006000 nid=0x452e waiting on condition [0x00007f9bda8fd000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x00000006c7a2bb20> (a java.util.concurrent.SynchronousQueue$TransferQueue)
+        at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:215)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.awaitFulfill(SynchronousQueue.java:764)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.transfer(SynchronousQueue.java:695)
+        at java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:941)
+        at com.zaxxer.hikari.util.ConcurrentBag.borrow(ConcurrentBag.java:157)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:165)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:145)
+        at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+        at org.springframework.jdbc.datasource.DataSourceTransactionManager.doBegin(DataSourceTransactionManager.java:246)
+        at org.springframework.transaction.support.AbstractPlatformTransactionManager.getTransaction(AbstractPlatformTransactionManager.java:373)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:130)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:36)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x0000000784d6a370> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-2" #42 prio=5 os_prio=0 tid=0x00007f9b44004800 nid=0x452d runnable [0x00007f9bda9fd000]
+   java.lang.Thread.State: RUNNABLE
+        at java.net.SocketInputStream.socketRead0(Native Method)
+        at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+        at java.net.SocketInputStream.read(SocketInputStream.java:171)
+        at java.net.SocketInputStream.read(SocketInputStream.java:141)
+        at org.postgresql.core.VisibleBufferedInputStream.readMore(VisibleBufferedInputStream.java:140)
+        at org.postgresql.core.VisibleBufferedInputStream.ensureBytes(VisibleBufferedInputStream.java:109)
+        at org.postgresql.core.VisibleBufferedInputStream.read(VisibleBufferedInputStream.java:67)
+        at org.postgresql.core.PGStream.receiveChar(PGStream.java:293)
+        at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:1947)
+        at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:306)
+        - locked <0x00000007848a9b20> (a org.postgresql.core.v3.QueryExecutorImpl)
+        at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:441)
+        at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:365)
+        at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:155)
+        at org.postgresql.jdbc.PgPreparedStatement.execute(PgPreparedStatement.java:144)
+        at com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+        at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.execute(HikariProxyPreparedStatement.java)
+        at org.apache.ibatis.executor.statement.PreparedStatementHandler.update(PreparedStatementHandler.java:44)
+        at org.apache.ibatis.executor.statement.RoutingStatementHandler.update(RoutingStatementHandler.java:69)
+        at org.apache.ibatis.executor.SimpleExecutor.doUpdate(SimpleExecutor.java:48)
+        at org.apache.ibatis.executor.BaseExecutor.update(BaseExecutor.java:105)
+        at org.apache.ibatis.executor.CachingExecutor.update(CachingExecutor.java:71)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.update(DefaultSqlSession.java:152)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.insert(DefaultSqlSession.java:141)
+        at org.camunda.bpm.engine.impl.db.sql.DbSqlSession.executeInsertEntity(DbSqlSession.java:146)
+        at org.camunda.bpm.engine.impl.db.sql.DbSqlSession.insertEntity(DbSqlSession.java:138)
+        at org.camunda.bpm.engine.impl.db.AbstractPersistenceSession.executeDbOperation(AbstractPersistenceSession.java:41)
+        at org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager.flushDbOperationManager(DbEntityManager.java:303)
+        at org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager.flush(DbEntityManager.java:281)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContext.flushSessions(CommandContext.java:203)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContext.close(CommandContext.java:132)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContextInterceptor.execute(CommandContextInterceptor.java:113)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor$1.doInTransaction(SpringTransactionInterceptor.java:42)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:133)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:36)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x0000000783960618> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"camundaTaskExecutor-1" #41 prio=5 os_prio=0 tid=0x00007f9b44002000 nid=0x452c runnable [0x00007f9bdaafd000]
+   java.lang.Thread.State: RUNNABLE
+        at java.net.SocketInputStream.socketRead0(Native Method)
+        at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+        at java.net.SocketInputStream.read(SocketInputStream.java:171)
+        at java.net.SocketInputStream.read(SocketInputStream.java:141)
+        at org.postgresql.core.VisibleBufferedInputStream.readMore(VisibleBufferedInputStream.java:140)
+        at org.postgresql.core.VisibleBufferedInputStream.ensureBytes(VisibleBufferedInputStream.java:109)
+        at org.postgresql.core.VisibleBufferedInputStream.read(VisibleBufferedInputStream.java:67)
+        at org.postgresql.core.PGStream.receiveChar(PGStream.java:293)
+        at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:1947)
+        at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:306)
+        - locked <0x0000000784c979e8> (a org.postgresql.core.v3.QueryExecutorImpl)
+        at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:441)
+        at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:365)
+        at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:155)
+        at org.postgresql.jdbc.PgPreparedStatement.execute(PgPreparedStatement.java:144)
+        at com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+        at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.execute(HikariProxyPreparedStatement.java)
+        at org.apache.ibatis.executor.statement.PreparedStatementHandler.update(PreparedStatementHandler.java:44)
+        at org.apache.ibatis.executor.statement.RoutingStatementHandler.update(RoutingStatementHandler.java:69)
+        at org.apache.ibatis.executor.SimpleExecutor.doUpdate(SimpleExecutor.java:48)
+        at org.apache.ibatis.executor.BaseExecutor.update(BaseExecutor.java:105)
+        at org.apache.ibatis.executor.CachingExecutor.update(CachingExecutor.java:71)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.update(DefaultSqlSession.java:152)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.delete(DefaultSqlSession.java:165)
+        at org.camunda.bpm.engine.impl.db.sql.DbSqlSession.executeDelete(DbSqlSession.java:188)
+        at org.camunda.bpm.engine.impl.db.sql.DbSqlSession.deleteEntity(DbSqlSession.java:173)
+        at org.camunda.bpm.engine.impl.db.AbstractPersistenceSession.executeDbOperation(AbstractPersistenceSession.java:45)
+        at org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager.flushDbOperationManager(DbEntityManager.java:303)
+        at org.camunda.bpm.engine.impl.db.entitymanager.DbEntityManager.flush(DbEntityManager.java:281)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContext.flushSessions(CommandContext.java:203)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContext.close(CommandContext.java:132)
+        at org.camunda.bpm.engine.impl.interceptor.CommandContextInterceptor.execute(CommandContextInterceptor.java:113)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor$1.doInTransaction(SpringTransactionInterceptor.java:42)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:133)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:36)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobHelper.executeJob(ExecuteJobHelper.java:29)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.executeJob(ExecuteJobsRunnable.java:88)
+        at org.camunda.bpm.engine.impl.jobexecutor.ExecuteJobsRunnable.run(ExecuteJobsRunnable.java:57)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - <0x0000000784db6720> (a java.util.concurrent.ThreadPoolExecutor$Worker)
+
+"DestroyJavaVM" #40 prio=5 os_prio=0 tid=0x00007f9c0c012000 nid=0x44e3 waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+   Locked ownable synchronizers:
+        - None
+
+"JobExecutor[org.camunda.bpm.engine.spring.components.jobexecutor.SpringJobExecutor]" #39 prio=5 os_prio=0 tid=0x00007f9c0d24f800 nid=0x452b waiting on condition [0x00007f9bdabfd000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x00000006c7a2bb20> (a java.util.concurrent.SynchronousQueue$TransferQueue)
+        at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:215)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.awaitFulfill(SynchronousQueue.java:764)
+        at java.util.concurrent.SynchronousQueue$TransferQueue.transfer(SynchronousQueue.java:695)
+        at java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:941)
+        at com.zaxxer.hikari.util.ConcurrentBag.borrow(ConcurrentBag.java:157)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:165)
+        at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:145)
+        at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+        at org.springframework.jdbc.datasource.DataSourceTransactionManager.doBegin(DataSourceTransactionManager.java:246)
+        at org.springframework.transaction.support.AbstractPlatformTransactionManager.getTransaction(AbstractPlatformTransactionManager.java:373)
+        at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:130)
+        at org.camunda.bpm.engine.spring.SpringTransactionInterceptor.execute(SpringTransactionInterceptor.java:40)
+        at org.camunda.bpm.engine.impl.interceptor.ProcessApplicationContextInterceptor.execute(ProcessApplicationContextInterceptor.java:66)
+        at org.camunda.bpm.engine.impl.interceptor.LogInterceptor.execute(LogInterceptor.java:30)
+        at org.camunda.bpm.engine.impl.jobexecutor.SequentialJobAcquisitionRunnable.acquireJobs(SequentialJobAcquisitionRunnable.java:142)
+        at org.camunda.bpm.engine.impl.jobexecutor.SequentialJobAcquisitionRunnable.run(SequentialJobAcquisitionRunnable.java:60)
+        - locked <0x0000000784db6f10> (a org.camunda.bpm.engine.impl.jobexecutor.SequentialJobAcquisitionRunnable)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"http-nio-8080-AsyncTimeout" #37 daemon prio=5 os_prio=0 tid=0x00007f9c0d12c000 nid=0x452a waiting on condition [0x00007f9bdacfe000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+        at java.lang.Thread.sleep(Native Method)
+        at org.apache.coyote.AbstractProtocol$AsyncTimeout.run(AbstractProtocol.java:1211)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"http-nio-8080-Acceptor-0" #36 daemon prio=5 os_prio=0 tid=0x00007f9c0d12a800 nid=0x4529 runnable [0x00007f9bdadfe000]
+   java.lang.Thread.State: RUNNABLE
+        at sun.nio.ch.ServerSocketChannelImpl.accept0(Native Method)
+        at sun.nio.ch.ServerSocketChannelImpl.accept(ServerSocketChannelImpl.java:421)
+        at sun.nio.ch.ServerSocketChannelImpl.accept(ServerSocketChannelImpl.java:249)
+        - locked <0x00000007858d3738> (a java.lang.Object)
+        at org.apache.tomcat.util.net.NioEndpoint$Acceptor.run(NioEndpoint.java:455)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"http-nio-8080-ClientPoller-1" #35 daemon prio=5 os_prio=0 tid=0x00007f9c0d128800 nid=0x4528 runnable [0x00007f9bdaefe000]
+   java.lang.Thread.State: RUNNABLE
+        at sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+        at sun.nio.ch.EPollArrayWrapper.poll(EPollArrayWrapper.java:269)
+        at sun.nio.ch.EPollSelectorImpl.doSelect(EPollSelectorImpl.java:93)
+        at sun.nio.ch.SelectorImpl.lockAndDoSelect(SelectorImpl.java:86)
+        - locked <0x00000007842b25f0> (a sun.nio.ch.Util$3)
+        - locked <0x00000007842b25e0> (a java.util.Collections$UnmodifiableSet)
+        - locked <0x00000007842b2378> (a sun.nio.ch.EPollSelectorImpl)
+        at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:97)
+        at org.apache.tomcat.util.net.NioEndpoint$Poller.run(NioEndpoint.java:793)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"http-nio-8080-ClientPoller-0" #34 daemon prio=5 os_prio=0 tid=0x00007f9c0d127800 nid=0x4527 runnable [0x00007f9bdaffe000]
+   java.lang.Thread.State: RUNNABLE
+        at sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+        at sun.nio.ch.EPollArrayWrapper.poll(EPollArrayWrapper.java:269)
+        at sun.nio.ch.EPollSelectorImpl.doSelect(EPollSelectorImpl.java:93)
+        at sun.nio.ch.SelectorImpl.lockAndDoSelect(SelectorImpl.java:86)
+        - locked <0x0000000785904cd0> (a sun.nio.ch.Util$3)
+        - locked <0x0000000785904cc0> (a java.util.Collections$UnmodifiableSet)
+        - locked <0x0000000785904c78> (a sun.nio.ch.EPollSelectorImpl)
+        at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:97)
+        at org.apache.tomcat.util.net.NioEndpoint$Poller.run(NioEndpoint.java:793)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"http-nio-8080-exec-10" #33 daemon prio=5 os_prio=0 tid=0x00007f9c0cf91800 nid=0x4526 waiting on condition [0x00007f9bdb0fe000]
+   java.lang.Thread.State: WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x0000000784d6b488> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+        at java.util.concurrent.locks.LockSupport.park(LockSupport.java:175)
+        at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2039)
+        at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:442)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:103)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:31)
+        at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1074)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1134)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"http-nio-8080-exec-9" #32 daemon prio=5 os_prio=0 tid=0x00007f9c0cf90000 nid=0x4525 waiting on condition [0x00007f9bdb1fe000]
+   java.lang.Thread.State: WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x0000000784d6b488> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+        at java.util.concurrent.locks.LockSupport.park(LockSupport.java:175)
+        at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2039)
+        at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:442)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:103)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:31)
+        at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1074)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1134)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"http-nio-8080-exec-8" #31 daemon prio=5 os_prio=0 tid=0x00007f9c0cf8e000 nid=0x4524 waiting on condition [0x00007f9bdb2fe000]
+   java.lang.Thread.State: WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x0000000784d6b488> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+        at java.util.concurrent.locks.LockSupport.park(LockSupport.java:175)
+        at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2039)
+        at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:442)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:103)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:31)
+        at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1074)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1134)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"http-nio-8080-exec-7" #30 daemon prio=5 os_prio=0 tid=0x00007f9c0cf8c800 nid=0x4523 waiting on condition [0x00007f9bdb3fe000]
+   java.lang.Thread.State: WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x0000000784d6b488> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+        at java.util.concurrent.locks.LockSupport.park(LockSupport.java:175)
+        at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2039)
+        at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:442)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:103)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:31)
+        at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1074)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1134)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"http-nio-8080-exec-6" #29 daemon prio=5 os_prio=0 tid=0x00007f9c0cf8a800 nid=0x4522 waiting on condition [0x00007f9bdb4fe000]
+   java.lang.Thread.State: WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x0000000784d6b488> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+        at java.util.concurrent.locks.LockSupport.park(LockSupport.java:175)
+        at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2039)
+        at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:442)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:103)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:31)
+        at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1074)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1134)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"http-nio-8080-exec-5" #28 daemon prio=5 os_prio=0 tid=0x00007f9c0cf89000 nid=0x4521 waiting on condition [0x00007f9bdb5fe000]
+   java.lang.Thread.State: WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x0000000784d6b488> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+        at java.util.concurrent.locks.LockSupport.park(LockSupport.java:175)
+        at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2039)
+        at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:442)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:103)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:31)
+        at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1074)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1134)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"http-nio-8080-exec-4" #27 daemon prio=5 os_prio=0 tid=0x00007f9c0cf87000 nid=0x4520 waiting on condition [0x00007f9bdb6fe000]
+   java.lang.Thread.State: WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x0000000784d6b488> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+        at java.util.concurrent.locks.LockSupport.park(LockSupport.java:175)
+        at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2039)
+        at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:442)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:103)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:31)
+        at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1074)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1134)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"http-nio-8080-exec-3" #26 daemon prio=5 os_prio=0 tid=0x00007f9c0cf85800 nid=0x451f waiting on condition [0x00007f9bdb7fe000]
+   java.lang.Thread.State: WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x0000000784d6b488> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+        at java.util.concurrent.locks.LockSupport.park(LockSupport.java:175)
+        at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2039)
+        at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:442)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:103)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:31)
+        at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1074)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1134)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"http-nio-8080-exec-2" #25 daemon prio=5 os_prio=0 tid=0x00007f9c0cf84800 nid=0x451e waiting on condition [0x00007f9bdb8fe000]
+   java.lang.Thread.State: WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x0000000784d6b488> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+        at java.util.concurrent.locks.LockSupport.park(LockSupport.java:175)
+        at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2039)
+        at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:442)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:103)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:31)
+        at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1074)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1134)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"http-nio-8080-exec-1" #24 daemon prio=5 os_prio=0 tid=0x00007f9c0cf83800 nid=0x451d waiting on condition [0x00007f9be27fd000]
+   java.lang.Thread.State: WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x0000000784d6b488> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+        at java.util.concurrent.locks.LockSupport.park(LockSupport.java:175)
+        at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2039)
+        at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:442)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:103)
+        at org.apache.tomcat.util.threads.TaskQueue.take(TaskQueue.java:31)
+        at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1074)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1134)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"NioBlockingSelector.BlockPoller-1" #23 daemon prio=5 os_prio=0 tid=0x00007f9c0cd51800 nid=0x451c runnable [0x00007f9be1dfe000]
+   java.lang.Thread.State: RUNNABLE
+        at sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+        at sun.nio.ch.EPollArrayWrapper.poll(EPollArrayWrapper.java:269)
+        at sun.nio.ch.EPollSelectorImpl.doSelect(EPollSelectorImpl.java:93)
+        at sun.nio.ch.SelectorImpl.lockAndDoSelect(SelectorImpl.java:86)
+        - locked <0x00000007858d3f78> (a sun.nio.ch.Util$3)
+        - locked <0x00000007858d3f68> (a java.util.Collections$UnmodifiableSet)
+        - locked <0x00000007858d3f20> (a sun.nio.ch.EPollSelectorImpl)
+        at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:97)
+        at org.apache.tomcat.util.net.NioBlockingSelector$BlockPoller.run(NioBlockingSelector.java:339)
+
+   Locked ownable synchronizers:
+        - None
+
+"Camunda Metrics Reporter" #22 daemon prio=5 os_prio=0 tid=0x00007f9c0d4bb800 nid=0x451b in Object.wait() [0x00007f9bdbffe000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+        at java.lang.Object.wait(Native Method)
+        - waiting on <0x0000000783929558> (a java.util.TaskQueue)
+        at java.util.TimerThread.mainLoop(Timer.java:552)
+        - locked <0x0000000783929558> (a java.util.TaskQueue)
+        at java.util.TimerThread.run(Timer.java:505)
+
+   Locked ownable synchronizers:
+        - None
+
+"HiCamundaDS housekeeper" #20 daemon prio=5 os_prio=0 tid=0x00007f9c0d810800 nid=0x4518 waiting on condition [0x00007f9be082e000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x00000006c7a2bc58> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+        at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:215)
+        at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:2078)
+        at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1093)
+        at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:809)
+        at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1074)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1134)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"PostgreSQL-JDBC-SharedTimer-1" #19 daemon prio=5 os_prio=0 tid=0x00007f9c0d80f800 nid=0x4517 in Object.wait() [0x00007f9be092e000]
+   java.lang.Thread.State: WAITING (on object monitor)
+        at java.lang.Object.wait(Native Method)
+        - waiting on <0x00000006c9d665f8> (a java.util.TaskQueue)
+        at java.lang.Object.wait(Object.java:502)
+        at java.util.TimerThread.mainLoop(Timer.java:526)
+        - locked <0x00000006c9d665f8> (a java.util.TaskQueue)
+        at java.util.TimerThread.run(Timer.java:505)
+
+   Locked ownable synchronizers:
+        - None
+
+"container-0" #18 prio=5 os_prio=0 tid=0x00007f9c0d614800 nid=0x4516 waiting on condition [0x00007f9be10fe000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+        at java.lang.Thread.sleep(Native Method)
+        at org.apache.catalina.core.StandardServer.await(StandardServer.java:427)
+        at org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer$1.run(TomcatEmbeddedServletContainer.java:177)
+
+   Locked ownable synchronizers:
+        - None
+
+"ContainerBackgroundProcessor[StandardEngine[Tomcat]]" #17 daemon prio=5 os_prio=0 tid=0x00007f9c0d611800 nid=0x4515 waiting on condition [0x00007f9be11fe000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+        at java.lang.Thread.sleep(Native Method)
+        at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java:1355)
+        at java.lang.Thread.run(Thread.java:750)
+
+   Locked ownable synchronizers:
+        - None
+
+"Attach Listener" #14 daemon prio=9 os_prio=0 tid=0x00007f9bbc001000 nid=0x4512 waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+   Locked ownable synchronizers:
+        - None
+
+"Service Thread" #10 daemon prio=9 os_prio=0 tid=0x00007f9c0c803800 nid=0x4505 runnable [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+   Locked ownable synchronizers:
+        - None
+
+"C1 CompilerThread3" #9 daemon prio=9 os_prio=0 tid=0x00007f9c0c7f0000 nid=0x4504 waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+   Locked ownable synchronizers:
+        - None
+
+"C2 CompilerThread2" #8 daemon prio=9 os_prio=0 tid=0x00007f9c0c7ee000 nid=0x4503 waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+   Locked ownable synchronizers:
+        - None
+
+"C2 CompilerThread1" #7 daemon prio=9 os_prio=0 tid=0x00007f9c0c7eb800 nid=0x4502 waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+   Locked ownable synchronizers:
+        - None
+
+"C2 CompilerThread0" #6 daemon prio=9 os_prio=0 tid=0x00007f9c0c7ea800 nid=0x4501 waiting on condition [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+   Locked ownable synchronizers:
+        - None
+
+"Monitor Ctrl-Break" #5 daemon prio=5 os_prio=0 tid=0x00007f9c0c7af800 nid=0x4500 runnable [0x00007f9bf8248000]
+   java.lang.Thread.State: RUNNABLE
+        at java.net.SocketInputStream.socketRead0(Native Method)
+        at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+        at java.net.SocketInputStream.read(SocketInputStream.java:171)
+        at java.net.SocketInputStream.read(SocketInputStream.java:141)
+        at sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284)
+        at sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326)
+        at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+        - locked <0x00000006c6ebe268> (a java.io.InputStreamReader)
+        at java.io.InputStreamReader.read(InputStreamReader.java:184)
+        at java.io.BufferedReader.fill(BufferedReader.java:161)
+        at java.io.BufferedReader.readLine(BufferedReader.java:324)
+        - locked <0x00000006c6ebe268> (a java.io.InputStreamReader)
+        at java.io.BufferedReader.readLine(BufferedReader.java:389)
+        at com.intellij.rt.execution.application.AppMainV2$1.run(AppMainV2.java:53)
+
+   Locked ownable synchronizers:
+        - None
+
+"Signal Dispatcher" #4 daemon prio=9 os_prio=0 tid=0x00007f9c0c213800 nid=0x44ff runnable [0x0000000000000000]
+   java.lang.Thread.State: RUNNABLE
+
+   Locked ownable synchronizers:
+        - None
+
+"Finalizer" #3 daemon prio=8 os_prio=0 tid=0x00007f9c0c1df800 nid=0x44f9 in Object.wait() [0x00007f9bf8448000]
+   java.lang.Thread.State: WAITING (on object monitor)
+        at java.lang.Object.wait(Native Method)
+        at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:144)
+        - locked <0x00000006c6ea8b60> (a java.lang.ref.ReferenceQueue$Lock)
+        at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:165)
+        at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:188)
+
+   Locked ownable synchronizers:
+        - None
+
+"Reference Handler" #2 daemon prio=10 os_prio=0 tid=0x00007f9c0c1db000 nid=0x44f8 in Object.wait() [0x00007f9bf8548000]
+   java.lang.Thread.State: WAITING (on object monitor)
+        at java.lang.Object.wait(Native Method)
+        at java.lang.Object.wait(Object.java:502)
+        at java.lang.ref.Reference.tryHandlePending(Reference.java:191)
+        - locked <0x00000006c6ea8d30> (a java.lang.ref.Reference$Lock)
+        at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:153)
+
+   Locked ownable synchronizers:
+        - None
+
+"VM Thread" os_prio=0 tid=0x00007f9c0c1d1000 nid=0x44f7 runnable 
+
+"GC task thread#0 (ParallelGC)" os_prio=0 tid=0x00007f9c0c029000 nid=0x44e6 runnable 
+
+"GC task thread#1 (ParallelGC)" os_prio=0 tid=0x00007f9c0c02a800 nid=0x44e7 runnable 
+
+"GC task thread#2 (ParallelGC)" os_prio=0 tid=0x00007f9c0c02c800 nid=0x44e8 runnable 
+
+"GC task thread#3 (ParallelGC)" os_prio=0 tid=0x00007f9c0c02e000 nid=0x44e9 runnable 
+
+"GC task thread#4 (ParallelGC)" os_prio=0 tid=0x00007f9c0c030000 nid=0x44ea runnable 
+
+"GC task thread#5 (ParallelGC)" os_prio=0 tid=0x00007f9c0c031800 nid=0x44eb runnable 
+
+"GC task thread#6 (ParallelGC)" os_prio=0 tid=0x00007f9c0c033800 nid=0x44ec runnable 
+
+"GC task thread#7 (ParallelGC)" os_prio=0 tid=0x00007f9c0c035800 nid=0x44ed runnable 
+
+"VM Periodic Task Thread" os_prio=0 tid=0x00007f9c0c806000 nid=0x4506 waiting on condition 
+
+JNI global references: 320
+
