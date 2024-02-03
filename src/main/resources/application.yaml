@@ -9,17 +9,17 @@ camunda.bpm:
   filter:
     create: All tasks
 
-#camunda.bpm.database:
-#  jdbc-batch-processing: true
+camunda.bpm.database:
+  jdbc-batch-processing: true
 
 camunda.bpm.job-execution:
   core-pool-size: 20
-  max-pool-size: 100
+  max-pool-size: 20
 
 spring.datasource:
-  url: "jdbc:postgresql://camunda-db.lakdhf.us-east-1.rds.amazonaws.com:666/myaaaa?socketTimeout=15&options=-c%20statement_timeout=2500"
-  username: admin
-  password: 1234567890
+  url: "jdbc:postgresql://camunda-database-1.cn160l4t4xyj.us-east-1.rds.amazonaws.com:5432/postgres?socketTimeout=15&options=-c%20statement_timeout=2500"
+  username: mycamunda_user
+  password: B19yM9Jo25>
   driverClassName: org.postgresql.Driver
 
 spring.datasource.hikari:
@@ -31,4 +31,4 @@ logging.level:
     org.springframework: INFO
     org.camunda.bpm.engine.cmd: DEBUG
     org.camunda.bpm.engine.jobexecutor: DEBUG
-    org.camunda.bpm.engine.impl.persistence.entity: DEBUG
+    org.camunda.bpm.engine.impl.persistence.entity: INFO

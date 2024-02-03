@@ -7,8 +7,8 @@
   <properties>
     <!-- when 7.7.0 use camunda.spring.boot.version>2.2.0</camunda.spring.boot.version-->
     <!-- when 7.8.0 use camunda.spring.boot.version>2.3.0</camunda.spring.boot.version-->
-    <camunda.spring.boot.version>2.2.0</camunda.spring.boot.version>
-    <camunda.engine.version>7.7.0</camunda.engine.version>
+    <camunda.spring.boot.version>2.3.0</camunda.spring.boot.version>
+    <camunda.engine.version>7.8.0</camunda.engine.version>
     <spring-boot.version>1.5.9.RELEASE</spring-boot.version>
     <hikari.cp.version>2.6.1</hikari.cp.version>
     <postgresql.version>42.2.27</postgresql.version>
@@ -32,21 +32,21 @@
 
     <!--workflow-->
     <dependency>
-      <groupId>org.camunda.bpm.extension.springboot</groupId>
-      <!-- for 7.8.0 use this groupId>org.camunda.bpm.springboot</groupId-->
+      <!-- for 7.7.0 use this groupId>org.camunda.bpm.extension.springboot</groupId-->
+      <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter</artifactId>
       <version>${camunda.spring.boot.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.camunda.bpm.extension.springboot</groupId>
-      <!-- for 7.8.0 use this groupId>org.camunda.bpm.springboot</groupId-->
+      <!-- for 7.7.0 use this groupId>org.camunda.bpm.extension.springboot</groupId-->
+      <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
       <version>${camunda.spring.boot.version}</version>
     </dependency>
 
     <dependency>
-      <groupId>org.camunda.bpm.extension.springboot</groupId>
-      <!-- for 7.8.0 use this groupId>org.camunda.bpm.springboot</groupId-->
+      <!-- for 7.7.0 use this groupId>org.camunda.bpm.extension.springboot</groupId-->
+      <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-test</artifactId>
       <version>${camunda.spring.boot.version}</version>
     </dependency>
