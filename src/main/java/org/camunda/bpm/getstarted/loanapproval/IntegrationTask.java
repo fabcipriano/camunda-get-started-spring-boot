@@ -26,7 +26,7 @@ public class IntegrationTask implements JavaDelegate {
             delegateExecution.setVariable("StartTime",System.currentTimeMillis());
             delegateExecution.setVariable("CAMUNDA_INSTANCE",
                     new CamundaInstance(CamundaStatus.CREATED, 0, delegateExecution.getBusinessKey()));
-            logger.info("Called {} task. INITIALIZED ..  resturn", currentActivityName);
+            logger.info("Called {} task. INITIALIZED ..  return", currentActivityName);
             return;
         }
 

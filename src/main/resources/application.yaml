@@ -13,22 +13,23 @@ camunda.bpm.database:
   jdbc-batch-processing: true
 
 camunda.bpm.job-execution:
-  core-pool-size: 20
-  max-pool-size: 20
+  core-pool-size: 10
+  max-pool-size: 15
 
 spring.datasource:
-  url: "jdbc:postgresql://camunda-database-1.cn160l4t4xyj.us-east-1.rds.amazonaws.com:5432/postgres?socketTimeout=15&options=-c%20statement_timeout=2500"
-  username: mycamunda_user
-  password: B19yM9Jo25>
+  url: "jdbc:postgresql://localhost:5432/my_camunda"
+  username: dbuser
+  password: admin2021
   driverClassName: org.postgresql.Driver
 
 spring.datasource.hikari:
   connectionTimeout: 10000
+  minimumIdle: 25
   maximumPoolSize: 25
   poolName: HiCamundaDS
 
 logging.level:
     org.springframework: INFO
-    org.camunda.bpm.engine.cmd: DEBUG
-    org.camunda.bpm.engine.jobexecutor: DEBUG
-    org.camunda.bpm.engine.impl.persistence.entity: INFO
+    org.camunda.bpm.engine.cmd: WARN
+    org.camunda.bpm.engine.jobexecutor: WARN
+    org.camunda.bpm.engine.impl.persistence.entity: WARN

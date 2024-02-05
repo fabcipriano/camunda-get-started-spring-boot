@@ -23,14 +23,13 @@
     </bpmn2:serviceTask>
     <bpmn2:sequenceFlow id="Flow_115psxq" sourceRef="Activity_1hkz5c7" targetRef="Activity_0l75vdw" />
     <bpmn2:sequenceFlow id="Flow_17qp20i" sourceRef="Activity_0l7ps2p" targetRef="Activity_18ac1oh" />
-    <bpmn2:sequenceFlow id="Flow_0c74e8m" sourceRef="Activity_18ac1oh" targetRef="Activity_1fxi45v" />
     <bpmn2:sequenceFlow id="Flow_0i1ckbs" sourceRef="Activity_1fxi45v" targetRef="EndEvent_1" />
-    <bpmn2:serviceTask id="Activity_18ac1oh" name="Deposit" camunda:asyncBefore="true" camunda:class="org.camunda.bpm.getstarted.loanapproval.IntegrationTask">
+    <bpmn2:serviceTask id="Activity_18ac1oh" name="Deposit" camunda:asyncBefore="true" camunda:class="org.camunda.bpm.getstarted.loanapproval.DepositTask">
       <bpmn2:incoming>Flow_17qp20i</bpmn2:incoming>
-      <bpmn2:outgoing>Flow_0c74e8m</bpmn2:outgoing>
+      <bpmn2:outgoing>Flow_0merlds</bpmn2:outgoing>
     </bpmn2:serviceTask>
     <bpmn2:serviceTask id="Activity_1fxi45v" name="Finalize" camunda:asyncBefore="true" camunda:class="org.camunda.bpm.getstarted.loanapproval.IntegrationTask">
-      <bpmn2:incoming>Flow_0c74e8m</bpmn2:incoming>
+      <bpmn2:incoming>Flow_0n2r03f</bpmn2:incoming>
       <bpmn2:outgoing>Flow_0i1ckbs</bpmn2:outgoing>
     </bpmn2:serviceTask>
     <bpmn2:serviceTask id="Activity_0zkbcgi" name="Initial" camunda:asyncBefore="true" camunda:class="org.camunda.bpm.getstarted.loanapproval.IntegrationTask">
@@ -38,6 +37,16 @@
       <bpmn2:outgoing>Flow_1abrvzr</bpmn2:outgoing>
     </bpmn2:serviceTask>
     <bpmn2:sequenceFlow id="Flow_1abrvzr" sourceRef="Activity_0zkbcgi" targetRef="Activity_1hkz5c7" />
+    <bpmn2:sequenceFlow id="Flow_0merlds" sourceRef="Activity_18ac1oh" targetRef="Activity_0j5b9pv" />
+    <bpmn2:sequenceFlow id="Flow_0n2r03f" sourceRef="Activity_0j5b9pv" targetRef="Activity_1fxi45v" />
+    <bpmn2:callActivity id="Activity_0j5b9pv" name="Auditoria" camunda:asyncBefore="true" calledElement="audit">
+      <bpmn2:extensionElements>
+        <camunda:in businessKey="#{execution.processBusinessKey}" />
+        <camunda:in variables="all" />
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>Flow_0merlds</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_0n2r03f</bpmn2:outgoing>
+    </bpmn2:callActivity>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="loanApproval">
@@ -45,12 +54,6 @@
         <dc:Bounds x="170" y="104" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="154" y="140" width="70" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="_BPMNShape_EndEvent_3" bpmnElement="EndEvent_1">
-        <dc:Bounds x="1322" y="104" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1306" y="140" width="70" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0l75vdw_di" bpmnElement="Activity_0l75vdw">
@@ -67,12 +70,21 @@
       <bpmndi:BPMNShape id="Activity_0ls4dve_di" bpmnElement="Activity_18ac1oh">
         <dc:Bounds x="1010" y="82" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0ppos7v_di" bpmnElement="Activity_1fxi45v">
-        <dc:Bounds x="1160" y="82" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1gnz61p_di" bpmnElement="Activity_0zkbcgi">
         <dc:Bounds x="320" y="82" width="100" height="80" />
         <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ppos7v_di" bpmnElement="Activity_1fxi45v">
+        <dc:Bounds x="1380" y="82" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_EndEvent_3" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1542" y="104" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1527" y="140" width="69" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_138pefo_di" bpmnElement="Activity_0j5b9pv">
+        <dc:Bounds x="1200" y="82" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="_BPMNShape_StartEvent_3" targetElement="Activity_1gnz61p_di">
         <di:waypoint x="206" y="122" />
@@ -93,17 +105,21 @@
         <di:waypoint x="920" y="122" />
         <di:waypoint x="1010" y="122" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0c74e8m_di" bpmnElement="Flow_0c74e8m">
-        <di:waypoint x="1110" y="122" />
-        <di:waypoint x="1160" y="122" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0i1ckbs_di" bpmnElement="Flow_0i1ckbs">
-        <di:waypoint x="1260" y="122" />
-        <di:waypoint x="1322" y="122" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1abrvzr_di" bpmnElement="Flow_1abrvzr">
         <di:waypoint x="420" y="122" />
         <di:waypoint x="490" y="122" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0i1ckbs_di" bpmnElement="Flow_0i1ckbs">
+        <di:waypoint x="1480" y="122" />
+        <di:waypoint x="1542" y="122" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0merlds_di" bpmnElement="Flow_0merlds">
+        <di:waypoint x="1110" y="122" />
+        <di:waypoint x="1200" y="122" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0n2r03f_di" bpmnElement="Flow_0n2r03f">
+        <di:waypoint x="1300" y="122" />
+        <di:waypoint x="1380" y="122" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
