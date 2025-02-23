@@ -1,15 +1,21 @@
 package org.camunda.bpm.getstarted.config;
 
 import io.prometheus.client.Gauge;
-import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.ProcessEngines;
-import org.camunda.bpm.engine.impl.jobexecutor.ThreadPoolJobExecutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-@Configuration
-public class CamundaActiveThreadsMetrics {
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
 
+@Configuration
+@EnableScheduling
+public class CamundaActiveThreadsMetrics {
+    private static final Logger logger
+            = LoggerFactory.getLogger(CamundaActiveThreadsMetrics.class);
     // Define a Prometheus Gauge metric
     private static final Gauge activeThreadsGauge = Gauge.build()
             .name("camunda_job_executor_active_threads")
@@ -18,16 +24,27 @@ public class CamundaActiveThreadsMetrics {
 
     //private final ThreadPoolJobExecutor jobExecutor;
 
-    public CamundaActiveThreadsMetrics() {
-        // Access the default ProcessEngine and its JobExecutor
-        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
-//        this.jobExecutor = (ThreadPoolJobExecutor) processEngine.getProcessEngineConfiguration().getJobExecutor();
-    }
 
     // Update the metric value periodically
-    @Scheduled(fixedRate = 5000) // Update every 5 seconds
+    @Scheduled(fixedRate = 10000)
     public void updateActiveThreadsMetric() {
-//        int activeThreads = jobExecutor.getThreadPoolExecutor().getActiveCount();
-//        activeThreadsGauge.set(activeThreads);
+        ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
+
+        // Get all thread information without stack traces
+        ThreadInfo[] threadInfos = threadMXBean.dumpAllThreads(false, false);
+
+        // Initialize the counter for threads with the prefix "camundaTaskExecutor"
+        int activeThreads = 0;
+
+        // Iterate through all threads and count those with the specified prefix
+        for (ThreadInfo threadInfo : threadInfos) {
+            if (threadInfo != null
+                    && threadInfo.getThreadName().startsWith("camundaTaskExecutor")
+                    && threadInfo.getThreadState() != Thread.State.WAITING ) {
+                activeThreads++;
+            }
+        }
+        activeThreadsGauge.set(activeThreads);
+        logger.info("=====> activeTHREADS: " + activeThreads);
     }
 }

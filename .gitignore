@@ -17,6 +17,9 @@ hs_err_pid*
 
 /target/
 
+/logs
+/database
+
 .classpath
 .settings
 .project
