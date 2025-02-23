@@ -11,17 +11,17 @@ camunda.bpm:
 
 camunda.bpm.database:
   jdbc-batch-processing: true
+  type: postgres
 
 camunda.bpm.job-execution:
   core-pool-size: 10
   max-pool-size: 15
 
 spring.datasource:
-  url: "jdbc:postgresql://localhost:5432/my_camunda"
+  url: "jdbc:postgresql://localhost:5432/camunda"
   username: dbuser
   password: admin2021
   driverClassName: org.postgresql.Driver
-
 spring.datasource.hikari:
   connectionTimeout: 10000
   minimumIdle: 25

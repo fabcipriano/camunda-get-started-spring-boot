@@ -3,7 +3,27 @@ services:
   camunda-get-started:
     container_name: camunda-started
     build:
+      context: .
       dockerfile: ./Dockerfile
     image: facio/camunda-get-started:latest
     ports:
       - "8666:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/my_camunda
+      - SPRING_DATASOURCE_USERNAME=camunda
+      - SPRING_DATASOURCE_PASSWORD=camund@123
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+    depends_on:
+      - postgres-db
+
+  postgres-db:
+    image: postgres:13
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: camunda
+      POSTGRES_PASSWORD: camund@123
+      POSTGRES_DB: my_camunda
+    ports:
+      - "5432:5432"
+    volumes:
+      - /home/fabiano_oliveira/dev/camunda-get-started-spring-boot/database:/var/lib/postgresql/data
