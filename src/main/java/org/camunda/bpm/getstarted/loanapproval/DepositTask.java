@@ -24,7 +24,7 @@ public class DepositTask implements JavaDelegate {
                 "initial", "loan",  "verify", "approve", "deposit", "audit", "receita federal",
                 "COAF", "fim");
 
-        Thread.sleep(10000);
+        Thread.sleep(1000);
 
         boolean b = random.nextBoolean();
         if (b) {

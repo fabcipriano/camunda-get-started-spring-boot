@@ -16,9 +16,9 @@ public class NormalAudit implements JavaDelegate {
         String currentActivityName = delegateExecution.getCurrentActivityName();
         logger.info("Calling {} task...", currentActivityName);
 
-        int i = random.nextInt(14001);
+        int i = random.nextInt(2001);
         logger.info("Random task {} with number {}", currentActivityName, i);
-        Thread.sleep(11000 + i);
+        Thread.sleep(100 + i);
 
         Object auditItem = delegateExecution.getVariable("auditItem");
         logger.info("Called {} task with audit Item: {} .", currentActivityName, auditItem);

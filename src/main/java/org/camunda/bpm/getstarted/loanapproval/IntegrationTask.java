@@ -43,9 +43,9 @@ public class IntegrationTask implements JavaDelegate {
         }
 
         delegateExecution.setVariable("StatusLoan-" + currentActivityName,"CREATED");
-        int i = random.nextInt(4001);
+        int i = random.nextInt(1001);
         logger.info("Random task {} with number {}", currentActivityName, i);
-        Thread.sleep(6000 + i);
+        Thread.sleep(600 + i);
 
         if ("Finalize".equals(currentActivityName)) {
             logger.info("Final task.");

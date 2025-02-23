@@ -15,7 +15,7 @@ public class VerifyTask implements JavaDelegate {
     public void execute(DelegateExecution delegateExecution) throws Exception {
 
         logger.info("Calling...");
-        Thread.sleep(5000);
+        Thread.sleep(2000);
         Map<String, Object> variables = delegateExecution.getVariables();
         Object moneyRequested = variables.get("MoneyRequested");
         Object scale = variables.get("Scale");

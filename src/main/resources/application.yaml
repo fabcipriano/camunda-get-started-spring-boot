@@ -14,13 +14,13 @@ camunda.bpm.database:
   type: postgres
 
 camunda.bpm.job-execution:
-  core-pool-size: 10
-  max-pool-size: 15
+  core-pool-size: 20
+  max-pool-size: 30
 
 spring.datasource:
-  url: "jdbc:postgresql://localhost:5432/camunda"
-  username: dbuser
-  password: admin2021
+  url: "jdbc:postgresql://localhost:5432/my_camunda"
+  username: camunda
+  password: camund@123
   driverClassName: org.postgresql.Driver
 spring.datasource.hikari:
   connectionTimeout: 10000

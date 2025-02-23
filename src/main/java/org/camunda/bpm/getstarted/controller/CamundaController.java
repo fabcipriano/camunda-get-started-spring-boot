@@ -1,4 +1,4 @@
-package org.camunda.bpm.getstarted.loanapproval;
+package org.camunda.bpm.getstarted.controller;
 
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.OptionalLong;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 public class CamundaController {
