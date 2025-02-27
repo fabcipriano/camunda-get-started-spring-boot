@@ -21,6 +21,16 @@ public class CamundaController {
     @Autowired
     private RuntimeService runtimeService;
 
+    public CamundaController() {
+        logger.info("VAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiii");
+    }
+
+    @GetMapping("/echo")
+    public String echo() {
+        logger.info("Echo");
+
+        return "Echo";
+    }
 
 //    @GetMapping("/report")
 //    public ReportCamundaInstance report() {

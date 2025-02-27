@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.getstarted.config;
+package org.camunda.bpm.getstarted;
 
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication;
