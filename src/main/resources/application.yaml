@@ -18,7 +18,7 @@ camunda.bpm.job-execution:
   max-pool-size: 30
 
 spring.datasource:
-  url: "jdbc:postgresql://localhost:5432/my_camunda"
+  url: "jdbc:postgresql://postgres-db:5432/my_camunda"
   username: camunda
   password: camund@123
   driverClassName: org.postgresql.Driver
