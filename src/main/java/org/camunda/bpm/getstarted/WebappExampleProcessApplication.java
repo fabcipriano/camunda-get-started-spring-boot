@@ -17,6 +17,7 @@
 package org.camunda.bpm.getstarted;
 
 import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication;
 import org.camunda.bpm.spring.boot.starter.event.PostDeployEvent;
 import org.slf4j.Logger;
@@ -26,6 +27,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @SpringBootApplication
 @EnableProcessApplication
@@ -46,8 +51,18 @@ public class WebappExampleProcessApplication {
 
   @EventListener
   public void processPostDeploy(PostDeployEvent event) {
+    Map<String, Object> variables = new HashMap<>();
 
-    runtimeService.startProcessInstanceByKey("loanApproval");
+    variables.put("Name", "Teste 1 2 3");
+    variables.put("MoneyRequested", 25000);
+    variables.put("Scale", 2);
+    variables.put("LOAN_PRIOR", 1);
+
+    runtimeService.startProcessInstanceByKey(
+            "loanApproval",
+            "LOAN-" + UUID.randomUUID(),
+            variables);
+    logger.info("INTERNAL Called create ...");
   }
 
 }

@@ -4,14 +4,16 @@ public class CreateLoan {
     String name;
     long moneyRequested;
     int scale;
+    int priority;
 
     public CreateLoan() {
     }
 
-    public CreateLoan(String name, long moneyRequested, int scale) {
+    public CreateLoan(String name, long moneyRequested, int scale, int priority) {
         this.name = name;
         this.moneyRequested = moneyRequested;
         this.scale = scale;
+        this.priority = priority;
     }
 
     public String getName() {
@@ -36,5 +38,13 @@ public class CreateLoan {
 
     public void setScale(int scale) {
         this.scale = scale;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

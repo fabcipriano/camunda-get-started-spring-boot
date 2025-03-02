@@ -40,13 +40,23 @@ public class IntegrationTask implements JavaDelegate {
                     new CamundaInstance(CamundaStatus.CREATED, 0, delegateExecution.getBusinessKey()));
 
             // Save a row in the Loan_Audit table using JdbcTemplate and retrieve the generated ID
-            String sql = "INSERT INTO Loan_Audit (name, description, created_at, updated_at) VALUES (?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+            String sql = "INSERT INTO Loan_Audit (name, description, priority, created_at, updated_at) " +
+                    "VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
             jdbcTemplate.update(connection -> {
+                Object loanPrior = delegateExecution.getVariable("LOAN_PRIOR");
+                int priority = 0;
+                if (loanPrior instanceof Integer) {
+                    priority = (Integer) loanPrior;
+                }
+
                 PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"}); // Specify the column name for the generated key
                 ps.setString(1, "ID_Execution_" + atomicInteger.incrementAndGet());
                 ps.setString(2, "This is the initial task in the process.");
+                ps.setInt(3, priority);
+
+                logger.info("Saving a row in Loan_Audit table with priority: {}.", priority);
                 return ps;
             }, keyHolder);
 

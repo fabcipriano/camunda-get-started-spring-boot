@@ -22,7 +22,7 @@ public class CamundaController {
     private RuntimeService runtimeService;
 
     public CamundaController() {
-        logger.info("VAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiii ........... 5");
+        logger.info("VAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiii ........... 7");
     }
 
     @GetMapping("/echo")
@@ -31,32 +31,6 @@ public class CamundaController {
 
         return "Echo";
     }
-
-//    @GetMapping("/report")
-//    public ReportCamundaInstance report() {
-//        Map<String, CamundaInstance> instanceMap = IntegrationTask.CAMUNDA_INSTANCE_MAP;
-//        int totalInstances = instanceMap.size();
-//        long avarageExecutionTimeOfFinishedInstances = 0;
-//
-//        long instancesCreated = instanceMap.values().stream().filter(i -> i.getStatus() == CamundaStatus.CREATED).count();
-//        long instancesRunning = instanceMap.values().stream().filter(i -> i.getStatus() == CamundaStatus.RUNNING).count();
-//
-//        long instancesFinished = instanceMap.values().stream().filter(i -> i.getStatus() == CamundaStatus.FINISHED).count();
-//
-//        long sum = instanceMap.values().stream().filter(i -> i.getStatus() == CamundaStatus.FINISHED)
-//                .mapToLong(CamundaInstance::getTotalTime).sum();
-//
-//        if (instancesFinished > 0) {
-//            avarageExecutionTimeOfFinishedInstances = sum / instancesFinished;
-//        }
-//
-//        OptionalLong maxExecutionTime = instanceMap.values().stream().filter(i -> i.getStatus() == CamundaStatus.FINISHED)
-//                .mapToLong(CamundaInstance::getTotalTime).max();
-//
-//        return new ReportCamundaInstance(totalInstances, instancesCreated,
-//                instancesRunning, instancesFinished, avarageExecutionTimeOfFinishedInstances,
-//                maxExecutionTime.orElse(0));
-//    }
 
     @PostMapping(value = "/createCamundaInstance",
             consumes = {"application/json"},
@@ -67,7 +41,8 @@ public class CamundaController {
         variables.put("Name", loan.getName());
         variables.put("MoneyRequested", loan.getMoneyRequested());
         variables.put("Scale", loan.getScale());
-        logger.info("Calling create ...");
+        variables.put("LOAN_PRIOR", loan.getPriority());
+        logger.info("Calling create ... PRIOR: {}", loan.getPriority());
 
         ProcessInstance processInstance =
                 runtimeService.startProcessInstanceByKey(
