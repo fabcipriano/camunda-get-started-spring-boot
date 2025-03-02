@@ -91,6 +91,12 @@
       <version>0.16.0</version>
     </dependency>
 
+    <!-- Spring Boot Starter for JDBC -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
+    </dependency>
+
   </dependencies>
   
    <build>

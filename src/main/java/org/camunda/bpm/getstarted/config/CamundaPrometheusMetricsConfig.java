@@ -29,12 +29,12 @@ public class CamundaPrometheusMetricsConfig {
             = LoggerFactory.getLogger(CamundaPrometheusMetricsConfig.class);
 
     private static final Gauge activeThreadsGauge = Gauge.build()
-            .name("camunda_job_executor_active_threads")
+            .name("camunda_thread_dump_job_executor_active_threads")
             .help("Number of active threads in the Camunda Job Executor thread pool")
             .register();
 
     private static final Gauge activeJobExecutoThreadsGauge = Gauge.build()
-            .name("camunda_process_engine_job_executor_active_threads")
+            .name("camunda_job_executor_active_threads")
             .help("Number of active threads found in process engine in the Camunda Job Executor thread pool")
             .register();
 

@@ -13,6 +13,9 @@ camunda.bpm.database:
   jdbc-batch-processing: true
   type: postgres
 
+camunda.bpm.job-executor:
+  acquire-by-priority: true
+
 camunda.bpm.job-execution:
   core-pool-size: 40
   max-pool-size: 80
