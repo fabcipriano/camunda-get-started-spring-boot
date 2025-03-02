@@ -8,12 +8,14 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
-import org.camunda.bpm.engine.impl.jobexecutor.ThreadPoolJobExecutor;
+import org.camunda.bpm.engine.spring.components.jobexecutor.SpringJobExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -48,7 +50,7 @@ public class CamundaPrometheusMetricsConfig {
     private ProcessEngineConfiguration processEngineConfiguration;
 
     private ManagementService managementService;
-    private ThreadPoolJobExecutor jobThreadPoolExecutor;
+    private ThreadPoolTaskExecutor springTaskExecutor;
 
     @PostConstruct
     public void init() throws IOException {
@@ -66,9 +68,15 @@ public class CamundaPrometheusMetricsConfig {
             JobExecutor jobExecutor = ((ProcessEngineConfigurationImpl) processEngineConfiguration).getJobExecutor();
 
             logger.info("Verify if jobExecutor is ThreadPoolJobExecutor ... jobExecutor: {} ", jobExecutor);
-            if ( jobExecutor instanceof ThreadPoolJobExecutor) {
-                jobThreadPoolExecutor = (ThreadPoolJobExecutor) jobExecutor;
-                logger.info("Got threadPoolJobExecutor.");
+            if ( jobExecutor instanceof SpringJobExecutor) {
+                SpringJobExecutor jobThreadPoolExecutor = (SpringJobExecutor) jobExecutor;
+                TaskExecutor taskExecutor = jobThreadPoolExecutor.getTaskExecutor();
+                logger.info("Got SpringJobExecutor. taskExecutor: {}", taskExecutor);
+
+                if (taskExecutor instanceof ThreadPoolTaskExecutor) {
+                    springTaskExecutor = (ThreadPoolTaskExecutor)taskExecutor;
+                    logger.info("Got ThreadPoolTaskExecutor. springTaskExecutor: {}", springTaskExecutor);
+                }
             }
         }
 
@@ -82,16 +90,16 @@ public class CamundaPrometheusMetricsConfig {
         logger.info("=====> updateActiveJobsCount - activeJobsCount: {}", activeJobsCount);
     }
 
-    @Scheduled(fixedRate = 4000)
+    @Scheduled(fixedRate = 2000)
     public void updateActiveThreadProcessEngine() {
-        int activeThreads = jobThreadPoolExecutor.getThreadPoolExecutor().getActiveCount();
+        int activeCount = springTaskExecutor.getActiveCount();
 
-        activeJobExecutoThreadsGauge.set(activeThreads);
+        activeJobExecutoThreadsGauge.set(activeCount);
 
-        logger.info("=====> updateActiveThreadProcessEngine - activeThreads: {}", activeThreads);
+        logger.info("=====> updateActiveThreadProcessEngine - activeThreads: {}", activeCount);
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 15000)
     public void updateActiveThreadsMetric() {
         ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
 
