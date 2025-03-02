@@ -14,8 +14,8 @@ camunda.bpm.database:
   type: postgres
 
 camunda.bpm.job-execution:
-  core-pool-size: 20
-  max-pool-size: 30
+  core-pool-size: 40
+  max-pool-size: 80
 
 spring.datasource:
   url: "jdbc:postgresql://postgres-db:5432/my_camunda"
@@ -24,8 +24,8 @@ spring.datasource:
   driverClassName: org.postgresql.Driver
 spring.datasource.hikari:
   connectionTimeout: 10000
-  minimumIdle: 25
-  maximumPoolSize: 25
+  minimumIdle: 40
+  maximumPoolSize: 60
   poolName: HiCamundaDS
 
 logging.level:
