@@ -19,6 +19,8 @@ hs_err_pid*
 
 /logs
 /database
+/grafana-data
+/grafana
 
 .classpath
 .settings

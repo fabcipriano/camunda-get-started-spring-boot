@@ -43,6 +43,11 @@ public class CamundaPrometheusMetricsConfig {
             .help("Number of active jobs in the Camunda Job Executor.")
             .register();
 
+    private static final Gauge activeQueueSizeGauge = Gauge.build()
+            .name("camunda_job_executor_number_of_tasks_in_queue")
+            .help("Number of tasks in the job executor queue waiting to be executed in memory")
+            .register();
+
     @Autowired
     private ProcessEngine processEngine;
 
@@ -76,6 +81,19 @@ public class CamundaPrometheusMetricsConfig {
                 if (taskExecutor instanceof ThreadPoolTaskExecutor) {
                     springTaskExecutor = (ThreadPoolTaskExecutor)taskExecutor;
                     logger.info("Got ThreadPoolTaskExecutor. springTaskExecutor: {}", springTaskExecutor);
+
+                    logger.info("-----> springTaskExecutor.getCorePoolSize(): {}", springTaskExecutor.getCorePoolSize());
+                    logger.info("-----> springTaskExecutor.getPoolSize(): {}", springTaskExecutor.getPoolSize());
+                    logger.info("-----> springTaskExecutor.getMaxPoolSize(): {}", springTaskExecutor.getMaxPoolSize());
+                    logger.info("-----> springTaskExecutor.getThreadPoolExecutor().getQueue().remainingCapacity(): {}",
+                            springTaskExecutor.getThreadPoolExecutor().getQueue().remainingCapacity());
+
+
+                    logger.info("-----> jobThreadPoolExecutor.getBackoffTimeInMillis(): {}", jobThreadPoolExecutor.getBackoffTimeInMillis());
+                    logger.info("-----> jobThreadPoolExecutor.getLockTimeInMillis(): {}", jobThreadPoolExecutor.getLockTimeInMillis());
+                    logger.info("-----> jobThreadPoolExecutor.getMaxBackoff(): {}", jobThreadPoolExecutor.getMaxBackoff());
+                    logger.info("-----> jobThreadPoolExecutor.getMaxWait(): {}", jobThreadPoolExecutor.getMaxWait());
+                    logger.info("-----> jobThreadPoolExecutor.getMaxJobsPerAcquisition(): {}", jobThreadPoolExecutor.getMaxJobsPerAcquisition());
                 }
             }
         }
@@ -88,6 +106,14 @@ public class CamundaPrometheusMetricsConfig {
         long activeJobsCount = managementService.createJobQuery().active().count();
         activeJobsGauge.set(activeJobsCount);
         logger.info("=====> updateActiveJobsCount - activeJobsCount: {}", activeJobsCount);
+    }
+
+    @Scheduled(fixedRate = 4000)
+    public void updateActiveQueueSizeGauge() {
+        int queueSize = springTaskExecutor.getThreadPoolExecutor().getQueue().size();
+
+        activeQueueSizeGauge.set(queueSize);
+        logger.info("=====> updateActiveQueueSizeGauge - queueSize: {}", queueSize);
     }
 
     @Scheduled(fixedRate = 2000)

@@ -6,6 +6,7 @@ camunda.bpm:
   id-generator: strong
   history-level: NONE
   history-level-default: NONE
+  job-executor-acquire-by-priority: true
   filter:
     create: All tasks
 
@@ -13,12 +14,11 @@ camunda.bpm.database:
   jdbc-batch-processing: true
   type: postgres
 
-camunda.bpm.job-executor:
-  acquire-by-priority: true
-
 camunda.bpm.job-execution:
-  core-pool-size: 40
+  core-pool-size: 50
   max-pool-size: 80
+  keep-alive-seconds: 126000
+  queue-capacity: 66
 
 spring.datasource:
   url: "jdbc:postgresql://postgres-db:5432/my_camunda"

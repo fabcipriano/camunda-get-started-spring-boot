@@ -13,8 +13,6 @@ services:
       - SPRING_DATASOURCE_USERNAME=camunda
       - SPRING_DATASOURCE_PASSWORD=camund@123
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
-    depends_on:
-      - postgres-db
     networks:
       - monitoring
 
@@ -48,6 +46,8 @@ services:
     container_name: grafana
     ports:
       - "3000:3000"
+    volumes:
+      - "./grafana:/var/lib/grafana"
     networks:
       - monitoring
     environment:
