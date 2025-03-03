@@ -31,8 +31,21 @@ spring.datasource.hikari:
   maximumPoolSize: 60
   poolName: HiCamundaDS
 
+management:
+  context-path: /actuator
+  port: 8383
+  ssl:
+    enabled: false
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
 logging.level:
     org.springframework: INFO
+    org.springframework.boot.actuate: DEBUG
     org.camunda.bpm.engine.cmd: WARN
     org.camunda.bpm.engine.jobexecutor: WARN
     org.camunda.bpm.engine.impl.persistence.entity: WARN

@@ -59,11 +59,6 @@ public class CamundaPrometheusMetricsConfig {
 
     @PostConstruct
     public void init() throws IOException {
-        logger.info("Start Prometheus HTTP server metrics ");
-        HTTPServer server = new HTTPServer(8081);
-
-        // Register JVM default metrics
-        DefaultExports.initialize();
 
         logger.info("Monitor Camunda active jobs");
         managementService = processEngine.getManagementService();
