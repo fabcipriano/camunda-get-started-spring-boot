@@ -17,7 +17,6 @@
 package org.camunda.bpm.getstarted;
 
 import org.camunda.bpm.engine.RuntimeService;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication;
 import org.camunda.bpm.spring.boot.starter.event.PostDeployEvent;
 import org.slf4j.Logger;
@@ -28,6 +27,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import io.prometheus.client.spring.boot.EnablePrometheusEndpoint;
+import io.prometheus.client.spring.boot.EnableSpringBootMetricsCollector;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -35,6 +37,10 @@ import java.util.UUID;
 @SpringBootApplication
 @EnableProcessApplication
 @EnableScheduling
+// Add a Prometheus metrics enpoint to the route `/prometheus`. `/metrics` is already taken by Actuator.
+@EnablePrometheusEndpoint
+// Pull all metrics from Actuator and expose them as Prometheus metrics. Need to disable security feature in properties file.
+@EnableSpringBootMetricsCollector
 public class WebappExampleProcessApplication {
 
   @Autowired

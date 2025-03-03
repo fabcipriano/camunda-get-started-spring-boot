@@ -1,8 +1,6 @@
 package org.camunda.bpm.getstarted.config;
 
 import io.prometheus.client.Gauge;
-import io.prometheus.client.exporter.HTTPServer;
-import io.prometheus.client.hotspot.DefaultExports;
 import org.camunda.bpm.engine.ManagementService;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;

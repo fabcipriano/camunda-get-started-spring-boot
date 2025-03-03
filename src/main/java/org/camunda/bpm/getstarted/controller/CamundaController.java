@@ -22,7 +22,7 @@ public class CamundaController {
     private RuntimeService runtimeService;
 
     public CamundaController() {
-        logger.info("VAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiii ........... 14");
+        logger.info("VAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiii ........... 4");
     }
 
     @GetMapping("/echo")
