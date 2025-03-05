@@ -8,6 +8,7 @@ services:
     image: facio/camunda-get-started:latest
     ports:
       - "8666:8080"
+      - "1099:1099"
       - "8383:8383"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/my_camunda

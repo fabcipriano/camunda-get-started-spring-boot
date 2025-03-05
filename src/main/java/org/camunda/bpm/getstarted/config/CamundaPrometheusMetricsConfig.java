@@ -1,5 +1,6 @@
 package org.camunda.bpm.getstarted.config;
 
+import com.zaxxer.hikari.HikariDataSource;
 import io.prometheus.client.Gauge;
 import org.camunda.bpm.engine.ManagementService;
 import org.camunda.bpm.engine.ProcessEngine;
@@ -16,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
@@ -25,11 +27,6 @@ import java.lang.management.ThreadMXBean;
 public class CamundaPrometheusMetricsConfig {
     private static final Logger logger
             = LoggerFactory.getLogger(CamundaPrometheusMetricsConfig.class);
-
-    private static final Gauge activeThreadsGauge = Gauge.build()
-            .name("camunda_thread_dump_job_executor_active_threads")
-            .help("Number of active threads in the Camunda Job Executor thread pool")
-            .register();
 
     private static final Gauge activeJobExecutoThreadsGauge = Gauge.build()
             .name("camunda_job_executor_active_threads")
@@ -46,11 +43,30 @@ public class CamundaPrometheusMetricsConfig {
             .help("Number of tasks in the job executor queue waiting to be executed in memory")
             .register();
 
+    // HikariCP metrics
+    private static final Gauge hikariActiveConnectionsGauge = Gauge.build()
+            .name("hikari_active_connections")
+            .help("Number of active connections in the HikariCP DataSource.")
+            .register();
+
+    private static final Gauge hikariIdleConnectionsGauge = Gauge.build()
+            .name("hikari_idle_connections")
+            .help("Number of idle connections in the HikariCP DataSource.")
+            .register();
+
+    private static final Gauge hikariTotalConnectionsGauge = Gauge.build()
+            .name("hikari_total_connections")
+            .help("Total number of connections in the HikariCP DataSource.")
+            .register();
+
     @Autowired
     private ProcessEngine processEngine;
 
     @Autowired
     private ProcessEngineConfiguration processEngineConfiguration;
+
+    @Autowired
+    private DataSource dataSource;
 
     private ManagementService managementService;
     private ThreadPoolTaskExecutor springTaskExecutor;
@@ -64,6 +80,19 @@ public class CamundaPrometheusMetricsConfig {
         logger.info("Got managementService ... processEngineConfiguration: {}", processEngineConfiguration);
         if (processEngineConfiguration instanceof ProcessEngineConfigurationImpl ) {
             JobExecutor jobExecutor = ((ProcessEngineConfigurationImpl) processEngineConfiguration).getJobExecutor();
+
+            logger.info("-----> processEngineConfiguration.isJobExecutorAcquireByPriority: {}",
+                    processEngineConfiguration.isJobExecutorAcquireByPriority());
+            logger.info("-----> processEngineConfiguration.isJobExecutorAcquireByDueDate(): {}",
+                    processEngineConfiguration.isJobExecutorAcquireByDueDate());
+            logger.info("-----> processEngineConfiguration.isJobExecutorPreferTimerJobs(): {}",
+                    processEngineConfiguration.isJobExecutorPreferTimerJobs());
+
+            if (!processEngineConfiguration.isJobExecutorAcquireByPriority()) {
+                processEngineConfiguration.setJobExecutorAcquireByPriority(true);
+                logger.info("-----> SETTING TRUE JobExecutorAcquireByPriority: {}",
+                        processEngineConfiguration.isJobExecutorAcquireByPriority());
+            }
 
             logger.info("Verify if jobExecutor is ThreadPoolJobExecutor ... jobExecutor: {} ", jobExecutor);
             if ( jobExecutor instanceof SpringJobExecutor) {
@@ -98,7 +127,6 @@ public class CamundaPrometheusMetricsConfig {
     public void updateActiveJobsCount() {
         long activeJobsCount = managementService.createJobQuery().active().count();
         activeJobsGauge.set(activeJobsCount);
-        logger.info("=====> updateActiveJobsCount - activeJobsCount: {}", activeJobsCount);
     }
 
     @Scheduled(fixedRate = 4000)
@@ -106,7 +134,6 @@ public class CamundaPrometheusMetricsConfig {
         int queueSize = springTaskExecutor.getThreadPoolExecutor().getQueue().size();
 
         activeQueueSizeGauge.set(queueSize);
-        logger.info("=====> updateActiveQueueSizeGauge - queueSize: {}", queueSize);
     }
 
     @Scheduled(fixedRate = 2000)
@@ -115,29 +142,19 @@ public class CamundaPrometheusMetricsConfig {
 
         activeJobExecutoThreadsGauge.set(activeCount);
 
-        logger.info("=====> updateActiveThreadProcessEngine - activeThreads: {}", activeCount);
     }
 
     @Scheduled(fixedRate = 15000)
-    public void updateActiveThreadsMetric() {
-        ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
+    public void updateHikariMetrics() {
+        if (dataSource instanceof org.apache.tomcat.jdbc.pool.DataSource) {
+            org.apache.tomcat.jdbc.pool.DataSource tomcatDataSource = (org.apache.tomcat.jdbc.pool.DataSource)dataSource;
+            hikariActiveConnectionsGauge.set(tomcatDataSource.getActive());
+            hikariIdleConnectionsGauge.set(tomcatDataSource.getIdle());
+            hikariTotalConnectionsGauge.set(tomcatDataSource.getMaxActive());
 
-        // Get all thread information without stack traces
-        ThreadInfo[] threadInfos = threadMXBean.dumpAllThreads(false, false);
-
-        // Initialize the counter for threads with the prefix "camundaTaskExecutor"
-        int activeThreads = 0;
-
-        // Iterate through all threads and count those with the specified prefix
-        for (ThreadInfo threadInfo : threadInfos) {
-            if (threadInfo != null
-                    && threadInfo.getThreadName().startsWith("camundaTaskExecutor")
-                    && threadInfo.getThreadState() != Thread.State.WAITING ) {
-                activeThreads++;
-            }
+        } else {
+            logger.warn("DataSource is not an instance of HikariDataSource");
         }
-        activeThreadsGauge.set(activeThreads);
-        logger.info("=====> activeTHREADS: {}", activeThreads);
     }
 
 }
