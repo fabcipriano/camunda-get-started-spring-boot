@@ -19,9 +19,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.lang.management.ManagementFactory;
-import java.lang.management.ThreadInfo;
-import java.lang.management.ThreadMXBean;
 
 @Configuration
 public class CamundaPrometheusMetricsConfig {
@@ -88,11 +85,11 @@ public class CamundaPrometheusMetricsConfig {
             logger.info("-----> processEngineConfiguration.isJobExecutorPreferTimerJobs(): {}",
                     processEngineConfiguration.isJobExecutorPreferTimerJobs());
 
-            if (!processEngineConfiguration.isJobExecutorAcquireByPriority()) {
-                processEngineConfiguration.setJobExecutorAcquireByPriority(true);
-                logger.info("-----> SETTING TRUE JobExecutorAcquireByPriority: {}",
-                        processEngineConfiguration.isJobExecutorAcquireByPriority());
-            }
+//            if (!processEngineConfiguration.isJobExecutorAcquireByPriority()) {
+//                processEngineConfiguration.setJobExecutorAcquireByPriority(true);
+//                logger.info("-----> SETTING TRUE JobExecutorAcquireByPriority: {}",
+//                        processEngineConfiguration.isJobExecutorAcquireByPriority());
+//            }
 
             logger.info("Verify if jobExecutor is ThreadPoolJobExecutor ... jobExecutor: {} ", jobExecutor);
             if ( jobExecutor instanceof SpringJobExecutor) {
@@ -102,6 +99,8 @@ public class CamundaPrometheusMetricsConfig {
 
                 if (taskExecutor instanceof ThreadPoolTaskExecutor) {
                     springTaskExecutor = (ThreadPoolTaskExecutor)taskExecutor;
+                    jobThreadPoolExecutor.setWaitTimeInMillis(1000);
+                    jobThreadPoolExecutor.setMaxJobsPerAcquisition(3);
                     logger.info("Got ThreadPoolTaskExecutor. springTaskExecutor: {}", springTaskExecutor);
 
                     logger.info("-----> springTaskExecutor.getCorePoolSize(): {}", springTaskExecutor.getCorePoolSize());
@@ -115,6 +114,7 @@ public class CamundaPrometheusMetricsConfig {
                     logger.info("-----> jobThreadPoolExecutor.getLockTimeInMillis(): {}", jobThreadPoolExecutor.getLockTimeInMillis());
                     logger.info("-----> jobThreadPoolExecutor.getMaxBackoff(): {}", jobThreadPoolExecutor.getMaxBackoff());
                     logger.info("-----> jobThreadPoolExecutor.getMaxWait(): {}", jobThreadPoolExecutor.getMaxWait());
+                    logger.info("-----> jobThreadPoolExecutor.getWaitTimeInMillis(): {}", jobThreadPoolExecutor.getWaitTimeInMillis());
                     logger.info("-----> jobThreadPoolExecutor.getMaxJobsPerAcquisition(): {}", jobThreadPoolExecutor.getMaxJobsPerAcquisition());
                 }
             }

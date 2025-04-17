@@ -1,0 +1,152 @@
+version: '3.8'
+services:
+  camunda-get-started:
+    container_name: camunda-started
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: facio/camunda-get-started:latest
+    ports:
+      - "8666:8080"
+      - "1099:1099"
+      - "8383:8383"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/my_camunda
+      - SPRING_DATASOURCE_USERNAME=camunda
+      - SPRING_DATASOURCE_PASSWORD=camund@123
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+    networks:
+      - monitoring
+
+  camunda-get-started-02:
+    container_name: camunda-started-2
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: facio/camunda-get-started:latest
+    ports:
+      - "8667:8080"
+      - "1100:1099"
+      - "8384:8383"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/my_camunda
+      - SPRING_DATASOURCE_USERNAME=camunda
+      - SPRING_DATASOURCE_PASSWORD=camund@123
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+    networks:
+      - monitoring
+
+  camunda-get-started-03:
+    container_name: camunda-started-3
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: facio/camunda-get-started:latest
+    ports:
+      - "8668:8080"
+      - "1101:1099"
+      - "8385:8383"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/my_camunda
+      - SPRING_DATASOURCE_USERNAME=camunda
+      - SPRING_DATASOURCE_PASSWORD=camund@123
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+    networks:
+      - monitoring
+
+  camunda-get-started-04:
+    container_name: camunda-started-4
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: facio/camunda-get-started:latest
+    ports:
+      - "8669:8080"
+      - "1102:1099"
+      - "8386:8383"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/my_camunda
+      - SPRING_DATASOURCE_USERNAME=camunda
+      - SPRING_DATASOURCE_PASSWORD=camund@123
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+    networks:
+      - monitoring
+
+  camunda-get-started-05:
+    container_name: camunda-started-5
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: facio/camunda-get-started:latest
+    ports:
+      - "8670:8080"
+      - "1103:1099"
+      - "8387:8383"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/my_camunda
+      - SPRING_DATASOURCE_USERNAME=camunda
+      - SPRING_DATASOURCE_PASSWORD=camund@123
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+    networks:
+      - monitoring
+
+  camunda-get-started-06:
+    container_name: camunda-started-6
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: facio/camunda-get-started:latest
+    ports:
+      - "8671:8080"
+      - "1104:1099"
+      - "8388:8383"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/my_camunda
+      - SPRING_DATASOURCE_USERNAME=camunda
+      - SPRING_DATASOURCE_PASSWORD=camund@123
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+    networks:
+      - monitoring
+
+  postgres-db:
+    image: postgres:13
+    command: postgres -c 'max_connections=950'
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: camunda
+      POSTGRES_PASSWORD: camund@123
+      POSTGRES_DB: my_camunda
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database:/var/lib/postgresql/data
+      - ./init-scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - monitoring
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./grafana:/var/lib/grafana"
+    networks:
+      - monitoring
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+
+networks:
+  monitoring:
+    driver: bridge

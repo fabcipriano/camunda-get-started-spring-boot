@@ -20,6 +20,7 @@ services:
 
   postgres-db:
     image: postgres:13
+    command: postgres -c 'max_connections=950'
     container_name: postgres-db
     environment:
       POSTGRES_USER: camunda

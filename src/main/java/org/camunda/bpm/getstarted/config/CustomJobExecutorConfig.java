@@ -21,8 +21,9 @@ public class CustomJobExecutorConfig {
         logger.info("Creating MY threadPoolTaskExecutor: {} ...", threadPoolTaskExecutor);
 
         threadPoolTaskExecutor.setQueueCapacity(Integer.MAX_VALUE);
-        threadPoolTaskExecutor.setCorePoolSize(55);
-        threadPoolTaskExecutor.setMaxPoolSize(88);
+//        threadPoolTaskExecutor.setQueueCapacity(10);
+        threadPoolTaskExecutor.setCorePoolSize(90);
+        threadPoolTaskExecutor.setMaxPoolSize(105);
         threadPoolTaskExecutor.setKeepAliveSeconds(121);
         logger.info("Created MY threadPoolTaskExecutor: {}", threadPoolTaskExecutor);
 

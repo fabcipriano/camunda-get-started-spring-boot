@@ -5,4 +5,10 @@ scrape_configs:
   - job_name: 'camunda-get-started'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['camunda-get-started:8383']
+      - targets:
+          - 'camunda-get-started:8383'
+          - 'camunda-get-started-02:8383'
+          - 'camunda-get-started-03:8383'
+          - 'camunda-get-started-04:8383'
+          - 'camunda-get-started-05:8383'
+          - 'camunda-get-started-06:8383'
