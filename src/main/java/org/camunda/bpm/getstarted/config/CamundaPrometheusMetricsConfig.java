@@ -1,12 +1,15 @@
 package org.camunda.bpm.getstarted.config;
 
-import com.zaxxer.hikari.HikariDataSource;
+import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
 import org.camunda.bpm.engine.ManagementService;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
+import org.camunda.bpm.engine.impl.metrics.Meter;
+import org.camunda.bpm.engine.management.Metrics;
+import org.camunda.bpm.engine.management.MetricsQuery;
 import org.camunda.bpm.engine.spring.components.jobexecutor.SpringJobExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +59,21 @@ public class CamundaPrometheusMetricsConfig {
             .help("Total number of connections in the HikariCP DataSource.")
             .register();
 
+    private static final Gauge countJobAcquiredSuccessful = Gauge.build()
+            .name("camunda_count_job_acquired_successful")
+            .help("Number of jobs successfully acquired (i.e. selected + locked)")
+            .register();
+
+    private static final Gauge countJobAcquiredFailed = Gauge.build()
+            .name("camunda_count_job_acquired_failed")
+            .help("Number of jobs attempted to acquire but with failure (i.e. selected + lock failed)")
+            .register();
+
+    private static final Gauge countJobExecutionRejected = Gauge.build()
+            .name("camunda_count_job_execution_rejected")
+            .help("Number of jobs rejected if thread pool exausted")
+            .register();
+
     @Autowired
     private ProcessEngine processEngine;
 
@@ -67,6 +85,9 @@ public class CamundaPrometheusMetricsConfig {
 
     private ManagementService managementService;
     private ThreadPoolTaskExecutor springTaskExecutor;
+    private Meter meterJobAcquiredSuccessful;
+    private Meter meterJobAcquiredFailed;
+    private Meter meterJobExecutionRejected;
 
     @PostConstruct
     public void init() throws IOException {
@@ -84,6 +105,10 @@ public class CamundaPrometheusMetricsConfig {
                     processEngineConfiguration.isJobExecutorAcquireByDueDate());
             logger.info("-----> processEngineConfiguration.isJobExecutorPreferTimerJobs(): {}",
                     processEngineConfiguration.isJobExecutorPreferTimerJobs());
+            logger.info("-----> processEngineConfiguration.isMetricsEnabled(): {}",
+                    ((ProcessEngineConfigurationImpl) processEngineConfiguration).isMetricsEnabled());
+
+            adaptCamundaJobExecutorMetricsToPrometheus();
 
 //            if (!processEngineConfiguration.isJobExecutorAcquireByPriority()) {
 //                processEngineConfiguration.setJobExecutorAcquireByPriority(true);
@@ -109,18 +134,33 @@ public class CamundaPrometheusMetricsConfig {
                     logger.info("-----> springTaskExecutor.getThreadPoolExecutor().getQueue().remainingCapacity(): {}",
                             springTaskExecutor.getThreadPoolExecutor().getQueue().remainingCapacity());
 
-
+                    jobThreadPoolExecutor.setMaxBackoff(100);
+                    jobThreadPoolExecutor.setBackoffTimeInMillis(10);
+                    jobThreadPoolExecutor.setWaitIncreaseFactor(2);
                     logger.info("-----> jobThreadPoolExecutor.getBackoffTimeInMillis(): {}", jobThreadPoolExecutor.getBackoffTimeInMillis());
                     logger.info("-----> jobThreadPoolExecutor.getLockTimeInMillis(): {}", jobThreadPoolExecutor.getLockTimeInMillis());
                     logger.info("-----> jobThreadPoolExecutor.getMaxBackoff(): {}", jobThreadPoolExecutor.getMaxBackoff());
                     logger.info("-----> jobThreadPoolExecutor.getMaxWait(): {}", jobThreadPoolExecutor.getMaxWait());
                     logger.info("-----> jobThreadPoolExecutor.getWaitTimeInMillis(): {}", jobThreadPoolExecutor.getWaitTimeInMillis());
                     logger.info("-----> jobThreadPoolExecutor.getMaxJobsPerAcquisition(): {}", jobThreadPoolExecutor.getMaxJobsPerAcquisition());
+                    logger.info("-----> jobThreadPoolExecutor.jobThreadPoolExecutor.getWaitIncreaseFactor(): {}", jobThreadPoolExecutor.getWaitIncreaseFactor());
                 }
             }
         }
 
         logger.info("PostConstruct success !!!");
+    }
+
+    private void adaptCamundaJobExecutorMetricsToPrometheus() {
+        if (((ProcessEngineConfigurationImpl) processEngineConfiguration).isMetricsEnabled()) {
+
+            meterJobAcquiredSuccessful = ((ProcessEngineConfigurationImpl) processEngineConfiguration)
+                    .getMetricsRegistry().getMeterByName(Metrics.JOB_ACQUIRED_SUCCESS);
+            meterJobAcquiredFailed = ((ProcessEngineConfigurationImpl) processEngineConfiguration)
+                    .getMetricsRegistry().getMeterByName(Metrics.JOB_ACQUIRED_FAILURE);
+            meterJobExecutionRejected = ((ProcessEngineConfigurationImpl) processEngineConfiguration)
+                    .getMetricsRegistry().getMeterByName(Metrics.JOB_EXECUTION_REJECTED);
+        }
     }
 
     @Scheduled(fixedRate = 5000)
@@ -141,7 +181,15 @@ public class CamundaPrometheusMetricsConfig {
         int activeCount = springTaskExecutor.getActiveCount();
 
         activeJobExecutoThreadsGauge.set(activeCount);
+    }
 
+    @Scheduled(fixedRate = 5000)
+    public void updateCamundaMetrics() {
+        logger.info("updateCamundaMetrics - JobAcquiredSuccessful: {} , JobAcquiredFailed: {}, JobExecutionRejected: {}",
+                meterJobAcquiredSuccessful.get(), meterJobAcquiredFailed.get(), meterJobExecutionRejected.get());
+        countJobAcquiredSuccessful.set(meterJobAcquiredSuccessful.get());
+        countJobAcquiredFailed.set(meterJobAcquiredFailed.get());
+        countJobExecutionRejected.set(meterJobExecutionRejected.get());
     }
 
     @Scheduled(fixedRate = 15000)
