@@ -37,6 +37,11 @@ public class DepositTask implements JavaDelegate {
             logger.info("DepositTask normal");
         }
 
+        if (b) {
+            logger.error(">>>>>>>>>>>>>>>ERROR----------ANATEL--- HACKING -------------------");
+            throw new Exception("Checked Failed to execute ... Planetaaaaaaaaaaaaaaaaa");
+        }
+
         logger.info("Called DepositTask");
 
     }
