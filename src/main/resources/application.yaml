@@ -14,11 +14,20 @@ camunda.bpm.database:
   jdbc-batch-processing: true
   type: postgres
 
+# Job acquisition benchmark, see PLAN.md
+benchmark:
+  max-delay-ms: ${BENCHMARK_MAX_DELAY_MS:160}
+  # Starts one loanApproval instance on every boot; turn off for benchmark runs
+  start-sample-instance: ${START_SAMPLE_INSTANCE:true}
+
 # Job executor tuning. Single source of truth, applied by CustomJobExecutorConfig
 # (camunda.bpm.job-execution pool settings are ignored because of the custom JobExecutor bean).
 # Every value can be overridden with the env var shown, e.g. from docker-compose.
 # Backoff off = backoff-time-in-millis 0 and max-backoff 0.
 job-executor:
+  # false = executor stays idle after boot until POST /benchmark/start (used for benchmark runs).
+  # Don't use camunda.bpm.job-execution.enabled for this: the starter then ignores our JobExecutor bean.
+  start-on-boot: ${JOB_EXECUTOR_START_ON_BOOT:true}
   core-pool-size: ${JOB_EXECUTOR_CORE_POOL_SIZE:90}
   max-pool-size: ${JOB_EXECUTOR_MAX_POOL_SIZE:105}
   queue-capacity: ${JOB_EXECUTOR_QUEUE_CAPACITY:2147483647}

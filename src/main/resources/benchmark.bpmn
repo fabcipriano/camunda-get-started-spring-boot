@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_benchmark" targetNamespace="http://bpmn.io/schema/bpmn">
+  <!-- Workload from the 2015 job acquisition article: one async job per instance, 0-160 ms of work -->
+  <bpmn:process id="benchmark" name="Job Acquisition Benchmark" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_benchmark">
+      <bpmn:outgoing>Flow_toWork</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_toWork" sourceRef="StartEvent_benchmark" targetRef="Task_work" />
+    <bpmn:serviceTask id="Task_work" name="Simulated Work" camunda:asyncBefore="true" camunda:delegateExpression="${benchmarkDelegate}">
+      <bpmn:incoming>Flow_toWork</bpmn:incoming>
+      <bpmn:outgoing>Flow_toEnd</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_toEnd" sourceRef="Task_work" targetRef="EndEvent_benchmark" />
+    <bpmn:endEvent id="EndEvent_benchmark">
+      <bpmn:incoming>Flow_toEnd</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_benchmark">
+    <bpmndi:BPMNPlane id="BPMNPlane_benchmark" bpmnElement="benchmark">
+      <bpmndi:BPMNShape id="StartEvent_benchmark_di" bpmnElement="StartEvent_benchmark">
+        <dc:Bounds x="152" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_work_di" bpmnElement="Task_work">
+        <dc:Bounds x="240" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_benchmark_di" bpmnElement="EndEvent_benchmark">
+        <dc:Bounds x="392" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_toWork_di" bpmnElement="Flow_toWork">
+        <di:waypoint x="188" y="120" />
+        <di:waypoint x="240" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_toEnd_di" bpmnElement="Flow_toEnd">
+        <di:waypoint x="340" y="120" />
+        <di:waypoint x="392" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

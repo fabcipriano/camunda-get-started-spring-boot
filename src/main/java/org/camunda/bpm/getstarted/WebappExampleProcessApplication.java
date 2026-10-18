@@ -22,6 +22,7 @@ import org.camunda.bpm.spring.boot.starter.event.PostDeployEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.event.EventListener;
@@ -46,6 +47,9 @@ public class WebappExampleProcessApplication {
   @Autowired
   private RuntimeService runtimeService;
 
+  @Value("${benchmark.start-sample-instance}")
+  private boolean startSampleInstance;
+
   private static final Logger logger
           = LoggerFactory.getLogger(WebappExampleProcessApplication.class);
 
@@ -57,6 +61,10 @@ public class WebappExampleProcessApplication {
 
   @EventListener
   public void processPostDeploy(PostDeployEvent event) {
+    if (!startSampleInstance) {
+      logger.info("Skipping sample loanApproval instance (benchmark.start-sample-instance=false)");
+      return;
+    }
     Map<String, Object> variables = new HashMap<>();
 
     variables.put("Name", "Teste 1 2 3");

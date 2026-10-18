@@ -1,7 +1,6 @@
 package org.camunda.bpm.getstarted.config;
 
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
-import org.camunda.bpm.engine.spring.components.jobexecutor.SpringJobExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +17,8 @@ public class CustomJobExecutorConfig {
     private static final Logger logger
             = LoggerFactory.getLogger(CustomJobExecutorConfig.class);
 
+    @Value("${job-executor.start-on-boot}")
+    private boolean startOnBoot;
     @Value("${job-executor.core-pool-size}")
     private int corePoolSize;
     @Value("${job-executor.max-pool-size}")
@@ -56,7 +57,7 @@ public class CustomJobExecutorConfig {
         logger.info("Job executor thread pool: corePoolSize={}, maxPoolSize={}, queueCapacity={}, keepAliveSeconds={}",
                 corePoolSize, maxPoolSize, queueCapacity, keepAliveSeconds);
 
-        SpringJobExecutor springJobExecutor = new SpringJobExecutor();
+        DeferredStartJobExecutor springJobExecutor = new DeferredStartJobExecutor(startOnBoot);
         springJobExecutor.setTaskExecutor(threadPoolTaskExecutor);
 
         springJobExecutor.setMaxJobsPerAcquisition(maxJobsPerAcquisition);
@@ -67,6 +68,7 @@ public class CustomJobExecutorConfig {
         springJobExecutor.setMaxBackoff(maxBackoff);
         springJobExecutor.setBackoffDecreaseThreshold(backoffDecreaseThreshold);
         springJobExecutor.setLockTimeInMillis(lockTimeInMillis);
+        logger.info("Job executor startOnBoot={}", startOnBoot);
         logger.info("Job acquisition: maxJobsPerAcquisition={}, waitTimeInMillis={}, maxWait={}, waitIncreaseFactor={}, "
                         + "backoffTimeInMillis={}, maxBackoff={}, backoffDecreaseThreshold={}, lockTimeInMillis={}",
                 maxJobsPerAcquisition, waitTimeInMillis, maxWait, waitIncreaseFactor,

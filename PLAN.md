@@ -65,11 +65,20 @@ PostgreSQL 13, Docker) and check whether its conclusions still hold:
 - [x] Build passes (`mvn package`) and the app starts in Docker with the new config.
 
 ### Phase 1 – Benchmark process
-- [ ] Add benchmark.bpmn + BenchmarkDelegate (Thread.sleep(random 0..160)).
-- [ ] Add POST /benchmark/fill?count=50000 (bulk-create instances, executor paused).
-- [ ] Add POST /benchmark/start (activate job executor) or start nodes after filling.
-- [ ] Disable the loanApproval instance started on every boot
+- [x] Add benchmark.bpmn + BenchmarkDelegate (Thread.sleep(random 0..160)).
+      → `benchmarkDelegate` Spring bean; max delay via `BENCHMARK_MAX_DELAY_MS` (default 160).
+- [x] Add POST /benchmark/fill?count=50000 (bulk-create instances, executor paused).
+      → `&batchSize=500` = instances per transaction. 5,000 instances ≈ 4.2 s locally.
+- [x] Add POST /benchmark/start (activate job executor) or start nodes after filling.
+      → Boot nodes with `JOB_EXECUTOR_START_ON_BOOT=false`, fill on one node,
+        then POST /benchmark/start on every node. GET /benchmark/status returns
+        remainingJobs, executor state and the active acquisition settings.
+- [x] Disable the loanApproval instance started on every boot
       (`WebappExampleProcessApplication.processPostDeploy`) during benchmarks.
+      → `START_SAMPLE_INSTANCE=false`.
+- [x] Smoke test (1 node, local jar, maxJobs=48, no backoff): executor stayed idle
+      after boot, 10,000 jobs drained in 10.3 s (~970 jobs/s), 0 failed acquisitions,
+      0 rejected, 0 errors.
 
 ### Phase 2 – Measurement tooling
 - [ ] Script `bench/run.sh <scenario>`: reset DB → up N nodes → fill → start →
@@ -101,11 +110,20 @@ PostgreSQL 13, Docker) and check whether its conclusions still hold:
   so executor threads don't starve waiting for connections and skew results.
   Env vars use `${ENV:default}` placeholders rather than Boot 1.5 relaxed binding,
   which is unreliable for dashed names.
+- 2026-10-18: Executor start is deferred with `DeferredStartJobExecutor` (ignores the
+  starter's start() until /benchmark/start), not `camunda.bpm.job-execution.enabled=false`.
+  With enabled=false the starter silently falls back to DefaultJobExecutor, so our
+  JobExecutor bean and all JOB_EXECUTOR_* settings are lost (verified: maxJobs showed 3).
+- 2026-10-18: The benchmark process has no job priority and no variables, so each instance
+  is exactly one job-table row, like the article.
 
 ## Results
 (filled in during Phase 3)
 
 ## Open questions
+- Throughput ceiling per node is thread-bound: 90 threads / 80 ms average work ≈ 1,125 jobs/s,
+  and the smoke test got ~970. To make acquisition (not thread count) the bottleneck as in the
+  article, consider fewer threads per node (e.g. `JOB_EXECUTOR_CORE_POOL_SIZE`). Decide before Phase 3.
 - Is ACT_RU_JOB polling accurate enough, or use the job-successful metric delta?
 - Should the DB be CPU-limited (`cpus: 2`) to mimic the article's 2-core machine?
 - Is `job-executor-acquire-by-priority: true` (currently on) part of the test?
