@@ -1,5 +1,7 @@
 package org.camunda.bpm.getstarted.config;
 
+import com.zaxxer.hikari.HikariDataSource;
+import com.zaxxer.hikari.HikariPoolMXBean;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
 import org.camunda.bpm.engine.ManagementService;
@@ -124,8 +126,6 @@ public class CamundaPrometheusMetricsConfig {
 
                 if (taskExecutor instanceof ThreadPoolTaskExecutor) {
                     springTaskExecutor = (ThreadPoolTaskExecutor)taskExecutor;
-                    jobThreadPoolExecutor.setWaitTimeInMillis(1000);
-                    jobThreadPoolExecutor.setMaxJobsPerAcquisition(3);
                     logger.info("Got ThreadPoolTaskExecutor. springTaskExecutor: {}", springTaskExecutor);
 
                     logger.info("-----> springTaskExecutor.getCorePoolSize(): {}", springTaskExecutor.getCorePoolSize());
@@ -134,9 +134,7 @@ public class CamundaPrometheusMetricsConfig {
                     logger.info("-----> springTaskExecutor.getThreadPoolExecutor().getQueue().remainingCapacity(): {}",
                             springTaskExecutor.getThreadPoolExecutor().getQueue().remainingCapacity());
 
-                    jobThreadPoolExecutor.setMaxBackoff(100);
-                    jobThreadPoolExecutor.setBackoffTimeInMillis(10);
-                    jobThreadPoolExecutor.setWaitIncreaseFactor(2);
+                    // Job executor settings are applied in CustomJobExecutorConfig; only log them here
                     logger.info("-----> jobThreadPoolExecutor.getBackoffTimeInMillis(): {}", jobThreadPoolExecutor.getBackoffTimeInMillis());
                     logger.info("-----> jobThreadPoolExecutor.getLockTimeInMillis(): {}", jobThreadPoolExecutor.getLockTimeInMillis());
                     logger.info("-----> jobThreadPoolExecutor.getMaxBackoff(): {}", jobThreadPoolExecutor.getMaxBackoff());
@@ -194,11 +192,12 @@ public class CamundaPrometheusMetricsConfig {
 
     @Scheduled(fixedRate = 15000)
     public void updateHikariMetrics() {
-        if (dataSource instanceof org.apache.tomcat.jdbc.pool.DataSource) {
-            org.apache.tomcat.jdbc.pool.DataSource tomcatDataSource = (org.apache.tomcat.jdbc.pool.DataSource)dataSource;
-            hikariActiveConnectionsGauge.set(tomcatDataSource.getActive());
-            hikariIdleConnectionsGauge.set(tomcatDataSource.getIdle());
-            hikariTotalConnectionsGauge.set(tomcatDataSource.getMaxActive());
+        if (dataSource instanceof HikariDataSource
+                && ((HikariDataSource) dataSource).getHikariPoolMXBean() != null) {
+            HikariPoolMXBean pool = ((HikariDataSource) dataSource).getHikariPoolMXBean();
+            hikariActiveConnectionsGauge.set(pool.getActiveConnections());
+            hikariIdleConnectionsGauge.set(pool.getIdleConnections());
+            hikariTotalConnectionsGauge.set(pool.getTotalConnections());
 
         } else {
             logger.warn("DataSource is not an instance of HikariDataSource");

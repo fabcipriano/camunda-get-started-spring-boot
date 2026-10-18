@@ -14,21 +14,36 @@ camunda.bpm.database:
   jdbc-batch-processing: true
   type: postgres
 
-camunda.bpm.job-execution:
-  core-pool-size: 50
-  max-pool-size: 80
-  keep-alive-seconds: 126000
-  queue-capacity: 66
+# Job executor tuning. Single source of truth, applied by CustomJobExecutorConfig
+# (camunda.bpm.job-execution pool settings are ignored because of the custom JobExecutor bean).
+# Every value can be overridden with the env var shown, e.g. from docker-compose.
+# Backoff off = backoff-time-in-millis 0 and max-backoff 0.
+job-executor:
+  core-pool-size: ${JOB_EXECUTOR_CORE_POOL_SIZE:90}
+  max-pool-size: ${JOB_EXECUTOR_MAX_POOL_SIZE:105}
+  queue-capacity: ${JOB_EXECUTOR_QUEUE_CAPACITY:2147483647}
+  keep-alive-seconds: ${JOB_EXECUTOR_KEEP_ALIVE_SECONDS:121}
+  max-jobs-per-acquisition: ${JOB_EXECUTOR_MAX_JOBS_PER_ACQUISITION:3}
+  wait-time-in-millis: ${JOB_EXECUTOR_WAIT_TIME_IN_MILLIS:1000}
+  max-wait: ${JOB_EXECUTOR_MAX_WAIT:60000}
+  wait-increase-factor: ${JOB_EXECUTOR_WAIT_INCREASE_FACTOR:2}
+  backoff-time-in-millis: ${JOB_EXECUTOR_BACKOFF_TIME_IN_MILLIS:10}
+  max-backoff: ${JOB_EXECUTOR_MAX_BACKOFF:100}
+  backoff-decrease-threshold: ${JOB_EXECUTOR_BACKOFF_DECREASE_THRESHOLD:100}
+  lock-time-in-millis: ${JOB_EXECUTOR_LOCK_TIME_IN_MILLIS:300000}
 
 spring.datasource:
   url: "jdbc:postgresql://postgres-db:5432/my_camunda"
   username: camunda
   password: camund@123
   driverClassName: org.postgresql.Driver
+  # Spring Boot 1.5 picks tomcat-jdbc over Hikari when both are on the classpath
+  type: com.zaxxer.hikari.HikariDataSource
+# Keep maximumPoolSize x nodes <= postgres max_connections (950)
 spring.datasource.hikari:
   connectionTimeout: 10000
-  minimumIdle: 40
-  maximumPoolSize: 60
+  minimumIdle: ${DB_POOL_MIN_IDLE:40}
+  maximumPoolSize: ${DB_POOL_MAX_SIZE:110}
   poolName: HiCamundaDS
 
 management:
