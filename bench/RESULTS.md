@@ -118,6 +118,8 @@ Unlike the article, the database CPU is **not** saturated: Postgres averaged 7 c
 
 ## S7/S8: `FOR UPDATE SKIP LOCKED` acquisition (follow-up)
 
+Design notes, side-effect analysis and upgrade checklist: [docs/skip-locked-job-acquisition.md](../docs/skip-locked-job-acquisition.md).
+
 ### How Camunda 7.8 acquires jobs
 
 Camunda 7.8 doesn't lock jobs pessimistically. Acquisition (`AcquireJobsCmd` + `selectNextJobsToExecute` in `Job.xml`) is optimistic:

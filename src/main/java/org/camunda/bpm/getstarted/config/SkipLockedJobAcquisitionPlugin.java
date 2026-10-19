@@ -18,7 +18,8 @@ import java.util.Map;
 /**
  * Makes job acquisition use SELECT ... FOR UPDATE SKIP LOCKED on PostgreSQL instead of Camunda's
  * select-then-optimistic-lock, so nodes in a cluster stop competing for the same jobs.
- * Enabled with job-executor.acquisition-skip-locked=true (JOB_EXECUTOR_SKIP_LOCKED). See bench/RESULTS.md.
+ * Enabled with job-executor.acquisition-skip-locked=true (JOB_EXECUTOR_SKIP_LOCKED).
+ * Design and side-effect analysis: docs/skip-locked-job-acquisition.md; benchmarks: bench/RESULTS.md.
  */
 @Component
 @ConditionalOnProperty(name = "job-executor.acquisition-skip-locked", havingValue = "true")
