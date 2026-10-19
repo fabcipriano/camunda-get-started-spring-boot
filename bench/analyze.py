@@ -13,9 +13,9 @@ BENCH_DIR = os.path.dirname(os.path.abspath(__file__))
 RESULTS = os.path.join(BENCH_DIR, "results")
 CHARTS = os.path.join(RESULTS, "charts")
 
-# Categorical slots 1-5 (light, dark); fixed order, colour follows the scenario
+# Categorical slots 1-6 (light, dark); fixed order, colour follows the scenario
 SLOTS = [("#2a78d6", "#3987e5"), ("#eb6834", "#d95926"), ("#1baf7a", "#199e70"),
-         ("#eda100", "#c98500"), ("#e87ba4", "#d55181")]
+         ("#eda100", "#c98500"), ("#e87ba4", "#d55181"), ("#008300", "#008300")]
 
 LIGHT = {"surface": "#fcfcfb", "ink": "#0b0b0b", "ink2": "#52514e", "muted": "#898781", "grid": "#e1e0d9", "axis": "#c3c2b7"}
 DARK = {"surface": "#1a1a19", "ink": "#ffffff", "ink2": "#c3c2b7", "muted": "#898781", "grid": "#2c2c2a", "axis": "#383835"}
@@ -118,6 +118,53 @@ def column_chart(path, title, sub, cats, med, lo, hi, value_fmt, color_slot=1, t
     open(path, "w").write("\n".join(out))
 
 
+def grouped_column_chart(path, title, sub, cats, series, value_fmt, tick_fmt=fmt):
+    """series: [(name, med, lo, hi)] in slot order; columns side by side per category, with legend."""
+    w, h = 640, 360
+    left, right, top, bottom = 56, 20, 96, 44
+    pw, ph = w - left - right, h - top - bottom
+    ymax = nice_max(max(max(hi) for _, _, _, hi in series) * 1.08)
+    y = lambda v: top + ph - v / ymax * ph
+    out = svg_open(w, h, title, sub)
+    lx = 20
+    for i, (name, *_ ) in enumerate(series):
+        out.append(f'<rect class="f{i + 1}" x="{lx}" y="62" width="12" height="12" rx="2"/>')
+        out.append(f'<text x="{lx + 18}" y="72">{name}</text>')
+        lx += 18 + 7.2 * len(name) + 22
+    for t in ticks(ymax):
+        out.append(f'<line class="grid" x1="{left}" x2="{w - right}" y1="{y(t):.1f}" y2="{y(t):.1f}"/>')
+        out.append(f'<text class="tick" x="{left - 8}" y="{y(t) + 4:.1f}" text-anchor="end">{tick_fmt(t)}</text>')
+    band = pw / len(cats)
+    bw, gap = 24, 2
+    for c_i, c in enumerate(cats):
+        cx = left + band * (c_i + 0.5)
+        x_start = cx - (len(series) * bw + (len(series) - 1) * gap) / 2
+        for s_i, (name, med, lo, hi) in enumerate(series):
+            x0 = x_start + s_i * (bw + gap)
+            xc = x0 + bw / 2
+            yt, yb = y(med[c_i]), y(0)
+            r = min(4, (yb - yt) / 2)
+            out.append(f'<path d="M{x0:.1f},{yb:.1f} V{yt + r:.1f} Q{x0:.1f},{yt:.1f} {x0 + r:.1f},{yt:.1f} '
+                       f'H{x0 + bw - r:.1f} Q{x0 + bw:.1f},{yt:.1f} {x0 + bw:.1f},{yt + r:.1f} V{yb:.1f} Z" '
+                       f'class="f{s_i + 1}"><title>{name}, {c}: {value_fmt(med[c_i])} (runs {value_fmt(lo[c_i])}–{value_fmt(hi[c_i])})</title></path>')
+            if hi[c_i] > lo[c_i]:
+                out.append(f'<line class="whisker" x1="{xc:.1f}" x2="{xc:.1f}" y1="{y(lo[c_i]):.1f}" y2="{y(hi[c_i]):.1f}"/>')
+        # One label per group ("first → second"): two numbers never fit side by side over 24px bars
+        label_y = min(y(v) for _, med, _, hi in series for v in (med[c_i], hi[c_i])) - 8
+        label = " → ".join(value_fmt(med[c_i]) for _, med, _, _ in series)
+        out.append(f'<text class="val" x="{cx:.1f}" y="{label_y:.1f}" text-anchor="middle">{label}</text>')
+        out.append(f'<text x="{cx:.1f}" y="{h - bottom + 20}" text-anchor="middle">{c}</text>')
+    out.append(f'<line class="axis" x1="{left}" x2="{w - right}" y1="{y(0):.1f}" y2="{y(0):.1f}"/>')
+    out.append("</svg>")
+    open(path, "w").write("\n".join(out))
+
+
+def peak_rate(run, window=3):
+    """Highest drain rate (jobs/s) over `window` consecutive 1 s progress samples."""
+    p = progress(run)
+    return max((p[i][1] - p[i + window][1]) / (p[i + window][0] - p[i][0]) for i in range(len(p) - window))
+
+
 def line_chart(path, title, sub, series, xlabel):
     """series: list of (name, [(x, y), ...]) in slot order. Legend always shown."""
     w, h = 640, 360
@@ -205,8 +252,10 @@ def per_node_table(groups, keys):
 def main():
     os.makedirs(CHARTS, exist_ok=True)
     groups = load()
-    matrix = sorted(k for k in groups if k[0] != "S6")
+    # S7 at 3 nodes = S2 + SKIP LOCKED, shown next to S1-S5 for comparison
+    matrix = sorted(k for k in groups if k[0] in ("S1", "S2", "S3", "S4", "S5") or k == ("S7", 3))
     scaling = sorted(k for k in groups if k[0] == "S6")
+    skip_locked = sorted(k for k in groups if k[0] in ("S7", "S8"))
 
     if matrix:
         cats = [k[0] for k in matrix]
@@ -222,7 +271,7 @@ def main():
         line_chart(os.path.join(CHARTS, "drain.svg"), "Remaining jobs over time (3 nodes)",
                    "Median run per scenario · lower and further left is faster",
                    [(f"{k[0]}", progress(median_run(groups[k]))) for k in matrix], "seconds since executors started")
-        print("### S1–S5 (3 nodes)\n")
+        print("### S1–S5 and S7 (3 nodes)\n")
         table(groups, matrix)
         per_node_table(groups, matrix)
 
@@ -245,6 +294,27 @@ def main():
         print("### S6 node scaling\n")
         table(groups, scaling)
         per_node_table(groups, scaling)
+
+    if skip_locked:
+        print("### S7/S8 SKIP LOCKED\n")
+        table(groups, skip_locked)
+        per_node_table(groups, skip_locked)
+        nodes = sorted({k[1] for k in groups if k[0] in ("S6", "S7")})
+        pairs = [n for n in nodes if ("S6", n) in groups and ("S7", n) in groups]
+        if pairs:
+            cats = [f"{n} node{'s' if n > 1 else ''}" for n in pairs]
+            def series(scenario, fn):
+                vals = [[fn(r) for r in groups[(scenario, n)]] for n in pairs]
+                return [statistics.median(v) for v in vals], [min(v) for v in vals], [max(v) for v in vals]
+            drain = lambda r: int(r["drain_ms"]) / 1000
+            grouped_column_chart(os.path.join(CHARTS, "skip-locked-drain.svg"), "Drain time: optimistic vs SKIP LOCKED",
+                                 "Seconds to drain 50,000 jobs (48 per acquisition, no backoff) · labels: S6 → S7 median",
+                                 cats, [("S6 optimistic (default)", *series("S6", drain)), ("S7 FOR UPDATE SKIP LOCKED", *series("S7", drain))],
+                                 lambda v: f"{v:.1f}")
+            grouped_column_chart(os.path.join(CHARTS, "skip-locked-peak.svg"), "Peak drain rate: optimistic vs SKIP LOCKED",
+                                 "Highest jobs/s over any 3 s while draining · labels: S6 → S7 median, whiskers = min–max",
+                                 cats, [("S6 optimistic (default)", *series("S6", peak_rate)), ("S7 FOR UPDATE SKIP LOCKED", *series("S7", peak_rate))],
+                                 lambda v: f"{v / 1000:.1f}k")
 
 
 if __name__ == "__main__":

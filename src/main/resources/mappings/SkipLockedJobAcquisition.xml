@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+  Copy of selectNextJobsToExecute from camunda-engine 7.8.0
+  (org/camunda/bpm/engine/impl/mapping/entity/Job.xml) with FOR UPDATE SKIP LOCKED appended (PostgreSQL 9.5+).
+  The acquisition transaction then row-locks the jobs it selects, and concurrent acquisitions on other nodes
+  skip those rows instead of selecting them and failing the optimistic-lock UPDATE afterwards.
+  Registered by SkipLockedJobAcquisitionPlugin. Keep in sync with Job.xml when upgrading Camunda.
+-->
+<mapper namespace="org.camunda.bpm.getstarted.acquisition">
+
+  <select id="selectNextJobsToExecuteSkipLocked" parameterType="org.camunda.bpm.engine.impl.db.ListQueryParameterObject"
+          resultMap="org.camunda.bpm.engine.impl.persistence.entity.JobEntity.jobResultMap">
+    <bind name="orderingProperties" value="parameter.orderingProperties" />
+    <include refid="org.camunda.bpm.engine.impl.persistence.entity.Commons.bindOrderBy"/>
+    ${limitBefore}
+    select
+      RES.* ${limitBetween}
+    from ${prefix}ACT_RU_JOB RES
+
+    where (RES.RETRIES_ &gt; 0)
+      and (RES.DUEDATE_ is null or RES.DUEDATE_ &lt;= #{parameter.now, jdbcType=TIMESTAMP})
+      and (RES.LOCK_OWNER_ is null or RES.LOCK_EXP_TIME_ &lt; #{parameter.now, jdbcType=TIMESTAMP})
+      and RES.SUSPENSION_STATE_ = 1
+
+      <if test="parameter.deploymentAware">
+        and (RES.DEPLOYMENT_ID_ is null
+        <if test="parameter.deploymentIds != null">
+          or
+          <bind name="listOfIds" value="parameter.deploymentIds"/>
+          <bind name="fieldName" value="'RES.DEPLOYMENT_ID_'"/>
+          <include refid="org.camunda.bpm.engine.impl.persistence.entity.Commons.applyInForPaginatedCollection"/>
+        </if>
+        )
+      </if>
+
+      and (<include refid="AtomicExclusiveOrNonExclusiveJobs"/>)
+
+    <if test="parameter.applyOrdering">
+      ${orderBy}
+    </if>
+    ${limitAfter}
+    FOR UPDATE OF RES SKIP LOCKED
+  </select>
+
+  <!-- Copied from Job.xml too: its fragments include each other by relative id, which MyBatis
+       resolves against the including mapper's namespace -->
+  <sql id="AtomicExclusiveOrNonExclusiveJobs">
+    (<include refid="AtomicExclusiveJobs"/>)
+    or
+    <include refid="NonExclusiveJobs"/>
+  </sql>
+
+  <sql id="AtomicExclusiveJobs">
+    RES.EXCLUSIVE_ = ${trueConstant}
+          and not exists(
+            select J2.* from ${prefix}ACT_RU_JOB J2
+            where J2.PROCESS_INSTANCE_ID_ = RES.PROCESS_INSTANCE_ID_                                           -- from the same proc. inst.
+            and (J2.EXCLUSIVE_ = ${trueConstant})                                                              -- also exclusive
+            and (J2.LOCK_OWNER_ is not null and J2.LOCK_EXP_TIME_ &gt;= #{parameter.now, jdbcType=TIMESTAMP})  -- in progress
+            )
+  </sql>
+
+  <sql id="NonExclusiveJobs">
+    RES.EXCLUSIVE_ = ${falseConstant}
+  </sql>
+
+</mapper>

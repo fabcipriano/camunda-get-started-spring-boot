@@ -1,0 +1,304 @@
+=== round 1/3: S7 nodes=1 ===
+[22:11:55] Scenario S7 run 1: nodes=1 count=50000 maxJobs=48 backoff=0/0/2
+[22:11:55] Resetting stack (empty database)
+[22:11:59] Starting node 1 (creates schema)
+[22:12:07] Nodes ready on ports 18082
+[22:12:07] Filling 50000 instances
+[22:12:46] Starting job executors on all nodes
+[22:13:34] Drained 50000 jobs in 47995 ms
+{
+  "scenario": "S7",
+  "run": "1",
+  "nodes": "1",
+  "count": 50000,
+  "max_jobs": "48",
+  "backoff": "0/0/2",
+  "threads": "90",
+  "db_cpus": "0",
+  "fill_ms": 38565,
+  "drain_ms": 47995,
+  "jobs_per_s": 1041.8,
+  "acquisition_attempts": 3109,
+  "acquired_ok": 50000,
+  "acquired_failed": 0,
+  "rejected": 0,
+  "successful": 50000,
+  "failed_ratio": 0.0,
+  "db_cpu_avg_pct": 199.0,
+  "db_cpu_max_pct": 227.08,
+  "optimistic_locking_exceptions": 0,
+  "results_dir": "S7-n1-r1-20261018-221155"
+}
+[22:13:37] Stack left up. Grafana: http://localhost:13000/d/camunda-bench  Prometheus: http://localhost:19090
+[22:13:37] Tear down: docker compose -p camunda-bench -f bench/docker-compose.yml down -v
+=== round 1/3: S7 nodes=3 ===
+[22:13:37] Scenario S7 run 1: nodes=3 count=50000 maxJobs=48 backoff=0/0/2
+[22:13:37] Resetting stack (empty database)
+[22:13:48] Starting node 1 (creates schema)
+[22:13:59] Scaling to 3 nodes
+[22:14:08] Nodes ready on ports 18083 18084 18085
+[22:14:08] Filling 50000 instances
+[22:14:46] Starting job executors on all nodes
+[22:15:06] Drained 50000 jobs in 20556 ms
+{
+  "scenario": "S7",
+  "run": "1",
+  "nodes": "3",
+  "count": 50000,
+  "max_jobs": "48",
+  "backoff": "0/0/2",
+  "threads": "90",
+  "db_cpus": "0",
+  "fill_ms": 37460,
+  "drain_ms": 20556,
+  "jobs_per_s": 2432.4,
+  "acquisition_attempts": 1891,
+  "acquired_ok": 50000,
+  "acquired_failed": 0,
+  "rejected": 0,
+  "successful": 50000,
+  "failed_ratio": 0.0,
+  "db_cpu_avg_pct": 585.9,
+  "db_cpu_max_pct": 790.6,
+  "optimistic_locking_exceptions": 0,
+  "results_dir": "S7-n3-r1-20261018-221337"
+}
+[22:15:10] Stack left up. Grafana: http://localhost:13000/d/camunda-bench  Prometheus: http://localhost:19090
+[22:15:10] Tear down: docker compose -p camunda-bench -f bench/docker-compose.yml down -v
+=== round 1/3: S7 nodes=6 ===
+[22:15:10] Scenario S7 run 1: nodes=6 count=50000 maxJobs=48 backoff=0/0/2
+[22:15:10] Resetting stack (empty database)
+[22:15:17] Starting node 1 (creates schema)
+[22:15:26] Scaling to 6 nodes
+[22:15:43] Nodes ready on ports 18086 18089 18088 18087 18080 18081
+[22:15:43] Filling 50000 instances
+[22:16:22] Starting job executors on all nodes
+[22:16:43] Drained 50000 jobs in 20911 ms
+{
+  "scenario": "S7",
+  "run": "1",
+  "nodes": "6",
+  "count": 50000,
+  "max_jobs": "48",
+  "backoff": "0/0/2",
+  "threads": "90",
+  "db_cpus": "0",
+  "fill_ms": 39415,
+  "drain_ms": 20911,
+  "jobs_per_s": 2391.1,
+  "acquisition_attempts": 1102,
+  "acquired_ok": 50000,
+  "acquired_failed": 0,
+  "rejected": 0,
+  "successful": 50000,
+  "failed_ratio": 0.0,
+  "db_cpu_avg_pct": 672.7,
+  "db_cpu_max_pct": 1125.77,
+  "optimistic_locking_exceptions": 0,
+  "results_dir": "S7-n6-r1-20261018-221510"
+}
+[22:16:46] Stack left up. Grafana: http://localhost:13000/d/camunda-bench  Prometheus: http://localhost:19090
+[22:16:46] Tear down: docker compose -p camunda-bench -f bench/docker-compose.yml down -v
+=== round 2/3: S7 nodes=1 ===
+[22:16:46] Scenario S7 run 2: nodes=1 count=50000 maxJobs=48 backoff=0/0/2
+[22:16:46] Resetting stack (empty database)
+[22:16:51] Starting node 1 (creates schema)
+[22:17:01] Nodes ready on ports 18082
+[22:17:01] Filling 50000 instances
+[22:17:42] Starting job executors on all nodes
+[22:18:29] Drained 50000 jobs in 47092 ms
+{
+  "scenario": "S7",
+  "run": "2",
+  "nodes": "1",
+  "count": 50000,
+  "max_jobs": "48",
+  "backoff": "0/0/2",
+  "threads": "90",
+  "db_cpus": "0",
+  "fill_ms": 40753,
+  "drain_ms": 47092,
+  "jobs_per_s": 1061.8,
+  "acquisition_attempts": 3016,
+  "acquired_ok": 50000,
+  "acquired_failed": 0,
+  "rejected": 0,
+  "successful": 50000,
+  "failed_ratio": 0.0,
+  "db_cpu_avg_pct": 200.6,
+  "db_cpu_max_pct": 220.49,
+  "optimistic_locking_exceptions": 0,
+  "results_dir": "S7-n1-r2-20261018-221646"
+}
+[22:18:32] Stack left up. Grafana: http://localhost:13000/d/camunda-bench  Prometheus: http://localhost:19090
+[22:18:32] Tear down: docker compose -p camunda-bench -f bench/docker-compose.yml down -v
+=== round 2/3: S7 nodes=3 ===
+[22:18:32] Scenario S7 run 2: nodes=3 count=50000 maxJobs=48 backoff=0/0/2
+[22:18:32] Resetting stack (empty database)
+[22:18:36] Starting node 1 (creates schema)
+[22:18:45] Scaling to 3 nodes
+[22:18:55] Nodes ready on ports 18083 18085 18084
+[22:18:55] Filling 50000 instances
+[22:19:33] Starting job executors on all nodes
+[22:19:54] Drained 50000 jobs in 21050 ms
+{
+  "scenario": "S7",
+  "run": "2",
+  "nodes": "3",
+  "count": 50000,
+  "max_jobs": "48",
+  "backoff": "0/0/2",
+  "threads": "90",
+  "db_cpus": "0",
+  "fill_ms": 38089,
+  "drain_ms": 21050,
+  "jobs_per_s": 2375.3,
+  "acquisition_attempts": 1877,
+  "acquired_ok": 50000,
+  "acquired_failed": 0,
+  "rejected": 0,
+  "successful": 50000,
+  "failed_ratio": 0.0,
+  "db_cpu_avg_pct": 633.9,
+  "db_cpu_max_pct": 805.03,
+  "optimistic_locking_exceptions": 0,
+  "results_dir": "S7-n3-r2-20261018-221832"
+}
+[22:19:58] Stack left up. Grafana: http://localhost:13000/d/camunda-bench  Prometheus: http://localhost:19090
+[22:19:58] Tear down: docker compose -p camunda-bench -f bench/docker-compose.yml down -v
+=== round 2/3: S7 nodes=6 ===
+[22:19:58] Scenario S7 run 2: nodes=6 count=50000 maxJobs=48 backoff=0/0/2
+[22:19:58] Resetting stack (empty database)
+[22:20:12] Starting node 1 (creates schema)
+[22:20:21] Scaling to 6 nodes
+[22:20:37] Nodes ready on ports 18086 18088 18089 18080 18087 18081
+[22:20:37] Filling 50000 instances
+[22:21:17] Starting job executors on all nodes
+[22:21:37] Drained 50000 jobs in 20951 ms
+{
+  "scenario": "S7",
+  "run": "2",
+  "nodes": "6",
+  "count": 50000,
+  "max_jobs": "48",
+  "backoff": "0/0/2",
+  "threads": "90",
+  "db_cpus": "0",
+  "fill_ms": 39160,
+  "drain_ms": 20951,
+  "jobs_per_s": 2386.5,
+  "acquisition_attempts": 1104,
+  "acquired_ok": 50000,
+  "acquired_failed": 0,
+  "rejected": 0,
+  "successful": 50000,
+  "failed_ratio": 0.0,
+  "db_cpu_avg_pct": 626.0,
+  "db_cpu_max_pct": 1074.74,
+  "optimistic_locking_exceptions": 0,
+  "results_dir": "S7-n6-r2-20261018-221958"
+}
+[22:21:41] Stack left up. Grafana: http://localhost:13000/d/camunda-bench  Prometheus: http://localhost:19090
+[22:21:41] Tear down: docker compose -p camunda-bench -f bench/docker-compose.yml down -v
+=== round 3/3: S7 nodes=1 ===
+[22:21:41] Scenario S7 run 3: nodes=1 count=50000 maxJobs=48 backoff=0/0/2
+[22:21:41] Resetting stack (empty database)
+[22:21:45] Starting node 1 (creates schema)
+[22:21:54] Nodes ready on ports 18082
+[22:21:54] Filling 50000 instances
+[22:22:23] Starting job executors on all nodes
+[22:23:12] Drained 50000 jobs in 48433 ms
+{
+  "scenario": "S7",
+  "run": "3",
+  "nodes": "1",
+  "count": 50000,
+  "max_jobs": "48",
+  "backoff": "0/0/2",
+  "threads": "90",
+  "db_cpus": "0",
+  "fill_ms": 29394,
+  "drain_ms": 48433,
+  "jobs_per_s": 1032.4,
+  "acquisition_attempts": 3640,
+  "acquired_ok": 50000,
+  "acquired_failed": 0,
+  "rejected": 0,
+  "successful": 50000,
+  "failed_ratio": 0.0,
+  "db_cpu_avg_pct": 178.3,
+  "db_cpu_max_pct": 195.59,
+  "optimistic_locking_exceptions": 0,
+  "results_dir": "S7-n1-r3-20261018-222141"
+}
+[22:23:15] Stack left up. Grafana: http://localhost:13000/d/camunda-bench  Prometheus: http://localhost:19090
+[22:23:15] Tear down: docker compose -p camunda-bench -f bench/docker-compose.yml down -v
+=== round 3/3: S7 nodes=3 ===
+[22:23:15] Scenario S7 run 3: nodes=3 count=50000 maxJobs=48 backoff=0/0/2
+[22:23:15] Resetting stack (empty database)
+[22:23:20] Starting node 1 (creates schema)
+[22:23:29] Scaling to 3 nodes
+[22:23:38] Nodes ready on ports 18083 18084 18085
+[22:23:38] Filling 50000 instances
+[22:24:07] Starting job executors on all nodes
+[22:24:25] Drained 50000 jobs in 18386 ms
+{
+  "scenario": "S7",
+  "run": "3",
+  "nodes": "3",
+  "count": 50000,
+  "max_jobs": "48",
+  "backoff": "0/0/2",
+  "threads": "90",
+  "db_cpus": "0",
+  "fill_ms": 28539,
+  "drain_ms": 18386,
+  "jobs_per_s": 2719.5,
+  "acquisition_attempts": 2147,
+  "acquired_ok": 50000,
+  "acquired_failed": 0,
+  "rejected": 0,
+  "successful": 50000,
+  "failed_ratio": 0.0,
+  "db_cpu_avg_pct": 620.6,
+  "db_cpu_max_pct": 730.14,
+  "optimistic_locking_exceptions": 0,
+  "results_dir": "S7-n3-r3-20261018-222315"
+}
+[22:24:28] Stack left up. Grafana: http://localhost:13000/d/camunda-bench  Prometheus: http://localhost:19090
+[22:24:28] Tear down: docker compose -p camunda-bench -f bench/docker-compose.yml down -v
+=== round 3/3: S7 nodes=6 ===
+[22:24:28] Scenario S7 run 3: nodes=6 count=50000 maxJobs=48 backoff=0/0/2
+[22:24:28] Resetting stack (empty database)
+[22:24:32] Starting node 1 (creates schema)
+[22:24:39] Scaling to 6 nodes
+[22:24:54] Nodes ready on ports 18086 18088 18089 18080 18087 18081
+[22:24:54] Filling 50000 instances
+[22:25:23] Starting job executors on all nodes
+[22:25:41] Drained 50000 jobs in 18178 ms
+{
+  "scenario": "S7",
+  "run": "3",
+  "nodes": "6",
+  "count": 50000,
+  "max_jobs": "48",
+  "backoff": "0/0/2",
+  "threads": "90",
+  "db_cpus": "0",
+  "fill_ms": 28607,
+  "drain_ms": 18178,
+  "jobs_per_s": 2750.6,
+  "acquisition_attempts": 1125,
+  "acquired_ok": 50000,
+  "acquired_failed": 0,
+  "rejected": 0,
+  "successful": 50000,
+  "failed_ratio": 0.0,
+  "db_cpu_avg_pct": 634.8,
+  "db_cpu_max_pct": 1121.03,
+  "optimistic_locking_exceptions": 0,
+  "results_dir": "S7-n6-r3-20261018-222428"
+}
+[22:25:44] Stack left up. Grafana: http://localhost:13000/d/camunda-bench  Prometheus: http://localhost:19090
+[22:25:44] Tear down: docker compose -p camunda-bench -f bench/docker-compose.yml down -v
+=== matrix done ===

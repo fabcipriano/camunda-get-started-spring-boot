@@ -19,6 +19,7 @@
   .f3{fill:#1baf7a} .k3{stroke:#1baf7a}
   .f4{fill:#eda100} .k4{stroke:#eda100}
   .f5{fill:#e87ba4} .k5{stroke:#e87ba4}
+  .f6{fill:#008300} .k6{stroke:#008300}
   @media (prefers-color-scheme: dark) {
   .bg{fill:#1a1a19}
   text{fill:#c3c2b7}
@@ -33,6 +34,7 @@
   .f3{fill:#199e70} .k3{stroke:#199e70}
   .f4{fill:#c98500} .k4{stroke:#c98500}
   .f5{fill:#d55181} .k5{stroke:#d55181}
+  .f6{fill:#008300} .k6{stroke:#008300}
   }
 </style>
 <rect class="bg" width="640" height="340" rx="8"/>

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="Peak drain rate: optimistic vs SKIP LOCKED">
+<style>
+  text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 12px; }
+  .title { font-size: 15px; font-weight: 600; }
+  .tick { font-size: 11px; font-variant-numeric: tabular-nums; }
+  .val { font-weight: 600; }
+  .grid, .axis { stroke-width: 1; }
+  .whisker { stroke-width: 1.5; }
+  .bg{fill:#fcfcfb}
+  text{fill:#52514e}
+  .title,.val{fill:#0b0b0b}
+  .tick{fill:#898781}
+  .grid{stroke:#e1e0d9}
+  .axis{stroke:#c3c2b7}
+  .whisker{stroke:#52514e}
+  .ring{stroke:#fcfcfb}
+  .f1{fill:#2a78d6} .k1{stroke:#2a78d6}
+  .f2{fill:#eb6834} .k2{stroke:#eb6834}
+  .f3{fill:#1baf7a} .k3{stroke:#1baf7a}
+  .f4{fill:#eda100} .k4{stroke:#eda100}
+  .f5{fill:#e87ba4} .k5{stroke:#e87ba4}
+  .f6{fill:#008300} .k6{stroke:#008300}
+  @media (prefers-color-scheme: dark) {
+  .bg{fill:#1a1a19}
+  text{fill:#c3c2b7}
+  .title,.val{fill:#ffffff}
+  .tick{fill:#898781}
+  .grid{stroke:#2c2c2a}
+  .axis{stroke:#383835}
+  .whisker{stroke:#c3c2b7}
+  .ring{stroke:#1a1a19}
+  .f1{fill:#3987e5} .k1{stroke:#3987e5}
+  .f2{fill:#d95926} .k2{stroke:#d95926}
+  .f3{fill:#199e70} .k3{stroke:#199e70}
+  .f4{fill:#c98500} .k4{stroke:#c98500}
+  .f5{fill:#d55181} .k5{stroke:#d55181}
+  .f6{fill:#008300} .k6{stroke:#008300}
+  }
+</style>
+<rect class="bg" width="640" height="360" rx="8"/>
+<text class="title" x="20" y="28">Peak drain rate: optimistic vs SKIP LOCKED</text>
+<text class="sub" x="20" y="47">Highest jobs/s over any 3 s while draining · labels: S6 → S7 median, whiskers = min–max</text>
+<rect class="f1" x="20" y="62" width="12" height="12" rx="2"/>
+<text x="38" y="72">S6 optimistic (default)</text>
+<rect class="f2" x="225.6" y="62" width="12" height="12" rx="2"/>
+<text x="243.6" y="72">S7 FOR UPDATE SKIP LOCKED</text>
+<line class="grid" x1="56" x2="620" y1="316.0" y2="316.0"/>
+<text class="tick" x="48" y="320.0" text-anchor="end">0</text>
+<line class="grid" x1="56" x2="620" y1="242.7" y2="242.7"/>
+<text class="tick" x="48" y="246.7" text-anchor="end">2k</text>
+<line class="grid" x1="56" x2="620" y1="169.3" y2="169.3"/>
+<text class="tick" x="48" y="173.3" text-anchor="end">4k</text>
+<line class="grid" x1="56" x2="620" y1="96.0" y2="96.0"/>
+<text class="tick" x="48" y="100.0" text-anchor="end">6k</text>
+<path d="M125.0,316.0 V279.4 Q125.0,275.4 129.0,275.4 H145.0 Q149.0,275.4 149.0,279.4 V316.0 Z" class="f1"><title>S6 optimistic (default), 1 node: 1.1k (runs 1.1k–1.1k)</title></path>
+<line class="whisker" x1="137.0" x2="137.0" y1="275.5" y2="275.1"/>
+<path d="M151.0,316.0 V279.3 Q151.0,275.3 155.0,275.3 H171.0 Q175.0,275.3 175.0,279.3 V316.0 Z" class="f2"><title>S7 FOR UPDATE SKIP LOCKED, 1 node: 1.1k (runs 1.1k–1.1k)</title></path>
+<line class="whisker" x1="163.0" x2="163.0" y1="275.9" y2="275.1"/>
+<text class="val" x="150.0" y="267.1" text-anchor="middle">1.1k → 1.1k</text>
+<text x="150.0" y="336" text-anchor="middle">1 node</text>
+<path d="M313.0,316.0 V202.7 Q313.0,198.7 317.0,198.7 H333.0 Q337.0,198.7 337.0,202.7 V316.0 Z" class="f1"><title>S6 optimistic (default), 3 nodes: 3.2k (runs 3.2k–3.2k)</title></path>
+<line class="whisker" x1="325.0" x2="325.0" y1="199.4" y2="198.3"/>
+<path d="M339.0,316.0 V202.4 Q339.0,198.4 343.0,198.4 H359.0 Q363.0,198.4 363.0,202.4 V316.0 Z" class="f2"><title>S7 FOR UPDATE SKIP LOCKED, 3 nodes: 3.2k (runs 3.1k–3.2k)</title></path>
+<line class="whisker" x1="351.0" x2="351.0" y1="202.0" y2="197.8"/>
+<text class="val" x="338.0" y="189.8" text-anchor="middle">3.2k → 3.2k</text>
+<text x="338.0" y="336" text-anchor="middle">3 nodes</text>
+<path d="M501.0,316.0 V205.0 Q501.0,201.0 505.0,201.0 H521.0 Q525.0,201.0 525.0,205.0 V316.0 Z" class="f1"><title>S6 optimistic (default), 6 nodes: 3.1k (runs 3.0k–3.9k)</title></path>
+<line class="whisker" x1="513.0" x2="513.0" y1="205.6" y2="172.9"/>
+<path d="M527.0,316.0 V163.1 Q527.0,159.1 531.0,159.1 H547.0 Q551.0,159.1 551.0,163.1 V316.0 Z" class="f2"><title>S7 FOR UPDATE SKIP LOCKED, 6 nodes: 4.3k (runs 3.8k–4.9k)</title></path>
+<line class="whisker" x1="539.0" x2="539.0" y1="178.3" y2="135.3"/>
+<text class="val" x="526.0" y="127.3" text-anchor="middle">3.1k → 4.3k</text>
+<text x="526.0" y="336" text-anchor="middle">6 nodes</text>
+<line class="axis" x1="56" x2="620" y1="316.0" y2="316.0"/>
+</svg>

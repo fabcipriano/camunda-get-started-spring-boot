@@ -1,0 +1,23 @@
+{
+  "scenario": "S7",
+  "run": "2",
+  "nodes": "1",
+  "count": 50000,
+  "max_jobs": "48",
+  "backoff": "0/0/2",
+  "threads": "90",
+  "db_cpus": "0",
+  "fill_ms": 40753,
+  "drain_ms": 47092,
+  "jobs_per_s": 1061.8,
+  "acquisition_attempts": 3016,
+  "acquired_ok": 50000,
+  "acquired_failed": 0,
+  "rejected": 0,
+  "successful": 50000,
+  "failed_ratio": 0.0,
+  "db_cpu_avg_pct": 200.6,
+  "db_cpu_max_pct": 220.49,
+  "optimistic_locking_exceptions": 0,
+  "results_dir": "S7-n1-r2-20261018-221646"
+}

@@ -106,6 +106,13 @@ Rounds are interleaved with `bench/run-matrix.sh` (S1 S2 … S5, ×3).
 - [x] Results table + charts in bench/RESULTS.md (`bench/analyze.py` → `bench/results/charts/*.svg`)
 - [x] Verdict for H1/H2/H3 and differences from the article (see Results below)
 
+### Phase 5 – Follow-up: FOR UPDATE SKIP LOCKED acquisition
+- [x] Source analysis of camunda-engine 7.8.0: acquisition is optimistic (plain SELECT, then
+      `UPDATE … WHERE ID_ = ? AND REV_ = ?`); SKIP LOCKED is feasible on PostgreSQL ≥ 9.5.
+- [x] Opt-in plugin: `SkipLockedJobAcquisitionPlugin` + `mappings/SkipLockedJobAcquisition.xml`, `JOB_EXECUTOR_SKIP_LOCKED=true`.
+- [x] S7 (S2 + SKIP LOCKED) at 1/3/6 nodes ×3, S8 (S1 + SKIP LOCKED) at 3 nodes ×3 → see RESULTS.md.
+- [ ] Re-run S6 vs S7 interleaved, on separate machines or with more nodes, where contention is the real limit.
+
 ## Decisions log
 - 2026-10-18: Use dedicated benchmark process instead of loanApproval (reason: isolate variable).
 - 2026-10-18: The job executor was configured in three places that disagreed:
@@ -137,10 +144,17 @@ Rounds are interleaved with `bench/run-matrix.sh` (S1 S2 … S5, ×3).
   to avoid concurrent schema creation on an empty DB.
 - 2026-10-18: Dockerfile base `openjdk:8-jdk-alpine` no longer exists on Docker Hub;
   switched to `eclipse-temurin:8-jre-alpine` (same Java 8). Affects the root compose files too.
+- 2026-10-18: SKIP LOCKED plugin copies selectNextJobsToExecute and its 3 local fragments from Job.xml: the engine's
+  fragments include each other by relative id, which MyBatis resolves against the *including* mapper's namespace.
+  Must be compared with Job.xml on every Camunda upgrade.
 - 2026-10-18: Node heap capped at 768m (`NODE_HEAP`) so 6 nodes fit in the 23 GB host.
 
 ## Results
 Full report: [bench/RESULTS.md](bench/RESULTS.md). Medians of 3 runs, 50,000 jobs.
+
+- **SKIP LOCKED (Phase 5).** 0 failed locks (from 65–81%), 45–80% fewer acquisition cycles, 37–44% faster than backoff,
+  +36% peak rate at 6 nodes, but only 5–7% faster end to end here (thread limit at 3 nodes, host CPU at 6).
+  With 3 per acquisition it's still 2.8× slower than with 48: it complements large batches, it doesn't replace them.
 
 - **H1 confirmed.** 48 jobs per acquisition drained in 19.6 s vs 92.9 s with 3 (4.7× faster), using 13× fewer acquisition cycles.
 - **H2 half confirmed.** Backoff cut failed locks by 62–71%, but drains were 66–88% *slower* (32.6–36.8 s vs 19.6 s),

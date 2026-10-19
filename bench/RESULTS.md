@@ -10,10 +10,17 @@ on Camunda 7.8 / Spring Boot 1.5 / PostgreSQL 13. Plan and hypotheses: [PLAN.md]
 | **H1** | Acquiring larger chunks (48 vs 3 jobs) is much faster | 48 jobs per acquisition drained 50,000 jobs **4.7× faster** (19.6 s vs 92.9 s) | **Confirmed** |
 | **H2** | Backoff reduces failed locks but gives only a slight benefit | Backoff cut failed locks by **62–71%**, but made the drain **66–88% slower** | **Half confirmed**: fewer conflicts, but throughput got worse, not slightly better |
 | **H3** | Adding nodes stops helping; the DB saturates | 1→3 nodes: **2.2×** faster. 3→6 nodes: **no gain**. DB used at most 9 of 24 cores | **Partly confirmed**: scaling stops, but not because of DB CPU (see caveats) |
+| **S7** | *(not in the article)* `FOR UPDATE SKIP LOCKED` + 48 per acquisition | **0 failed locks** (from 65–81%), 37–44% faster than backoff, +36% peak rate at 6 nodes, 5–7% faster end to end | **Recommended**: never slower than S2, removes contention |
 
-The short version: **use large acquisition batches, and don't turn on backoff unless the database is the
-bottleneck.** In this setup, backoff lets one node win most acquisitions while the others wait,
+The short version: **use large acquisition batches, don't turn on backoff unless the database is the
+bottleneck, and on PostgreSQL add `SKIP LOCKED` acquisition (S7).** In this setup, backoff lets one node win most acquisitions while the others wait,
 so a 3-node cluster performs like about one node.
+
+**Follow-up: `FOR UPDATE SKIP LOCKED` (S7/S8).** A small opt-in plugin switches acquisition to
+`SELECT … FOR UPDATE SKIP LOCKED` on PostgreSQL. It removed **all** failed locks (from 65–81%), cut acquisition cycles by
+45–80%, beat every backoff setting by 37–44%, and lifted the 6-node peak rate by 36%. End to end it was only 5–7% faster
+here, because the nodes' threads (3 nodes) and the shared host (6 nodes) became the limit. It complements large batches
+rather than replacing them. See [S7/S8](#s7s8-for-update-skip-locked-acquisition-follow-up).
 
 ## Setup
 
@@ -31,7 +38,7 @@ job executor is started at the same moment, and the time until the job table is 
 Each configuration ran 3 times, interleaved (S1 S2 S3 S4 S5, ×3) so drift on the machine doesn't favour one scenario.
 Values below are medians of the 3 runs, with min–max where shown.
 
-## S1–S5: batch size and backoff (3 nodes)
+## S1–S5 and S7: batch size, backoff and SKIP LOCKED (3 nodes)
 
 | Scenario | maxJobs | Backoff (init/max/factor) | Drain time, s | Jobs/s | Failed locks | Failed share | Acquisition cycles | DB CPU, cores (avg / max) |
 |---|---|---|---|---|---|---|---|---|
@@ -40,6 +47,10 @@ Values below are medians of the 3 runs, with min–max where shown.
 | S3 | 48 | 50/250/2 | 36.8 (26.5–36.9) | 1,359 | 27,312 | 35% | 2,889 | 2.5 / 7.2 |
 | S4 | 48 | 70/350/2 | 36.8 (34.6–39.4) | 1,359 | 26,688 | 35% | 3,024 | 2.5 / 7.4 |
 | S5 | 48 | 90/450/2 | 32.6 (29.5–36.8) | 1,534 | 34,400 | 41% | 2,975 | 2.6 / 5.8 |
+| **S7** | **48 + SKIP LOCKED** | **off** | **20.6 (18.4–21.1)** | **2,432** | **0** | **0%** | **1,891** | 6.2 / 7.9 |
+
+S7 is the follow-up described [below](#s7s8-for-update-skip-locked-acquisition-follow-up): S2's settings plus
+`FOR UPDATE SKIP LOCKED` acquisition. It was run after S1–S5, not interleaved with them.
 
 ![Throughput by scenario](results/charts/throughput.svg)
 
@@ -47,7 +58,7 @@ Values below are medians of the 3 runs, with min–max where shown.
 
 ![Remaining jobs over time](results/charts/drain.svg)
 
-*S3 and S4 overlap almost exactly in the chart above; both medians are 36.8 s.*
+*S3 and S4 overlap almost exactly in the chart above (both medians 36.8 s), and so do S2 and S7 (19.6 s and 20.6 s).*
 
 ### H1: larger batches
 
@@ -105,6 +116,85 @@ the same rows, and most lock attempts fail. Six nodes do 5,423 acquisition cycle
 Unlike the article, the database CPU is **not** saturated: Postgres averaged 7 cores and peaked at
 9 of 24. The limit here is contention on the same job rows, not database capacity.
 
+## S7/S8: `FOR UPDATE SKIP LOCKED` acquisition (follow-up)
+
+### How Camunda 7.8 acquires jobs
+
+Camunda 7.8 doesn't lock jobs pessimistically. Acquisition (`AcquireJobsCmd` + `selectNextJobsToExecute` in `Job.xml`) is optimistic:
+
+1. `SELECT RES.* FROM ACT_RU_JOB RES WHERE <acquirable> ORDER BY … LIMIT 48` takes no row locks, so every node gets the same head of the queue.
+2. Each job's lock owner and expiry are set in memory.
+3. At commit, `UPDATE ACT_RU_JOB … WHERE ID_ = ? AND REV_ = ?` runs per job. Updates that hit 0 rows are optimistic-locking
+   failures, and an `OptimisticLockingListener` drops those jobs from the batch. These are the "failed locks" above.
+
+`SKIP LOCKED` takes a very short pessimistic lock to avoid those conflicts. Each acquisition locks the rows it selects,
+and concurrent acquisitions on other nodes skip those rows and take the next free ones.
+
+### Implementation (opt-in, no engine fork)
+
+- `src/main/resources/mappings/SkipLockedJobAcquisition.xml`: a copy of `selectNextJobsToExecute` from 7.8.0 with
+  `FOR UPDATE OF RES SKIP LOCKED` appended. PostgreSQL accepts it because the query has no joins, `DISTINCT` or aggregates.
+- `SkipLockedJobAcquisitionPlugin`: a `ProcessEnginePlugin` that registers the mapper in MyBatis after the engine's
+  SqlSessionFactory is built, then maps `selectNextJobsToExecute` to the new statement through
+  `DbSqlSessionFactory`'s statement mappings. Camunda uses the same mechanism for its own `*_postgres` statements.
+- Enabled with `JOB_EXECUTOR_SKIP_LOCKED=true`, and only on PostgreSQL (logs a warning and does nothing on other databases).
+
+Why it's safe:
+- Acquisition runs in its own transaction (`getCommandExecutorTxRequired()`), so the row locks last only for the SELECT
+  plus the lock-owner UPDATEs, a few milliseconds.
+- `SKIP LOCKED` never waits, so it can't block or deadlock job execution.
+- Under PostgreSQL's default READ COMMITTED isolation, `FOR UPDATE` re-checks the WHERE clause on the latest row version.
+  A job that another node locked and committed a moment earlier is skipped, and the LIMIT still fills from the next rows.
+- Exclusive jobs of the same process instance can still be acquired by two nodes at once (the `NOT EXISTS` check sees
+  a snapshot). This race exists in the original query too, and is still caught by optimistic locking when the jobs execute.
+
+Verified in the runs below: **0 failed locks** in every multi-node run, and every job executed exactly once
+(acquired = successful = 50,000).
+
+### Results (48 per acquisition, no backoff; S6 = default optimistic, S7 = SKIP LOCKED)
+
+| Nodes | Drain time, s: S6 → S7 | Peak drain rate, jobs/s: S6 → S7 | Acquisition cycles: S6 → S7 | Failed locks: S6 → S7 | DB CPU avg, cores: S6 → S7 |
+|---|---|---|---|---|---|
+| 1 | 47.2 → 48.0 (no change) | 1,108 → 1,109 | 4,140 → 3,109 | 0 → 0 | 1.8 → 2.0 |
+| 3 | 21.6 → 20.6 (−5%) | 3,199 → 3,208 | 3,416 → 1,891 (−45%) | 90,880 → **0** | 4.6 → 6.2 |
+| 6 | 22.5 → 20.9 (−7%) | 3,138 → **4,279 (+36%)** | 5,423 → 1,104 (−80%) | 207,952 → **0** | 7.0 → 6.3 |
+
+![Drain time: optimistic vs SKIP LOCKED](results/charts/skip-locked-drain.svg)
+
+![Peak drain rate: optimistic vs SKIP LOCKED](results/charts/skip-locked-peak.svg)
+
+And SKIP LOCKED with Camunda's default batch size (S8, 3 nodes, 3 per acquisition):
+
+| Scenario (3 nodes) | Jobs per acquisition | Acquisition | Drain time, s |
+|---|---|---|---|
+| S1 | 3 | optimistic | 92.9 |
+| **S8** | 3 | **SKIP LOCKED** | **57.4 (56.9–58.6)** |
+| S2 | 48 | optimistic | 19.6 |
+| **S7** | 48 | **SKIP LOCKED** | **20.6 (18.4–21.1)** |
+
+### Verdict on SKIP LOCKED
+
+- **It removes contention completely:** 0 failed locks at 3 and 6 nodes (from 65% and 81%), and 45–80% fewer
+  acquisition cycles. It costs nothing on a single node.
+- **It's better than backoff:** at 3 nodes, S7 (20.6 s) is 37–44% faster than every backoff scenario (32.6–36.8 s), and the
+  work is evenly spread (15.6k–18.5k jobs per node instead of one node doing 67–82%).
+- **It doesn't replace large batches, it complements them.** With 3 per acquisition it's 38% faster than S1, but still
+  2.8× slower than 48 per acquisition. Each node has one acquisition thread, and fetching 3 jobs per round trip caps it
+  at about 300 jobs/s however cleanly the locks work.
+- **The end-to-end gain here is small (5–7%)** because the bottleneck moves elsewhere:
+  - **3 nodes:** both S6 and S7 peak at about 3,200 jobs/s, which is the 3 nodes' combined thread limit (3 × ~1,090).
+    Removing contention can't go past that.
+  - **6 nodes:** SKIP LOCKED lifts the peak rate by 36% (to about 4,300 jobs/s), where optimistic locking was stuck at the
+    3-node level. But the shared 24-core host is saturated (all containers averaged 19 cores, peaked at 23), so 6 JVMs
+    ramp up slowly, and 50,000 jobs run out before they reach full speed. Run-to-run spread is also tighter
+    (18.2–21.0 s vs 19.0–24.8 s).
+- **Database CPU was 35% higher at 3 nodes** (4.6 → 6.2 cores, average) but 10% lower at 6 nodes. Row locks add a write to
+  each selected tuple, but failed optimistic UPDATEs go away. Neither came close to saturating the database here.
+
+The benefit should grow where contention is the real limit: more nodes, nodes on separate machines, or more threads
+per node. That's the next test to confirm it. S6 and S7 were run about 45 minutes apart on the same machine
+(not interleaved), and the 3-node difference is within run-to-run noise.
+
 ## Caveats
 
 - **Everything ran on one 24-core machine.** With 6 nodes, all containers together peaked at about
@@ -126,6 +216,8 @@ Unlike the article, the database CPU is **not** saturated: Postgres averaged 7 c
 ```bash
 bench/run-matrix.sh 3 S1 S2 S3 S4 S5                               # about 25 min
 for n in 1 3 6; do NODES=$n SKIP_BUILD=1 bench/run.sh S6 1; done   # one round of S6
+for n in 1 3 6; do NODES=$n SKIP_BUILD=1 bench/run.sh S7 1; done   # same with SKIP LOCKED
+bench/run.sh S8 1                                                  # SKIP LOCKED, 3 per acquisition
 python3 bench/analyze.py > bench/results/tables.md                 # tables + charts/*.svg
 ```
 
