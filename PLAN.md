@@ -81,9 +81,19 @@ PostgreSQL 13, Docker) and check whether its conclusions still hold:
       0 rejected, 0 errors.
 
 ### Phase 2 – Measurement tooling
-- [ ] Script `bench/run.sh <scenario>`: reset DB → up N nodes → fill → start →
+- [x] Script `bench/run.sh <scenario>`: reset DB → up N nodes → fill → start →
       poll ACT_RU_JOB count → record duration → dump metrics to bench/results/<id>.csv
-- [ ] Grafana panel: acquired vs failed acquisitions (like the article's blue/orange chart)
+      → `bench/run.sh S2 1`, `NODES=6 bench/run.sh S6 1`, `COUNT=5000` for quick runs.
+        Scenarios in `bench/scenarios/S*.env`. Per run: `bench/results/<S>-n<N>-r<run>-<ts>/`
+        (config.env, fill.json, progress.csv, docker_stats.csv, nodes.csv, summary.json),
+        plus one row appended to `bench/results/summary.csv`.
+      → Stack: `bench/docker-compose.yml` (project `camunda-bench`, ports 18080+/15432/19090/13000),
+        separate from the root compose files; Postgres has no volume, so each run starts empty.
+- [x] Grafana panel: acquired vs failed acquisitions (like the article's blue/orange chart)
+      → Auto-provisioned: http://localhost:13000/d/camunda-bench (anonymous view, admin/admin).
+        Also: jobs/s, remaining jobs, acquisition cycles/s, failed per node, threads, queue, DB connections.
+- [x] New metrics: `camunda_count_job_acquisition_attempt`, `camunda_count_job_successful`.
+- [x] Smoke test: S3, 3 nodes, COUNT=5000 → see observations below.
 
 ### Phase 3 – Execute
 - [ ] S1 … S6 (3 runs each)
@@ -117,8 +127,24 @@ PostgreSQL 13, Docker) and check whether its conclusions still hold:
 - 2026-10-18: The benchmark process has no job priority and no variables, so each instance
   is exactly one job-table row, like the article.
 
+- 2026-10-18: Benchmark nodes run with `CAMUNDA_METRICS_DB_REPORTER=false`: the DB reporter
+  calls `Meter.getAndClear()` every 15 min, which would reset counters mid-run.
+- 2026-10-18: Node 1 boots alone first (creates the schema), then the service scales to N,
+  to avoid concurrent schema creation on an empty DB.
+- 2026-10-18: Dockerfile base `openjdk:8-jdk-alpine` no longer exists on Docker Hub;
+  switched to `eclipse-temurin:8-jre-alpine` (same Java 8). Affects the root compose files too.
+- 2026-10-18: Node heap capped at 768m (`NODE_HEAP`) so 6 nodes fit in the 23 GB host.
+
 ## Results
 (filled in during Phase 3)
+
+### Smoke-test observations (S3, 3 nodes, 5,000 jobs — too small to conclude anything)
+- 5,000 jobs in 5.2 s (~970 jobs/s), about the same as 1 node in Phase 1.
+- 47% of lock attempts failed (4,464 failed vs 5,000 acquired), peak ~590 failed/s.
+- Very uneven work split: node 1 executed 4,520 jobs in 4,052 acquisition cycles;
+  nodes 2 and 3 executed 288 and 192 in only 11 and 9 cycles, with most attempts failing.
+  Likely backoff pushing the losing nodes to max backoff while node 1 keeps winning.
+  Compare with S2 (no backoff) in Phase 3. If confirmed, it's relevant to H2.
 
 ## Open questions
 - Throughput ceiling per node is thread-bound: 90 threads / 80 ms average work ≈ 1,125 jobs/s,

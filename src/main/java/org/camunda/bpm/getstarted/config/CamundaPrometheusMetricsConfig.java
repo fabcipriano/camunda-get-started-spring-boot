@@ -76,6 +76,16 @@ public class CamundaPrometheusMetricsConfig {
             .help("Number of jobs rejected if thread pool exausted")
             .register();
 
+    private static final Gauge countJobAcquisitionAttempt = Gauge.build()
+            .name("camunda_count_job_acquisition_attempt")
+            .help("Number of job acquisition cycles performed")
+            .register();
+
+    private static final Gauge countJobSuccessful = Gauge.build()
+            .name("camunda_count_job_successful")
+            .help("Number of jobs executed successfully")
+            .register();
+
     @Autowired
     private ProcessEngine processEngine;
 
@@ -90,6 +100,8 @@ public class CamundaPrometheusMetricsConfig {
     private Meter meterJobAcquiredSuccessful;
     private Meter meterJobAcquiredFailed;
     private Meter meterJobExecutionRejected;
+    private Meter meterJobAcquisitionAttempt;
+    private Meter meterJobSuccessful;
 
     @PostConstruct
     public void init() throws IOException {
@@ -158,6 +170,10 @@ public class CamundaPrometheusMetricsConfig {
                     .getMetricsRegistry().getMeterByName(Metrics.JOB_ACQUIRED_FAILURE);
             meterJobExecutionRejected = ((ProcessEngineConfigurationImpl) processEngineConfiguration)
                     .getMetricsRegistry().getMeterByName(Metrics.JOB_EXECUTION_REJECTED);
+            meterJobAcquisitionAttempt = ((ProcessEngineConfigurationImpl) processEngineConfiguration)
+                    .getMetricsRegistry().getMeterByName(Metrics.JOB_ACQUISITION_ATTEMPT);
+            meterJobSuccessful = ((ProcessEngineConfigurationImpl) processEngineConfiguration)
+                    .getMetricsRegistry().getMeterByName(Metrics.JOB_SUCCESSFUL);
         }
     }
 
@@ -181,13 +197,16 @@ public class CamundaPrometheusMetricsConfig {
         activeJobExecutoThreadsGauge.set(activeCount);
     }
 
-    @Scheduled(fixedRate = 5000)
+    // Meters are cumulative only while the DB metrics reporter is off (it clears them every 15 min)
+    @Scheduled(fixedRate = 2000)
     public void updateCamundaMetrics() {
-        logger.info("updateCamundaMetrics - JobAcquiredSuccessful: {} , JobAcquiredFailed: {}, JobExecutionRejected: {}",
+        logger.debug("updateCamundaMetrics - JobAcquiredSuccessful: {} , JobAcquiredFailed: {}, JobExecutionRejected: {}",
                 meterJobAcquiredSuccessful.get(), meterJobAcquiredFailed.get(), meterJobExecutionRejected.get());
         countJobAcquiredSuccessful.set(meterJobAcquiredSuccessful.get());
         countJobAcquiredFailed.set(meterJobAcquiredFailed.get());
         countJobExecutionRejected.set(meterJobExecutionRejected.get());
+        countJobAcquisitionAttempt.set(meterJobAcquisitionAttempt.get());
+        countJobSuccessful.set(meterJobSuccessful.get());
     }
 
     @Scheduled(fixedRate = 15000)

@@ -1,0 +1,73 @@
+# Benchmark stack for PLAN.md. Driven by bench/run.sh; separate from the root compose files
+# (own project name, no DB volume, so every run starts from an empty database).
+services:
+  camunda:
+    build:
+      context: ..
+      dockerfile: ./Dockerfile
+    image: facio/camunda-get-started:bench
+    # One host port per replica; run.sh finds them with `docker compose port --index`
+    ports:
+      - "18080-18089:8080"
+      - "18380-18389:8383"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/my_camunda
+      - JAVA_TOOL_OPTIONS=-Xmx${NODE_HEAP:-768m}
+      - JOB_EXECUTOR_START_ON_BOOT=false
+      - START_SAMPLE_INSTANCE=false
+      - CAMUNDA_METRICS_DB_REPORTER=false
+      - BENCHMARK_MAX_DELAY_MS=${BENCHMARK_MAX_DELAY_MS:-160}
+      - JOB_EXECUTOR_CORE_POOL_SIZE=${JOB_EXECUTOR_CORE_POOL_SIZE:-90}
+      - JOB_EXECUTOR_MAX_POOL_SIZE=${JOB_EXECUTOR_MAX_POOL_SIZE:-105}
+      - JOB_EXECUTOR_MAX_JOBS_PER_ACQUISITION=${JOB_EXECUTOR_MAX_JOBS_PER_ACQUISITION:-3}
+      - JOB_EXECUTOR_WAIT_TIME_IN_MILLIS=${JOB_EXECUTOR_WAIT_TIME_IN_MILLIS:-1000}
+      - JOB_EXECUTOR_BACKOFF_TIME_IN_MILLIS=${JOB_EXECUTOR_BACKOFF_TIME_IN_MILLIS:-0}
+      - JOB_EXECUTOR_MAX_BACKOFF=${JOB_EXECUTOR_MAX_BACKOFF:-0}
+      - JOB_EXECUTOR_WAIT_INCREASE_FACTOR=${JOB_EXECUTOR_WAIT_INCREASE_FACTOR:-2}
+      - DB_POOL_MAX_SIZE=${DB_POOL_MAX_SIZE:-110}
+    depends_on:
+      - postgres-db
+    networks:
+      - bench
+
+  postgres-db:
+    image: postgres:13
+    command: postgres -c 'max_connections=950'
+    environment:
+      POSTGRES_USER: camunda
+      POSTGRES_PASSWORD: camund@123
+      POSTGRES_DB: my_camunda
+    # 0 = no limit; set DB_CPUS=2 to mimic the article's 2-core DB
+    cpus: ${DB_CPUS:-0}
+    ports:
+      - "15432:5432"
+    networks:
+      - bench
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "19090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    networks:
+      - bench
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "13000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    networks:
+      - bench
+
+networks:
+  bench:
+    driver: bridge

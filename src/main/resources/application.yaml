@@ -10,6 +10,11 @@ camunda.bpm:
   filter:
     create: All tasks
 
+# The DB reporter clears the in-memory meters every 15 min; turn it off for benchmark runs
+# so the camunda_count_* Prometheus gauges are cumulative
+camunda.bpm.metrics:
+  db-reporter-activate: ${CAMUNDA_METRICS_DB_REPORTER:true}
+
 camunda.bpm.database:
   jdbc-batch-processing: true
   type: postgres

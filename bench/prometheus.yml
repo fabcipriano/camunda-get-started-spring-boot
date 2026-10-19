@@ -1,0 +1,13 @@
+global:
+  # Runs last about a minute, so scrape much faster than the default 15s
+  scrape_interval: 2s
+
+scrape_configs:
+  - job_name: 'camunda-bench'
+    metrics_path: '/actuator/prometheus'
+    # The compose service name resolves to every replica, however many are running
+    dns_sd_configs:
+      - names: ['camunda']
+        type: A
+        port: 8383
+        refresh_interval: 5s

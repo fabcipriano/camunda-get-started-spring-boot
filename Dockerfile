@@ -1,4 +1,5 @@
-FROM openjdk:8-jdk-alpine
+# openjdk:8-jdk-alpine was removed from Docker Hub; Temurin is its official successor
+FROM eclipse-temurin:8-jre-alpine
 
 RUN mkdir /opt/spring
 
