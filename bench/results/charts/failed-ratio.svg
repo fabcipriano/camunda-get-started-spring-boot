@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="340" viewBox="0 0 640 340" role="img" aria-label="Failed lock attempts by scenario (3 nodes)">
+<style>
+  text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 12px; }
+  .title { font-size: 15px; font-weight: 600; }
+  .tick { font-size: 11px; font-variant-numeric: tabular-nums; }
+  .val { font-weight: 600; }
+  .grid, .axis { stroke-width: 1; }
+  .whisker { stroke-width: 1.5; }
+  .bg{fill:#fcfcfb}
+  text{fill:#52514e}
+  .title,.val{fill:#0b0b0b}
+  .tick{fill:#898781}
+  .grid{stroke:#e1e0d9}
+  .axis{stroke:#c3c2b7}
+  .whisker{stroke:#52514e}
+  .ring{stroke:#fcfcfb}
+  .f1{fill:#2a78d6} .k1{stroke:#2a78d6}
+  .f2{fill:#eb6834} .k2{stroke:#eb6834}
+  .f3{fill:#1baf7a} .k3{stroke:#1baf7a}
+  .f4{fill:#eda100} .k4{stroke:#eda100}
+  .f5{fill:#e87ba4} .k5{stroke:#e87ba4}
+  @media (prefers-color-scheme: dark) {
+  .bg{fill:#1a1a19}
+  text{fill:#c3c2b7}
+  .title,.val{fill:#ffffff}
+  .tick{fill:#898781}
+  .grid{stroke:#2c2c2a}
+  .axis{stroke:#383835}
+  .whisker{stroke:#c3c2b7}
+  .ring{stroke:#1a1a19}
+  .f1{fill:#3987e5} .k1{stroke:#3987e5}
+  .f2{fill:#d95926} .k2{stroke:#d95926}
+  .f3{fill:#199e70} .k3{stroke:#199e70}
+  .f4{fill:#c98500} .k4{stroke:#c98500}
+  .f5{fill:#d55181} .k5{stroke:#d55181}
+  }
+</style>
+<rect class="bg" width="640" height="340" rx="8"/>
+<text class="title" x="20" y="28">Failed lock attempts by scenario (3 nodes)</text>
+<text class="sub" x="20" y="47">Share of lock attempts lost to another node · median of runs, whiskers = min–max</text>
+<line class="grid" x1="56" x2="620" y1="296.0" y2="296.0"/>
+<text class="tick" x="48" y="300.0" text-anchor="end">0%</text>
+<line class="grid" x1="56" x2="620" y1="240.0" y2="240.0"/>
+<text class="tick" x="48" y="244.0" text-anchor="end">20%</text>
+<line class="grid" x1="56" x2="620" y1="184.0" y2="184.0"/>
+<text class="tick" x="48" y="188.0" text-anchor="end">40%</text>
+<line class="grid" x1="56" x2="620" y1="128.0" y2="128.0"/>
+<text class="tick" x="48" y="132.0" text-anchor="end">60%</text>
+<line class="grid" x1="56" x2="620" y1="72.0" y2="72.0"/>
+<text class="tick" x="48" y="76.0" text-anchor="end">80%</text>
+<path d="M100.4,296.0 V126.6 Q100.4,122.6 104.4,122.6 H120.4 Q124.4,122.6 124.4,126.6 V296.0 Z" class="f1"><title>S1: 62% (runs 62%–64%)</title></path>
+<line class="whisker" x1="112.4" x2="112.4" y1="123.2" y2="117.6"/>
+<line class="whisker" x1="107.4" x2="117.4" y1="123.2" y2="123.2"/>
+<line class="whisker" x1="107.4" x2="117.4" y1="117.6" y2="117.6"/>
+<text class="val" x="112.4" y="109.6" text-anchor="middle">62%</text>
+<text x="112.4" y="316" text-anchor="middle">S1</text>
+<path d="M213.2,296.0 V119.3 Q213.2,115.3 217.2,115.3 H233.2 Q237.2,115.3 237.2,119.3 V296.0 Z" class="f1"><title>S2: 65% (runs 64%–65%)</title></path>
+<line class="whisker" x1="225.2" x2="225.2" y1="116.6" y2="115.0"/>
+<line class="whisker" x1="220.2" x2="230.2" y1="116.6" y2="116.6"/>
+<line class="whisker" x1="220.2" x2="230.2" y1="115.0" y2="115.0"/>
+<text class="val" x="225.2" y="107.0" text-anchor="middle">65%</text>
+<text x="225.2" y="316" text-anchor="middle">S2</text>
+<path d="M326.0,296.0 V201.1 Q326.0,197.1 330.0,197.1 H346.0 Q350.0,197.1 350.0,201.1 V296.0 Z" class="f1"><title>S3: 35% (runs 32%–44%)</title></path>
+<line class="whisker" x1="338.0" x2="338.0" y1="205.6" y2="172.7"/>
+<line class="whisker" x1="333.0" x2="343.0" y1="205.6" y2="205.6"/>
+<line class="whisker" x1="333.0" x2="343.0" y1="172.7" y2="172.7"/>
+<text class="val" x="338.0" y="164.7" text-anchor="middle">35%</text>
+<text x="338.0" y="316" text-anchor="middle">S3</text>
+<path d="M438.8,296.0 V202.6 Q438.8,198.6 442.8,198.6 H458.8 Q462.8,198.6 462.8,202.6 V296.0 Z" class="f1"><title>S4: 35% (runs 33%–37%)</title></path>
+<line class="whisker" x1="450.8" x2="450.8" y1="202.6" y2="192.5"/>
+<line class="whisker" x1="445.8" x2="455.8" y1="202.6" y2="202.6"/>
+<line class="whisker" x1="445.8" x2="455.8" y1="192.5" y2="192.5"/>
+<text class="val" x="450.8" y="184.5" text-anchor="middle">35%</text>
+<text x="450.8" y="316" text-anchor="middle">S4</text>
+<path d="M551.6,296.0 V185.9 Q551.6,181.9 555.6,181.9 H571.6 Q575.6,181.9 575.6,185.9 V296.0 Z" class="f1"><title>S5: 41% (runs 28%–42%)</title></path>
+<line class="whisker" x1="563.6" x2="563.6" y1="216.5" y2="178.9"/>
+<line class="whisker" x1="558.6" x2="568.6" y1="216.5" y2="216.5"/>
+<line class="whisker" x1="558.6" x2="568.6" y1="178.9" y2="178.9"/>
+<text class="val" x="563.6" y="170.9" text-anchor="middle">41%</text>
+<text x="563.6" y="316" text-anchor="middle">S5</text>
+<line class="axis" x1="56" x2="620" y1="296.0" y2="296.0"/>
+</svg>

@@ -1,0 +1,4 @@
+node,port,acquisition_attempts,acquired_ok,acquired_failed,rejected,successful
+1,18089,1247,20576,27360,0,20576
+2,18080,1115,18336,27312,0,18336
+3,18081,951,11088,34304,0,11088

@@ -96,11 +96,15 @@ PostgreSQL 13, Docker) and check whether its conclusions still hold:
 - [x] Smoke test: S3, 3 nodes, COUNT=5000 → see observations below.
 
 ### Phase 3 – Execute
-- [ ] S1 … S6 (3 runs each)
+Run conditions (open questions left at defaults): 90/105 executor threads per node,
+no DB CPU limit (host has 24 cores), acquire-by-priority on, 50,000 jobs, 768m heap per node.
+Rounds are interleaved with `bench/run-matrix.sh` (S1 S2 … S5, ×3).
+- [x] S1 … S5 (3 runs each): `bench/run-matrix.sh 3 S1 S2 S3 S4 S5` → 15/15 runs OK, ~23 min.
+- [x] S6 with NODES=1, 3, 6 (3 runs each) using the best of S1–S5 → best was S2; 9/9 runs OK.
 
 ### Phase 4 – Analysis
-- [ ] Results table + charts in bench/RESULTS.md
-- [ ] Verdict for H1/H2/H3 and differences from the article
+- [x] Results table + charts in bench/RESULTS.md (`bench/analyze.py` → `bench/results/charts/*.svg`)
+- [x] Verdict for H1/H2/H3 and differences from the article (see Results below)
 
 ## Decisions log
 - 2026-10-18: Use dedicated benchmark process instead of loanApproval (reason: isolate variable).
@@ -136,7 +140,15 @@ PostgreSQL 13, Docker) and check whether its conclusions still hold:
 - 2026-10-18: Node heap capped at 768m (`NODE_HEAP`) so 6 nodes fit in the 23 GB host.
 
 ## Results
-(filled in during Phase 3)
+Full report: [bench/RESULTS.md](bench/RESULTS.md). Medians of 3 runs, 50,000 jobs.
+
+- **H1 confirmed.** 48 jobs per acquisition drained in 19.6 s vs 92.9 s with 3 (4.7× faster), using 13× fewer acquisition cycles.
+- **H2 half confirmed.** Backoff cut failed locks by 62–71%, but drains were 66–88% *slower* (32.6–36.8 s vs 19.6 s),
+  not slightly faster. With backoff, one node did 67–82% of the work while the others waited at maximum backoff, so the
+  cluster ran at one node's thread limit (~1,090 jobs/s). The article's DB was 2 cores at 100%; ours never used more than ~7 of 24.
+- **H3 partly confirmed.** 1→3 nodes gave 2.2×; 3→6 nodes gave nothing (81% of lock attempts failed). DB CPU was *not*
+  saturated (max 9 of 24 cores), but the shared host peaked at ~23 of 24 cores with 6 nodes, so that result is partly a host limit.
+
 
 ### Smoke-test observations (S3, 3 nodes, 5,000 jobs — too small to conclude anything)
 - 5,000 jobs in 5.2 s (~970 jobs/s), about the same as 1 node in Phase 1.
@@ -144,13 +156,16 @@ PostgreSQL 13, Docker) and check whether its conclusions still hold:
 - Very uneven work split: node 1 executed 4,520 jobs in 4,052 acquisition cycles;
   nodes 2 and 3 executed 288 and 192 in only 11 and 9 cycles, with most attempts failing.
   Likely backoff pushing the losing nodes to max backoff while node 1 keeps winning.
-  Compare with S2 (no backoff) in Phase 3. If confirmed, it's relevant to H2.
+  Compare with S2 (no backoff) in Phase 3. If confirmed, it's relevant to H2. → Confirmed in Phase 3 (H2).
 
 ## Open questions
-- Throughput ceiling per node is thread-bound: 90 threads / 80 ms average work ≈ 1,125 jobs/s,
+- (Answered: it is thread-bound, and that explains H2; see RESULTS.md) Throughput ceiling per node is thread-bound: 90 threads / 80 ms average work ≈ 1,125 jobs/s,
   and the smoke test got ~970. To make acquisition (not thread count) the bottleneck as in the
   article, consider fewer threads per node (e.g. `JOB_EXECUTOR_CORE_POOL_SIZE`). Decide before Phase 3.
 - Is ACT_RU_JOB polling accurate enough, or use the job-successful metric delta?
+  (1 s polling = 1–5% uncertainty on 19–95 s drains; good enough for these differences.)
+- Next experiments that would get closer to the article: `DB_CPUS=2`, fewer executor threads per node,
+  acquire-by-priority off, and nodes on separate machines for the 6-node case.
 - Should the DB be CPU-limited (`cpus: 2`) to mimic the article's 2-core machine?
 - Is `job-executor-acquire-by-priority: true` (currently on) part of the test?
   The article didn't use priorities; consider turning it off for S1–S6.
